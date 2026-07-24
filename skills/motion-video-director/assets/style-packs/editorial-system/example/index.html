@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Editorial System Sample</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Editorial Serif";
+        src: local("Baskerville");
+      }
+
+      @font-face {
+        font-family: "Evidence Mono";
+        src: local("Menlo");
+      }
+
+      :root {
+        --paper: #f5f0e6;
+        --ink: #17312a;
+        --muted: #53645c;
+        --rule: #b8c5ba;
+        --signal: #a93f29;
+        --proof: #3b6b56;
+        --wash: #e3eadf;
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        margin: 0;
+        overflow: hidden;
+        background: var(--paper);
+      }
+
+      #editorial-system-sample {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: "Evidence Mono", monospace;
+      }
+
+      .paper-grid {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        opacity: 0.65;
+        background-image:
+          linear-gradient(to right, transparent 0, transparent 95px, rgba(23, 49, 42, 0.04) 96px),
+          linear-gradient(to bottom, transparent 0, transparent 95px, rgba(23, 49, 42, 0.04) 96px);
+        background-size: 96px 96px;
+      }
+
+      .scene-content {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        width: 100%;
+        height: 100%;
+        padding: 74px 92px 58px 104px;
+        gap: 28px;
+      }
+
+      .topline,
+      .footer,
+      .eyebrow,
+      .signal,
+      .evidence-node,
+      .decision-meta,
+      .proof-strip {
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--rule);
+        color: var(--muted);
+      }
+
+      .folio {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .folio-mark {
+        width: 12px;
+        height: 12px;
+        background: var(--signal);
+      }
+
+      .folio-code { font-variant-numeric: tabular-nums; }
+
+      .story-grid {
+        display: grid;
+        grid-template-columns: minmax(520px, 0.83fr) minmax(940px, 1.45fr);
+        gap: 92px;
+        min-height: 0;
+      }
+
+      .statement-panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 0;
+        padding: 18px 0 12px;
+      }
+
+      .eyebrow {
+        color: var(--signal);
+      }
+
+      .headline {
+        max-width: 650px;
+        margin: 0;
+        font-family: "Editorial Serif", serif;
+        font-size: 104px;
+        font-weight: 600;
+        letter-spacing: -0.058em;
+        line-height: 0.86;
+      }
+
+      .headline span {
+        display: inline-block;
+      }
+
+      .deck {
+        max-width: 540px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 27px;
+        letter-spacing: -0.025em;
+        line-height: 1.25;
+      }
+
+      .margin-note {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 358px;
+        padding-top: 18px;
+        border-top: 1px solid var(--ink);
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.35;
+      }
+
+      .margin-note strong {
+        color: var(--ink);
+        font-weight: 500;
+      }
+
+      .diagram {
+        position: relative;
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+        border: 1px solid var(--rule);
+        background: rgba(227, 234, 223, 0.46);
+      }
+
+      .diagram::before,
+      .diagram::after {
+        position: absolute;
+        z-index: 1;
+        width: 16px;
+        height: 16px;
+        border-color: var(--ink);
+        border-style: solid;
+        content: "";
+      }
+
+      .diagram::before {
+        top: 18px;
+        left: 18px;
+        border-width: 1px 0 0 1px;
+      }
+
+      .diagram::after {
+        right: 18px;
+        bottom: 18px;
+        border-width: 0 1px 1px 0;
+      }
+
+      .diagram-label {
+        position: absolute;
+        z-index: 2;
+        top: 28px;
+        right: 30px;
+        color: var(--muted);
+        font-size: 16px;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+      }
+
+      .routes {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .route {
+        fill: none;
+        stroke: var(--rule);
+        stroke-width: 2;
+        stroke-linecap: square;
+        stroke-dasharray: 1;
+        stroke-dashoffset: 0;
+      }
+
+      .route-active { stroke: var(--signal); }
+      .route-proof { stroke: var(--proof); stroke-width: 3; }
+
+      .signal {
+        position: absolute;
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 218px;
+        color: var(--ink);
+        white-space: nowrap;
+      }
+
+      .signal-index {
+        width: 28px;
+        color: var(--signal);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .signal-rule {
+        width: 42px;
+        height: 2px;
+        background: var(--signal);
+      }
+
+      .signal-1 { top: 132px; left: 52px; }
+      .signal-2 { top: 242px; left: 52px; }
+      .signal-3 { top: 352px; left: 52px; }
+      .signal-4 { top: 462px; left: 52px; }
+
+      .evidence-node {
+        position: absolute;
+        z-index: 4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 132px;
+        height: 60px;
+        border: 1px solid var(--ink);
+        background: var(--paper);
+        color: var(--ink);
+        font-size: 14px;
+        letter-spacing: 0.05em;
+        text-align: center;
+      }
+
+      .evidence-copy {
+        display: grid;
+        gap: 2px;
+      }
+
+      .evidence-node::before {
+        position: absolute;
+        top: -7px;
+        left: -7px;
+        width: 13px;
+        height: 13px;
+        background: var(--proof);
+        content: "";
+      }
+
+      .evidence-1 { top: 153px; left: 410px; }
+      .evidence-2 { top: 263px; left: 410px; }
+      .evidence-3 { top: 373px; left: 410px; }
+
+      .decision-node {
+        position: absolute;
+        z-index: 5;
+        top: 164px;
+        right: 62px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 278px;
+        height: 278px;
+        border-radius: 50%;
+        background: var(--ink);
+        color: var(--paper);
+        text-align: center;
+      }
+
+      .decision-node::before {
+        position: absolute;
+        inset: 18px;
+        border: 1px solid rgba(245, 240, 230, 0.5);
+        border-radius: 50%;
+        content: "";
+      }
+
+      .decision-orbit {
+        position: absolute;
+        inset: -21px;
+        border: 1px solid var(--signal);
+        border-radius: 50%;
+      }
+
+      .decision-kicker {
+        position: relative;
+        color: #d7e7da;
+        font-size: 14px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .decision-title {
+        position: relative;
+        margin-top: 13px;
+        font-family: "Editorial Serif", serif;
+        font-size: 51px;
+        font-weight: 600;
+        letter-spacing: -0.06em;
+        line-height: 0.9;
+      }
+
+      .decision-meta {
+        position: relative;
+        margin-top: 20px;
+        color: #d7e7da;
+        font-size: 13px;
+        letter-spacing: 0.1em;
+      }
+
+      .proof-strip {
+        position: absolute;
+        z-index: 4;
+        right: 28px;
+        bottom: 31px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        color: var(--proof);
+        font-size: 14px;
+      }
+
+      .proof-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--proof);
+      }
+
+      .footer {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 16px;
+      }
+
+      .footer-rule {
+        width: 67%;
+        height: 1px;
+        background: var(--rule);
+        transform-origin: left center;
+      }
+
+      .footer-note { font-variant-numeric: tabular-nums; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="editorial-system-sample"
+      class="clip"
+      data-composition-id="editorial-system-sample"
+      data-start="0"
+      data-duration="12"
+      data-track-index="0"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div class="paper-grid" data-layout-ignore></div>
+
+      <div class="scene-content">
+        <header class="topline">
+          <div class="folio">
+            <span class="folio-mark"></span>
+            <span>Editorial systems / evidence path</span>
+          </div>
+          <span class="folio-code" data-layout-allow-overflow>Field note 01—04</span>
+        </header>
+
+        <main class="story-grid">
+          <section class="statement-panel">
+            <div class="eyebrow">From signals to a decision</div>
+            <h1 class="headline"><span>Make</span> <span>evidence</span> <span>legible.</span></h1>
+            <p class="deck">A useful system does not stack inputs. It gives each signal a route, a proof, and a place in the final call.</p>
+            <div class="margin-note">
+              <strong>Editorial rule</strong>
+              <span>Show the relationship changing before you name the outcome.</span>
+            </div>
+          </section>
+
+          <section class="diagram" aria-label="Four signals become verified evidence and one decision">
+            <div class="diagram-label">Evidence field / live structure</div>
+            <svg class="routes" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
+              <path class="route route-active" pathLength="1" d="M 188 144 C 286 144, 304 184, 406 184"></path>
+              <path class="route" pathLength="1" d="M 188 254 C 286 254, 304 294, 406 294"></path>
+              <path class="route route-active" pathLength="1" d="M 188 364 C 286 364, 304 404, 406 404"></path>
+              <path class="route" pathLength="1" d="M 188 474 C 286 474, 316 404, 406 404"></path>
+              <path class="route route-proof" pathLength="1" d="M 542 184 C 652 184, 692 250, 740 280"></path>
+              <path class="route route-proof" pathLength="1" d="M 542 294 C 632 294, 676 306, 740 306"></path>
+              <path class="route route-proof" pathLength="1" d="M 542 404 C 652 404, 692 358, 740 334"></path>
+            </svg>
+
+            <div class="signal signal-1" data-layout-allow-overflow><span class="signal-index">01</span><span class="signal-rule"></span><span>Observe</span></div>
+            <div class="signal signal-2" data-layout-allow-overflow><span class="signal-index">02</span><span class="signal-rule"></span><span>Measure</span></div>
+            <div class="signal signal-3" data-layout-allow-overflow><span class="signal-index">03</span><span class="signal-rule"></span><span>Test</span></div>
+            <div class="signal signal-4" data-layout-allow-overflow><span class="signal-index">04</span><span class="signal-rule"></span><span>Explain</span></div>
+
+            <div class="evidence-node evidence-1"><span class="evidence-copy"><span>source</span><span>context</span></span></div>
+            <div class="evidence-node evidence-2"><span class="evidence-copy"><span>pattern</span><span>check</span></span></div>
+            <div class="evidence-node evidence-3"><span class="evidence-copy"><span>trade-off</span><span>record</span></span></div>
+
+            <div class="decision-node">
+              <div class="decision-orbit"></div>
+              <div class="decision-kicker">Resolved state</div>
+              <div class="decision-title">Decision</div>
+              <div class="decision-meta">traceable / clear</div>
+            </div>
+
+            <div class="proof-strip"><span class="proof-dot"></span><span>4 signals registered</span></div>
+          </section>
+        </main>
+
+        <footer class="footer">
+          <div class="footer-rule"></div>
+          <span class="footer-note">12 seconds / 30 fps / local code only</span>
+        </footer>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+
+      const timeline = gsap.timeline({paused: true});
+
+      timeline
+        .addLabel("opening", 0.2)
+        .from(".folio", {opacity: 0, y: -18, duration: 0.45, ease: "expo.out"}, "opening")
+        .from(".folio-code", {opacity: 0, x: 20, duration: 0.38, ease: "power2.out"}, "opening+=0.1")
+        .from(".eyebrow", {opacity: 0, x: -36, duration: 0.5, ease: "power3.out"}, "opening+=0.18")
+        .from(".headline span", {opacity: 0, y: 86, rotation: 1.5, duration: 0.82, stagger: 0.12, ease: "power4.out"}, "opening+=0.34")
+        .from(".deck", {opacity: 0, y: 30, duration: 0.56, ease: "circ.out"}, "opening+=0.72")
+        .from(".margin-note", {opacity: 0, x: -24, duration: 0.48, ease: "power2.out"}, "opening+=1.05")
+        .addLabel("signals", 1.5)
+        .from(".diagram", {opacity: 0, x: 42, duration: 0.72, ease: "expo.out"}, "signals")
+        .from(".signal", {opacity: 0, x: -104, duration: 0.56, stagger: 0.13, ease: "back.out(1.45)"}, "signals+=0.32")
+        .from(".signal-rule", {scaleX: 0, duration: 0.42, stagger: 0.1, ease: "power3.inOut", transformOrigin: "left center"}, "signals+=0.5")
+        .addLabel("connect", 3.0)
+        .from(".route", {strokeDashoffset: 1, duration: 1.02, stagger: 0.14, ease: "power3.inOut"}, "connect")
+        .addLabel("evidence", 5.35)
+        .from(".evidence-node", {opacity: 0, scale: 0.48, y: 22, duration: 0.5, stagger: 0.18, ease: "back.out(1.8)"}, "evidence")
+        .addLabel("resolve", 8.85)
+        .from(".decision-node", {opacity: 0, scale: 0.42, duration: 0.82, ease: "circ.out", transformOrigin: "center center"}, "resolve")
+        .from(".decision-orbit", {opacity: 0, scale: 0.78, duration: 0.72, ease: "elastic.out(1, 0.55)", transformOrigin: "center center"}, "resolve+=0.24")
+        .from(".proof-strip", {opacity: 0, x: 30, duration: 0.46, ease: "power2.out"}, "resolve+=0.5")
+        .from(".footer-rule", {scaleX: 0, duration: 0.6, ease: "power3.inOut", transformOrigin: "left center"}, "resolve+=0.82")
+        .from(".footer-note", {opacity: 0, y: 16, duration: 0.38, ease: "sine.out"}, "resolve+=0.92");
+
+      window.__timelines["editorial-system-sample"] = timeline;
+    </script>
+  </body>
+</html>

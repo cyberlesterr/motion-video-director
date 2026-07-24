@@ -19,6 +19,7 @@ const allowedNarrativeJobs = new Set(['hook', 'reveal', 'contrast', 'mechanism',
 const allowedStateChangeKinds = new Set(['transform', 'travel', 'connect', 'split', 'accumulate', 'reveal', 'resolve', 'hold']);
 const allowedAssetKinds = new Set(['image', 'video', 'audio', 'svg', 'lottie', 'font', 'other']);
 const allowedAssetSources = new Set(['supplied', 'created-in-project', 'licensed-local']);
+const allowedDeliveryStatuses = new Set(['not-run', 'in-progress', 'partial', 'passed', 'failed']);
 const allowedCheckStatuses = new Set(['not-run', 'passed', 'failed', 'not-applicable']);
 const requiredDeliveryChecks = [
   'sourceContract',
@@ -230,7 +231,7 @@ async function validateProductionContract(project, html) {
 
   assertObject(deliveryReport, 'delivery-report.json');
   assert(deliveryReport.schemaVersion === 1, 'delivery-report.json schemaVersion must be 1.');
-  assert(allowedCheckStatuses.has(deliveryReport.status), 'delivery-report.json status is unsupported.');
+  assert(allowedDeliveryStatuses.has(deliveryReport.status), 'delivery-report.json status is unsupported.');
   assertObject(deliveryReport.checks, 'delivery-report.json checks');
   for (const check of requiredDeliveryChecks) {
     assert(allowedCheckStatuses.has(deliveryReport.checks[check]), `delivery-report.json checks.${check} is missing or unsupported.`);

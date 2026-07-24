@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "scenes": [
+    {
+      "beatId": "beat-01",
+      "intent": "Verify that the claim and four incoming signals establish two balanced focal points.",
+      "proofTimes": [0.55, 1.45, 2.45]
+    },
+    {
+      "beatId": "beat-02",
+      "intent": "Verify that routes make the input-to-evidence relationship readable without an arrow-only diagram.",
+      "proofTimes": [2.85, 4.1, 5.25]
+    },
+    {
+      "beatId": "beat-03",
+      "intent": "Verify that evidence units visibly register on the system before the decision appears.",
+      "proofTimes": [5.7, 7.15, 8.7]
+    },
+    {
+      "beatId": "beat-04",
+      "intent": "Verify that the decision resolves from the completed field and the system stays visible through the close.",
+      "proofTimes": [9.15, 10.35, 11.55]
+    }
+  ]
+}

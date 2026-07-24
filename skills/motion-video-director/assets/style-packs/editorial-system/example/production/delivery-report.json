@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "status": "partial",
+  "checks": {
+    "sourceContract": "passed",
+    "hyperframesLint": "passed",
+    "hyperframesValidate": "passed",
+    "hyperframesInspect": "passed",
+    "animationMap": "not-run",
+    "render": "passed",
+    "mediaProbe": "passed",
+    "contactSheet": "passed"
+  },
+  "evidence": {
+    "renderer": "hyperframes@0.7.70",
+    "renderOutput": "renders/editorial-system-sample.mp4",
+    "contactSheet": "renders/editorial-system-contact-sheet.jpg",
+    "media": {
+      "codec": "h264",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationSeconds": 12,
+      "frameCount": 360,
+      "audio": "absent by design"
+    }
+  },
+  "notes": [
+    "The bundled animation-map helper could not run because its installed Skill cache lacks @hyperframes/producer. This remains not-run rather than passed.",
+    "The local render and contact sheet are intentionally ignored generated artifacts; reproduce them with npm run render and the proof-plan timestamps."
+  ]
+}

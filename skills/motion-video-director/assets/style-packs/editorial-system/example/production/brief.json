@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "status": "production",
+  "projectId": "editorial-system-sample",
+  "title": "Make evidence legible",
+  "audience": "Teams explaining how evidence becomes a decision",
+  "ratio": "16:9",
+  "durationSeconds": 12,
+  "fps": 30,
+  "motionThesis": "Four scattered questions connect through an evidence field and resolve into one accountable decision.",
+  "narration": {
+    "mode": "none"
+  },
+  "generationPolicy": {
+    "textToVideo": "prohibited",
+    "imageToVideo": "prohibited",
+    "firstLastFrameVideo": "prohibited"
+  },
+  "factualClaims": []
+}

@@ -31,6 +31,7 @@ skills/motion-video-director/
   agents/openai.yaml               # Codex interface metadata
   assets/hyperframes-starter/      # Copyable no-provider starter composition
   assets/project-contract/         # Copyable brief, beat, asset, proof, and delivery records
+  assets/style-packs/              # Reusable visual systems with real HyperFrames samples
   references/                      # Beat, style, and QA contracts
   scripts/                         # Bootstrap and static contract checks
 ```
@@ -67,6 +68,21 @@ node skills/motion-video-director/scripts/verify-contract.mjs ./my-motion-video
 This creates a short `starter` project. Replace its brief, design, beat graph,
 asset manifest, and proof plan before promoting a user-facing video to
 `production`; production projects must be 10–60 seconds.
+
+## Included style pack
+
+`editorial-system` is the first complete profile: warm-paper editorial
+hierarchy, diagrammatic relationships, and restrained signal color for stories
+about evidence, processes, and decisions. Its self-contained 12-second
+reference project is at
+[`skills/motion-video-director/assets/style-packs/editorial-system/example/`](skills/motion-video-director/assets/style-packs/editorial-system/example/).
+
+Run its pinned HyperFrames checks from that directory:
+
+```bash
+npm run check
+npm run render
+```
 
 ## Validation
 

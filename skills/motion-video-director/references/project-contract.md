@@ -87,10 +87,12 @@ that beat. These are the timestamps for visual review and the contact sheet.
 
 ## `delivery-report.json`
 
-Start all checks as `not-run`. Record only actual results: `passed`, `failed`,
-`not-run`, or `not-applicable`. The required checks are source contract,
-HyperFrames lint, validation, inspection, animation map, render, media probe,
-and contact sheet.
+Start all checks as `not-run`. Record only actual per-check results: `passed`,
+`failed`, `not-run`, or `not-applicable`. The top-level report status may also
+be `in-progress` or `partial`; use `partial` when at least one required gate is
+not run, and do not call that result fully verified. The required checks are
+source contract, HyperFrames lint, validation, inspection, animation map,
+render, media probe, and contact sheet.
 
 Never use a `passed` value to mean "expected to pass".
 

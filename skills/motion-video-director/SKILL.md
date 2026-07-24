@@ -63,6 +63,8 @@ Use supplied local assets first. Use generated or imported assets only when expl
 
 Select 2–4 motion primitives and reuse them with variation. Read [references/style-profile-contract.md](references/style-profile-contract.md) when choosing a style profile.
 
+For relationship, evidence, decision, or process explainers, read [references/editorial-system.md](references/editorial-system.md) and use `assets/style-packs/editorial-system/example/` as the implementation reference. Replace its design and production decisions; do not reuse its copy as a generic template.
+
 Use Canvas/p5 for procedural interaction, state machines, particles, or hand-drawn systems. Keep its random seed, virtual input path, and audio events deterministic.
 
 ### 5. Build with HyperFrames
@@ -97,10 +99,12 @@ Deliver the source project, final MP4, contact sheet, selected proof times, rend
 
 - [references/beat-graph.md](references/beat-graph.md): required scene and beat contract.
 - [references/style-profile-contract.md](references/style-profile-contract.md): reusable style profile boundary.
+- [references/editorial-system.md](references/editorial-system.md): first concrete profile and usage rules for relationship explainers.
 - [references/project-contract.md](references/project-contract.md): project planning, asset, proof, and delivery-report contract.
 - [references/quality-gates.md](references/quality-gates.md): source, visual, and delivery gates.
 - [assets/hyperframes-starter/](assets/hyperframes-starter/): no-provider starter composition.
 - [assets/project-contract/](assets/project-contract/): copyable planning and delivery-report baseline.
+- [assets/style-packs/editorial-system/example/](assets/style-packs/editorial-system/example/): complete 12-second HyperFrames reference sample.
 - `scripts/bootstrap-project.mjs`: copies the fallback starter into an empty directory.
 - `scripts/init-production.mjs`: copies the fallback starter and its production contract into an empty directory.
 - `scripts/verify-contract.mjs`: validates the bundled starter or a copied project against the local source contract; it does not replace HyperFrames lint, validation, or visual inspection.
