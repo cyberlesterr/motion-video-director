@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "styleProof": {
+    "targetBeatIds": ["beat-02", "beat-04"],
+    "rationale": "The constraint-driven alignment and the feedback closure prove the profile's core promise: a system changes in-frame from noisy inputs to a legible, stable route."
+  },
+  "approvedHolds": [
+    {
+      "id": "feedback-reading-hold",
+      "beatId": "beat-04",
+      "startSeconds": 13,
+      "endSeconds": 14,
+      "proofTime": 13.45,
+      "rationale": "The final second preserves the closed feedback loop and its output label long enough to read the causal conclusion."
+    }
+  ],
+  "scenes": [
+    {
+      "beatId": "beat-01",
+      "intent": "Verify that the instrument panel and unaligned field establish two focal points before a route exists.",
+      "proofTimes": [0.6, 1.55, 2.9]
+    },
+    {
+      "beatId": "beat-02",
+      "intent": "Verify that the amber rule causes a readable change from scatter to lanes without a slide-like explanation.",
+      "proofTimes": [3.55, 5.15, 6.55]
+    },
+    {
+      "beatId": "beat-03",
+      "intent": "Verify that pulses travel only after the route is drawn and visibly converge through the constraint.",
+      "proofTimes": [7.1, 8.65, 10.15]
+    },
+    {
+      "beatId": "beat-04",
+      "intent": "Verify that feedback closure resolves from the completed path and remains readable through the final hold.",
+      "proofTimes": [10.75, 12.15, 13.45]
+    }
+  ]
+}

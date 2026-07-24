@@ -71,15 +71,20 @@ This creates a short `starter` project. Replace its brief, design, beat graph,
 asset manifest, and proof plan before promoting a user-facing video to
 `production`; production projects must be 10–60 seconds.
 
-## Included style pack
+## Included style packs
 
-`editorial-system` is the first complete profile: warm-paper editorial
-hierarchy, diagrammatic relationships, and restrained signal color for stories
-about evidence, processes, and decisions. Its self-contained 12-second
-reference project is at
-[`skills/motion-video-director/assets/style-packs/editorial-system/example/`](skills/motion-video-director/assets/style-packs/editorial-system/example/).
+- `editorial-system`: warm-paper editorial hierarchy, diagrammatic
+  relationships, and restrained signal color for stories about evidence,
+  processes, and decisions. Its self-contained 12-second reference project is
+  at
+  [`skills/motion-video-director/assets/style-packs/editorial-system/example/`](skills/motion-video-director/assets/style-packs/editorial-system/example/).
+- `procedural-explainer`: a dark, code-only signal field in which a visible
+  constraint aligns noisy inputs into a stable feedback route. Its
+  self-contained 14-second reference project is at
+  [`skills/motion-video-director/assets/style-packs/procedural-explainer/example/`](skills/motion-video-director/assets/style-packs/procedural-explainer/example/).
 
-Run its pinned HyperFrames checks from that directory:
+Both samples pin their HyperFrames runtime and use the same production
+evidence lifecycle. Run a sample's checks from its own directory:
 
 ```bash
 npm install

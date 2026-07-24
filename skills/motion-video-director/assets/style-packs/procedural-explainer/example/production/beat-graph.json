@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "beats": [
+    {
+      "id": "beat-01",
+      "startSeconds": 0,
+      "endSeconds": 3.2,
+      "narrativeJob": "hook",
+      "mainMovingObject": "nine unresolved signal units",
+      "stateChangeKind": "reveal",
+      "stateChange": "Authored signal units emerge at visibly different offsets across an unorganized field.",
+      "cameraOrLayerMotion": "The left instrument panel enters before the field; signal units reveal from distinct directions without camera movement.",
+      "textRole": "state label and compressed system premise",
+      "assetNeed": "live HTML text, CSS geometry, and inline SVG",
+      "pptRisk": "Do not introduce the system as a title slide with decorative dots."
+    },
+    {
+      "id": "beat-02",
+      "startSeconds": 3.2,
+      "endSeconds": 6.8,
+      "narrativeJob": "mechanism",
+      "mainMovingObject": "signal units snapping into three lanes",
+      "stateChangeKind": "transform",
+      "stateChange": "A single amber constraint appears and the scattered units visibly align into ordered input lanes.",
+      "cameraOrLayerMotion": "The persistent field holds its frame while the geometry changes; the constraint scales in from its actual selection point.",
+      "textRole": "constraint name and lane count",
+      "assetNeed": "live HTML nodes, CSS transforms, and inline SVG lane rules",
+      "pptRisk": "Do not explain alignment with static bullets or a labeled card."
+    },
+    {
+      "id": "beat-03",
+      "startSeconds": 6.8,
+      "endSeconds": 10.4,
+      "narrativeJob": "proof",
+      "mainMovingObject": "active route pulses",
+      "stateChangeKind": "connect",
+      "stateChange": "Mint pulses traverse the now-visible lanes, pass the constraint, and converge into one output route.",
+      "cameraOrLayerMotion": "Paths draw before pulses cross them; the output chamber gains structure only as the route reaches it.",
+      "textRole": "flow state and traceable route annotation",
+      "assetNeed": "inline SVG routes and live HTML pulse units",
+      "pptRisk": "Do not use arrows as static decoration or turn the route into a dashboard chart."
+    },
+    {
+      "id": "beat-04",
+      "startSeconds": 10.4,
+      "endSeconds": 14,
+      "narrativeJob": "close",
+      "mainMovingObject": "feedback loop around the resolved output",
+      "stateChangeKind": "resolve",
+      "stateChange": "The output becomes legible only after a mint feedback loop closes around the completed route.",
+      "cameraOrLayerMotion": "The output label gains a restrained scale emphasis while the entire input-to-output chain stays visible.",
+      "textRole": "resolved state and final causal claim",
+      "assetNeed": "inline SVG loop, live HTML output node, and CSS labels",
+      "pptRisk": "Do not replace the resolved system with a disconnected end card."
+    }
+  ]
+}

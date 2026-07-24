@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "status": "production",
+  "projectId": "procedural-explainer-sample",
+  "title": "Make a system legible",
+  "audience": "Teams explaining how a process gains a rule, a route, and useful feedback",
+  "ratio": "16:9",
+  "durationSeconds": 14,
+  "fps": 30,
+  "motionThesis": "A scattered signal field meets a visible constraint, becomes a traceable route, and closes into a stable feedback loop.",
+  "narration": {
+    "mode": "none"
+  },
+  "generationPolicy": {
+    "textToVideo": "prohibited",
+    "imageToVideo": "prohibited",
+    "firstLastFrameVideo": "prohibited"
+  },
+  "factualClaims": []
+}

@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "sha256",
+  "inputCount": 29,
+  "inputs": [
+    {
+      "scope": "project",
+      "path": "DESIGN.md",
+      "bytes": 2109,
+      "sha256": "754ef7d150eb4b25c3a185eb43f79deaf7a7222f38212503812794e9e57519cb"
+    },
+    {
+      "scope": "project",
+      "path": "hyperframes.json",
+      "bytes": 318,
+      "sha256": "53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
+    },
+    {
+      "scope": "project",
+      "path": "index.html",
+      "bytes": 26601,
+      "sha256": "1464dd95dcc6884e420fde07fd327f01078c1e4252d69cf250e4c507a87980c9"
+    },
+    {
+      "scope": "project",
+      "path": "meta.json",
+      "bytes": 126,
+      "sha256": "928b8fa99f74592991f4d5047b8736f4479550d1280813195b89675351f33bf6"
+    },
+    {
+      "scope": "project",
+      "path": "package-lock.json",
+      "bytes": 116070,
+      "sha256": "bb6b5523b049cc5937b8ac3d8dff3d5c3d75ecb8ae816949655bb9e6872f8b71"
+    },
+    {
+      "scope": "project",
+      "path": "package.json",
+      "bytes": 1157,
+      "sha256": "4d90055f0374438d33f2724c2fb775906a21443c8f3fc91417aed3d50fdfb3aa"
+    },
+    {
+      "scope": "project",
+      "path": "production/asset-manifest.json",
+      "bytes": 41,
+      "sha256": "427bc853754c83bccc1baa0275170692c65b512c29978ce7d0407037b3409aed"
+    },
+    {
+      "scope": "project",
+      "path": "production/beat-graph.json",
+      "bytes": 2846,
+      "sha256": "50406435a622a0eba891711e6c33877899d26cf1f315958f6bf3bd2e2aa4abb6"
+    },
+    {
+      "scope": "project",
+      "path": "production/brief.json",
+      "bytes": 622,
+      "sha256": "05d9164ba014150636496b19b5b04a817e3cb4df237b70c9a92b838354eda8b8"
+    },
+    {
+      "scope": "project",
+      "path": "production/compiled-motion-plan.json",
+      "bytes": 3836,
+      "sha256": "e93fa80493d2e1669b38d32a33211e70a2fe7bf2e2b31eae153b097e231d48a6"
+    },
+    {
+      "scope": "project",
+      "path": "production/proof-plan.json",
+      "bytes": 1420,
+      "sha256": "b49378897e65763a2280d93524826715f4c6f53e525f0b74029c6547eeaed84a"
+    },
+    {
+      "scope": "project",
+      "path": "project.json",
+      "bytes": 275,
+      "sha256": "71a3f51d7ddd4d88899555ebff05785b2fd1b87a908cdf90de44b565f80c71ee"
+    },
+    {
+      "scope": "skill",
+      "path": "references/project-contract.md",
+      "bytes": 7333,
+      "sha256": "5052bc583ab7ca1aaf96c8bceea7f4481812e9f0b5d64ac5063b0fdf66d864ef"
+    },
+    {
+      "scope": "skill",
+      "path": "references/quality-gates.md",
+      "bytes": 2383,
+      "sha256": "5c645e7c0db0e4773cb434978a081cf6d08c0be777ae505840070fb4e792e354"
+    },
+    {
+      "scope": "skill",
+      "path": "scripts/animation-map.mjs",
+      "bytes": 15058,
+      "sha256": "0d88042ebad1ca74c3be94acf50298575f9d37fd2b041db4bcb234ddf45ab8a8"
+    },
+    {
+      "scope": "skill",
+      "path": "scripts/capture-contact-sheet.mjs",
+      "bytes": 3858,
+      "sha256": "ce759047bb147b0f2d674518c97260ef52e1d39bebc5d19521acbf7598e79878"
+    },
+    {
+      "scope": "skill",
+      "path": "scripts/compile-motion-plan.mjs",
+      "bytes": 2273,
+      "sha256": "7980200e349618928386b8fdb9cc8410c96106a842cdafa3f24b1586964eddb5"
+    },
+    {
+      "scope": "skill",
+      "path": "scripts/finalize-production.mjs",
+      "bytes": 2062,
+      "sha256": "c052d0d43e993af6ec6921a3d9f120c0ff30c325aadd889b8310c9941558b40b"
+    },
+    {
+      "scope": "skill",
+      "path": "scripts/fingerprint-production.mjs",
+      "bytes": 2238,
+      "sha256": "2f47429111458dfc4637d8a6353565166357ac8c93f3c4c87495b1c08f247382"
+    },
+    {
+      "scope": "skill",
+      "path": "scripts/production-lib.mjs",
+      "bytes": 8965,
+      "sha256": "61860775e5c49c03b3136608022ec853caab5c4f15a06155bf82058539bfbbf1"
+    },
+    {
+      "scope": "skill",
+      "path": "scripts/render-production.mjs",
+      "bytes": 4812,
+      "sha256": "5d7334784577fd61e932ad7b1e0b9ede8291f5dcce6f980e89232cb3a8283e73"
+    },
+    {
+      "scope": "skill",
+      "path": "scripts/reopen-production.mjs",
+      "bytes": 1795,
+      "sha256": "b0ec74d76969cceca2905771feefd66ef1aa1e7c2278a4bd3cbc1a1d2ab154da"
+    },
+    {
+      "scope": "skill",
+      "path": "scripts/resume-production.mjs",
+      "bytes": 1366,
+      "sha256": "8bad6f52664ae4d785b7a4389e312ffbee229f657b247d6af70b032f94da31b2"
+    },
+    {
+      "scope": "skill",
+      "path": "scripts/review-scaffold.mjs",
+      "bytes": 3997,
+      "sha256": "0dbc57058151449125259cfa8a57d31c07e4b1874d87e03e5dd05c0501f11016"
+    },
+    {
+      "scope": "skill",
+      "path": "scripts/set-production-stage.mjs",
+      "bytes": 988,
+      "sha256": "6f00bf704c545d5e333add62f5ccd63aa46b4a5d7a75e3449f9a081a562f6f08"
+    },
+    {
+      "scope": "skill",
+      "path": "scripts/style-proof.mjs",
+      "bytes": 5217,
+      "sha256": "b8442f52d9bc1e1c1a8de2984f91b8da8f63c6be8ef95ab5d34b01789eac2538"
+    },
+    {
+      "scope": "skill",
+      "path": "scripts/validate-production.mjs",
+      "bytes": 5785,
+      "sha256": "6fc6cb6e0d3c88503e6777dc639beb6b7974bacb1d5f08bdac102b56d6bf0c80"
+    },
+    {
+      "scope": "skill",
+      "path": "scripts/verify-contract.mjs",
+      "bytes": 18962,
+      "sha256": "481bfce7a9acca44c7e4b89a41335ec405e187fba7037ae0d352917352ed470e"
+    },
+    {
+      "scope": "skill",
+      "path": "SKILL.md",
+      "bytes": 10400,
+      "sha256": "06d249bae0ba69a4f72f7f391a93c9a2bed7652fb967e5ca5ca8d1b59c695b23"
+    }
+  ],
+  "fingerprint": "d12f6bea92b01a97414732d140ffabc1d5cb32fe07c27631b0f121ee19154c69"
+}

@@ -17,7 +17,7 @@ A style profile is a reusable visual system, not a one-off collection of colors.
 
 - **[editorial-system](editorial-system.md)**: diagrammatic relationships, warm-paper editorial hierarchy, restrained rust accent, and moving structure over decorative cards. Includes a complete HyperFrames sample.
 - **dark-product**: deep spatial canvas, large UI hero objects, localized glow, CTA-driven transformations, no persistent neon grid.
-- **procedural-poetry**: Canvas/p5 systems, seeded behavior, sparse typography, audio events derived from the same state changes as the image.
+- **[procedural-explainer](procedural-explainer.md)**: a dark signal field, explicit constraints, readable flow routes, and a feedback loop that turns a noisy system into an explainable one. Includes a complete HyperFrames sample.
 
 Use a profile as a starting point. Create a project `DESIGN.md` for the actual video; do not copy a profile blindly.
 
