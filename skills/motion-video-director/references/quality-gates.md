@@ -15,7 +15,7 @@ Run `npx hyperframes lint .`, `npx hyperframes validate .`, and `npx hyperframes
 
 - Fix lint errors and unintended track overlaps.
 - Fix text overflow, clipping, off-canvas elements, and contrast warnings.
-- Inspect composition hero frames and the animation map for collisions, unexpected invisible elements, pacing issues, and dead zones.
+- For significant compositions, install `@hyperframes/producer@0.7.70` as a project dev dependency and run `node <skill-root>/scripts/animation-map.mjs . --out .hyperframes/animation-map`. Inspect its collision, offscreen, invisible, pacing, and dead-zone findings alongside the composition hero frames.
 - Mark only genuinely intentional overflow as allowed.
 
 ## Delivery gate

@@ -91,6 +91,13 @@ node <skill-root>/scripts/verify-contract.mjs .
 
 For a significant new composition, generate and inspect a motion map. Correct lint errors, unintentional overflows, contrast failures, collisions, dead zones, and unapproved low-motion intervals before calling the video complete.
 
+The map runner intentionally loads a project-local HyperFrames producer rather than depending on a host plugin cache:
+
+```bash
+npm install --save-dev @hyperframes/producer@0.7.70
+node <skill-root>/scripts/animation-map.mjs . --out .hyperframes/animation-map
+```
+
 ### 7. Deliver evidence
 
 Deliver the source project, final MP4, contact sheet, selected proof times, renderer validation results, and an `ffprobe` media summary. Distinguish successful checks from unverified visual or audio claims.
@@ -108,3 +115,4 @@ Deliver the source project, final MP4, contact sheet, selected proof times, rend
 - `scripts/bootstrap-project.mjs`: copies the fallback starter into an empty directory.
 - `scripts/init-production.mjs`: copies the fallback starter and its production contract into an empty directory.
 - `scripts/verify-contract.mjs`: validates the bundled starter or a copied project against the local source contract; it does not replace HyperFrames lint, validation, or visual inspection.
+- `scripts/animation-map.mjs`: records timeline tween samples, potential collisions, pacing flags, dead zones, and element lifecycles using the composition's local `@hyperframes/producer` dev dependency.

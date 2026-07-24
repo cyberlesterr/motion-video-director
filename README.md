@@ -80,7 +80,9 @@ reference project is at
 Run its pinned HyperFrames checks from that directory:
 
 ```bash
+npm install
 npm run check
+npm run animation-map
 npm run render
 ```
 
@@ -98,6 +100,14 @@ For a real project, run the HyperFrames checks before delivery:
 npx hyperframes lint .
 npx hyperframes validate .
 npx hyperframes inspect . --samples 15
+```
+
+For a significant composition, install the pinned producer locally and record
+the motion diagnostics without relying on a host-level plugin cache:
+
+```bash
+npm install --save-dev @hyperframes/producer@0.7.70
+node skills/motion-video-director/scripts/animation-map.mjs . --out .hyperframes/animation-map
 ```
 
 ## License and publication

@@ -1,20 +1,23 @@
 {
   "schemaVersion": 1,
-  "status": "partial",
+  "status": "passed",
   "checks": {
     "sourceContract": "passed",
     "hyperframesLint": "passed",
     "hyperframesValidate": "passed",
     "hyperframesInspect": "passed",
-    "animationMap": "not-run",
+    "animationMap": "passed",
     "render": "passed",
     "mediaProbe": "passed",
-    "contactSheet": "passed"
+    "contactSheet": "passed",
+    "freshWorkspace": "passed"
   },
   "evidence": {
     "renderer": "hyperframes@0.7.70",
     "renderOutput": "renders/editorial-system-sample.mp4",
     "contactSheet": "renders/editorial-system-contact-sheet.jpg",
+    "animationMap": ".hyperframes/animation-map/animation-map.json",
+    "freshWorkspace": "A source-only copy, with inherited node_modules, .hyperframes, and renders excluded, initialized and rendered successfully.",
     "media": {
       "codec": "h264",
       "width": 1920,
@@ -26,7 +29,7 @@
     }
   },
   "notes": [
-    "The bundled animation-map helper could not run because its installed Skill cache lacks @hyperframes/producer. This remains not-run rather than passed.",
-    "The local render and contact sheet are intentionally ignored generated artifacts; reproduce them with npm run render and the proof-plan timestamps."
+    "The project-local animation map recorded 20 of 20 tweens with no collision, offscreen, invisible, or pacing flags. Its 10.5–12.0 second interval is the intentional final-reading hold.",
+    "The local render and contact sheet are intentionally ignored generated artifacts; reproduce them with npm install, npm run check, npm run animation-map, npm run render, and the proof-plan timestamps."
   ]
 }
