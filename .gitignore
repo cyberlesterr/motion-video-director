@@ -1,0 +1,21 @@
+# Dependencies and package-manager state
+node_modules/
+.npm/
+.cache/
+
+# HyperFrames development and render output
+.hyperframes/
+renders/
+dist/
+
+# Local media generated while authoring
+*.mp4
+*.mov
+*.webm
+*.wav
+*.mp3
+
+# Operating-system and editor files
+.DS_Store
+.idea/
+.vscode/
