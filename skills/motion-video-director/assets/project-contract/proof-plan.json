@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "scenes": [
+    {
+      "beatId": "beat-01",
+      "intent": "Verify that the premise and three fragments become readable without a slide-like title card.",
+      "proofTimes": [0.35, 1.2, 1.78]
+    },
+    {
+      "beatId": "beat-02",
+      "intent": "Verify that the rail and fragment convergence make the mechanism legible.",
+      "proofTimes": [2.05, 3.35, 4.3]
+    },
+    {
+      "beatId": "beat-03",
+      "intent": "Verify that the destination reads as the resolved end state and remains uncluttered.",
+      "proofTimes": [4.65, 5.75, 7.5]
+    }
+  ]
+}

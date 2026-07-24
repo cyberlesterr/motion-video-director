@@ -23,7 +23,7 @@ Use one object whose state changes as the primary carrier of meaning. Do not beg
 
 - Use 3–8 beats for a 10–60 second film.
 - Assign one narrative job per beat: hook, reveal, contrast, mechanism, consequence, proof, or close.
-- Include at least one main moving object and one concrete state change in every beat.
+- At least 80% of beats must have a concrete state change. The remaining beats may be intentional holds only when their reading or absorption purpose is named.
 - Use text as an anchor, label, or counter; do not require the viewer to read paragraphs to understand a beat.
 - Plan at least three proof times per scene: early change, hero state, and late/final state.
 - Name the PPT risk before implementation and verify that the implementation avoids it.

@@ -30,6 +30,7 @@ skills/motion-video-director/
   SKILL.md                         # Agent workflow and production boundaries
   agents/openai.yaml               # Codex interface metadata
   assets/hyperframes-starter/      # Copyable no-provider starter composition
+  assets/project-contract/         # Copyable brief, beat, asset, proof, and delivery records
   references/                      # Beat, style, and QA contracts
   scripts/                         # Bootstrap and static contract checks
 ```
@@ -56,6 +57,17 @@ node skills/motion-video-director/scripts/bootstrap-project.mjs ./my-motion-vide
 
 The fallback does not replace the official HyperFrames scaffold; it gives a deterministic source template that can be linted and rendered once the CLI is available.
 
+For a contract-managed local starter, initialize the composition and its production artifacts together:
+
+```bash
+node skills/motion-video-director/scripts/init-production.mjs ./my-motion-video
+node skills/motion-video-director/scripts/verify-contract.mjs ./my-motion-video
+```
+
+This creates a short `starter` project. Replace its brief, design, beat graph,
+asset manifest, and proof plan before promoting a user-facing video to
+`production`; production projects must be 10–60 seconds.
+
 ## Validation
 
 ```bash
@@ -74,4 +86,4 @@ npx hyperframes inspect . --samples 15
 
 ## License and publication
 
-This repository is licensed under the [MIT License](LICENSE). No remote has been configured; creating a public GitHub repository and pushing remain separate, explicit actions.
+This repository is licensed under the [MIT License](LICENSE) and is published at [cyberlesterr/motion-video-director](https://github.com/cyberlesterr/motion-video-director).

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "status": "starter",
+  "projectId": "motion-starter",
+  "title": "Fragments into momentum",
+  "audience": "Product and systems teams",
+  "ratio": "16:9",
+  "durationSeconds": 8,
+  "fps": 30,
+  "motionThesis": "A fragmented signal resolves into one directed path, showing that a clear system turns scattered work into momentum.",
+  "narration": {
+    "mode": "none"
+  },
+  "generationPolicy": {
+    "textToVideo": "prohibited",
+    "imageToVideo": "prohibited",
+    "firstLastFrameVideo": "prohibited"
+  },
+  "factualClaims": []
+}

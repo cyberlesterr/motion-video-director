@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "beats": [
+    {
+      "id": "beat-01",
+      "startSeconds": 0,
+      "endSeconds": 1.85,
+      "narrativeJob": "hook",
+      "mainMovingObject": "three signal fragments",
+      "stateChangeKind": "reveal",
+      "stateChange": "The thesis resolves into three visible fragments on a shared system rail.",
+      "cameraOrLayerMotion": "Headline and fragments enter on separate depth layers.",
+      "textRole": "thesis anchor",
+      "assetNeed": "HTML and CSS circles only",
+      "pptRisk": "Do not replace the fragments with a static before-and-after card."
+    },
+    {
+      "id": "beat-02",
+      "startSeconds": 1.85,
+      "endSeconds": 4.45,
+      "narrativeJob": "mechanism",
+      "mainMovingObject": "three signal fragments",
+      "stateChangeKind": "connect",
+      "stateChange": "The fragments travel along one rail and collapse into a shared destination.",
+      "cameraOrLayerMotion": "The rail draws outward before the fragments move into it.",
+      "textRole": "supporting context",
+      "assetNeed": "HTML and CSS circles only",
+      "pptRisk": "Do not make the mechanism a numbered list or a sequence of cards."
+    },
+    {
+      "id": "beat-03",
+      "startSeconds": 4.45,
+      "endSeconds": 8,
+      "narrativeJob": "close",
+      "mainMovingObject": "resolved destination node",
+      "stateChangeKind": "resolve",
+      "stateChange": "One highlighted destination holds the final resolved system state.",
+      "cameraOrLayerMotion": "The destination glow anchors the final layer while the system settles.",
+      "textRole": "state label",
+      "assetNeed": "HTML and CSS circle only",
+      "pptRisk": "Do not turn the close into a separate CTA card."
+    }
+  ]
+}

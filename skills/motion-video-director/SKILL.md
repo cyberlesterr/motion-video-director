@@ -45,7 +45,19 @@ Create a beat graph using [references/beat-graph.md](references/beat-graph.md). 
 
 If no moving metaphor exists, invent one before building a composition.
 
-### 3. Choose local assets and components
+### 3. Initialize and complete the project contract
+
+Read [references/project-contract.md](references/project-contract.md). For a deterministic local baseline, run:
+
+```bash
+node <skill-root>/scripts/init-production.mjs <empty-project-directory>
+```
+
+The generated project is a `starter`, not a completed production. Before changing the composition, replace its brief, design direction, beat graph, asset manifest, and proof plan with the actual project decisions. Promote it to `production` only when it is a 10–60 second user-facing film.
+
+Keep all video-generation policy fields as `prohibited`. List factual claims and their sources before animating them. Record only local assets that are actually used.
+
+### 4. Choose local assets and components
 
 Use supplied local assets first. Use generated or imported assets only when explicitly available in the host environment and approved by the user; do not substitute an external video provider.
 
@@ -53,13 +65,13 @@ Select 2–4 motion primitives and reuse them with variation. Read [references/s
 
 Use Canvas/p5 for procedural interaction, state machines, particles, or hand-drawn systems. Keep its random seed, virtual input path, and audio events deterministic.
 
-### 4. Build with HyperFrames
+### 5. Build with HyperFrames
 
 Use `npx hyperframes init <project-dir> --non-interactive` for a new project whenever the CLI is available. Use `assets/hyperframes-starter/` as the baseline composition and design contract, not as an immutable visual style.
 
 Build the static hero frame before animation. Register a paused GSAP timeline in `window.__timelines`, use `data-*` timing attributes, and let the renderer own playback. Use finite repeats only. Use transitions between multi-scene compositions.
 
-### 5. Validate before rendering
+### 6. Validate before rendering
 
 Read [references/quality-gates.md](references/quality-gates.md). Run:
 
@@ -69,9 +81,15 @@ npx hyperframes validate .
 npx hyperframes inspect . --samples 15
 ```
 
+Also run the local project contract check after changing source metadata or production planning files:
+
+```bash
+node <skill-root>/scripts/verify-contract.mjs .
+```
+
 For a significant new composition, generate and inspect a motion map. Correct lint errors, unintentional overflows, contrast failures, collisions, dead zones, and unapproved low-motion intervals before calling the video complete.
 
-### 6. Deliver evidence
+### 7. Deliver evidence
 
 Deliver the source project, final MP4, contact sheet, selected proof times, renderer validation results, and an `ffprobe` media summary. Distinguish successful checks from unverified visual or audio claims.
 
@@ -79,7 +97,10 @@ Deliver the source project, final MP4, contact sheet, selected proof times, rend
 
 - [references/beat-graph.md](references/beat-graph.md): required scene and beat contract.
 - [references/style-profile-contract.md](references/style-profile-contract.md): reusable style profile boundary.
+- [references/project-contract.md](references/project-contract.md): project planning, asset, proof, and delivery-report contract.
 - [references/quality-gates.md](references/quality-gates.md): source, visual, and delivery gates.
 - [assets/hyperframes-starter/](assets/hyperframes-starter/): no-provider starter composition.
+- [assets/project-contract/](assets/project-contract/): copyable planning and delivery-report baseline.
 - `scripts/bootstrap-project.mjs`: copies the fallback starter into an empty directory.
+- `scripts/init-production.mjs`: copies the fallback starter and its production contract into an empty directory.
 - `scripts/verify-contract.mjs`: validates the bundled starter or a copied project against the local source contract; it does not replace HyperFrames lint, validation, or visual inspection.
