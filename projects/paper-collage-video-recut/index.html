@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root { --stock:#f4eddd; --ink:#142b47; --red:#d7533c; --yellow:#eab64a; --leaf:#6f8f79; --night:#0b1c30; --serif:"Songti SC","STSong",serif; --mono:"SF Mono","Menlo","PingFang SC",monospace; }
+      * { box-sizing:border-box; }
+      html, body { margin:0; width:1080px; height:1920px; overflow:hidden; background:#f4eddd; }
+      #paper-collage-video-recut-root { position:relative; width:1080px; height:1920px; overflow:hidden; background:#f4eddd; }
+      .scene { position:absolute; inset:0; overflow:hidden; isolation:isolate; }
+      #scene-01 { z-index:1; background:#f4eddd; }
+      #scene-02, #scene-03, #scene-04, #scene-05 { opacity:0; visibility:hidden; }
+      #scene-02, #scene-04 { background:#142b47; color:#f4eddd; }
+      #scene-03, #scene-05 { background:#f4eddd; color:#142b47; }
+      .scene::before { content:""; position:absolute; inset:0; z-index:-2; opacity:.38; background-image:radial-gradient(circle at 19% 23%, rgba(20,43,71,.12) 0 1px, transparent 1.5px),radial-gradient(circle at 72% 64%, rgba(20,43,71,.08) 0 1px, transparent 1.8px); background-size:31px 37px,41px 43px; }
+      .night::before { opacity:.16; background-image:radial-gradient(circle at 19% 23%, rgba(244,237,221,.85) 0 1px, transparent 1.5px),radial-gradient(circle at 72% 64%, rgba(244,237,221,.55) 0 1px, transparent 1.8px); }
+      .scene-frame { position:absolute; inset:28px; border:1px solid rgba(20,43,71,.16); pointer-events:none; z-index:30; }
+      .night .scene-frame { border-color:rgba(244,237,221,.25); }
+      .cap { position:absolute; top:80px; left:77px; z-index:18; font:700 19px/1 var(--mono); letter-spacing:.13em; text-transform:uppercase; }
+      .night .cap { color:#f4eddd; }
+      .cap .num { color:#d7533c; margin-right:10px; }
+      .headline { position:absolute; top:200px; left:77px; z-index:16; margin:0; width:900px; font:700 122px/.91 var(--serif); letter-spacing:-.075em; }
+      .headline .line { display:block; }
+      .headline em { color:#d7533c; font-style:normal; }
+      .intro { position:absolute; left:77px; top:501px; z-index:16; width:596px; margin:0; font:500 23px/1.5 var(--mono); letter-spacing:.03em; }
+      .night .intro { color:rgba(244,237,221,.82); }
+      .torn { clip-path:polygon(0 7%,5% 0,17% 5%,31% 1%,43% 6%,57% 0,69% 4%,82% 1%,100% 6%,96% 95%,83% 100%,67% 96%,54% 100%,39% 96%,21% 100%,0 93%); }
+      .paper-shadow { filter:drop-shadow(20px 24px 0 rgba(20,43,71,.84)); }
+      .cut-label { font:700 18px/1 var(--mono); letter-spacing:.12em; }
+      .scene-note { position:absolute; left:77px; bottom:107px; z-index:18; width:790px; padding-top:22px; border-top:3px solid currentColor; font:600 22px/1.45 var(--mono); letter-spacing:.035em; }
+      #paper-pull { position:absolute; inset:-120px 0; z-index:50; visibility:hidden; background:#eab64a; transform:rotate(-3deg); box-shadow:0 18px 0 rgba(20,43,71,.36); }
+      #paper-pull::after { content:""; position:absolute; right:92px; top:72px; width:190px; height:52px; background:#d7533c; transform:rotate(4deg); }
+
+      /* 01 gather */
+      #s1-label { position:absolute; left:77px; top:642px; z-index:16; color:#f4eddd; background:#142b47; padding:17px 20px; transform:rotate(-2deg); }
+      #s1-horizon { position:absolute; left:64px; right:56px; top:1135px; z-index:8; height:36px; background:#eab64a; transform:rotate(-3deg); transform-origin:left center; }
+      #s1-horizon::after { content:"TIMING / A PLACE TO LAND"; position:absolute; right:28px; top:9px; color:#142b47; font:700 15px/1 var(--mono); letter-spacing:.1em; }
+      #s1-mountain { position:absolute; left:-42px; top:936px; width:510px; height:470px; z-index:3; background:#6f8f79; clip-path:polygon(0 100%,0 68%,24% 48%,38% 18%,50% 43%,70% 0,100% 57%,100% 100%); transform:rotate(-6deg); }
+      #s1-water { position:absolute; right:-58px; top:1139px; width:834px; height:425px; z-index:5; background:#142b47; clip-path:polygon(0 27%,14% 20%,30% 26%,43% 17%,60% 23%,74% 15%,100% 22%,100% 100%,0 100%); transform:rotate(2deg); }
+      #s1-boat-stage { position:absolute; left:183px; top:844px; z-index:11; width:720px; height:404px; background:#f4eddd; transform:rotate(7deg); }
+      #s1-boat-stage::before { content:"UNFINISHED SCENE"; position:absolute; left:46px; top:42px; color:#d7533c; font:700 19px/1 var(--mono); letter-spacing:.14em; }
+      #s1-tree { position:absolute; right:48px; top:47px; display:grid; gap:9px; width:160px; }
+      #s1-tree span { height:9px; border-radius:16px; background:#142b47; } #s1-tree span:nth-child(2){ margin-left:27px; width:80%; background:#6f8f79;} #s1-tree span:nth-child(3){margin-left:53px;width:58%;background:#eab64a;}
+      #s1-boat { position:absolute; left:90px; bottom:48px; width:417px; height:151px; background:#d7533c; clip-path:polygon(0 2%,100% 17%,79% 100%,17% 94%); }
+      #s1-boat::after { content:""; position:absolute; left:101px; top:-116px; width:116px; height:139px; background:#eab64a; clip-path:polygon(50% 0,100% 100%,0 100%); transform:rotate(-4deg); }
+      #s1-character { position:absolute; left:258px; bottom:170px; width:42px; height:100px; border-radius:50% 50% 18px 18px; background:#142b47; z-index:3; } #s1-character::before {content:"";position:absolute;top:-44px;left:4px;width:35px;height:42px;border-radius:50%;background:#142b47;}
+      #s1-scrap-a { position:absolute; left:49px; top:1340px; z-index:13; width:282px; height:212px; background:#d7533c; transform:rotate(-13deg); }
+      #s1-scrap-b { position:absolute; right:63px; top:1400px; z-index:12; width:324px; height:233px; background:#eab64a; transform:rotate(10deg); }
+      #s1-scrap-c { position:absolute; right:89px; top:730px; z-index:13; width:146px; height:124px; background:#6f8f79; transform:rotate(23deg); }
+
+      /* 02 stand */
+      #s2-stage-wrap { position:absolute; left:61px; right:61px; top:742px; bottom:105px; perspective:1550px; z-index:4; }
+      #s2-stage { position:absolute; inset:0; transform-style:preserve-3d; transform:rotateX(18deg) rotateZ(-5deg); transform-origin:50% 75%; }
+      #s2-base { position:absolute; left:0; right:0; bottom:48px; height:700px; background:#f4eddd; box-shadow:0 58px 0 rgba(0,0,0,.25); }
+      #s2-base::before { content:"story / assets / composition"; position:absolute; left:59px; top:52px; color:#142b47; font:700 20px/1 var(--mono); letter-spacing:.12em; }
+      #s2-hinge { position:absolute; left:45px; right:35px; bottom:410px; height:40px; background:#eab64a; z-index:8; }
+      #s2-mountain { position:absolute; left:75px; bottom:348px; width:555px; height:520px; z-index:5; background:#6f8f79; transform:rotateX(-69deg); transform-origin:50% 100%; clip-path:polygon(0 100%,0 55%,22% 28%,38% 58%,58% 0,100% 65%,100% 100%); filter:drop-shadow(24px 32px 0 rgba(0,0,0,.26)); }
+      #s2-water { position:absolute; right:0; bottom:142px; width:654px; height:385px; z-index:6; background:#142b47; border:10px solid #f4eddd; transform:rotateX(-52deg) rotateZ(2deg); transform-origin:50% 100%; clip-path:polygon(0 22%,14% 12%,31% 20%,48% 7%,64% 18%,81% 8%,100% 16%,100% 100%,0 100%); filter:drop-shadow(20px 28px 0 rgba(0,0,0,.34)); }
+      #s2-boat { position:absolute; left:390px; bottom:264px; width:313px; height:107px; z-index:10; background:#d7533c; transform:rotateX(-38deg) rotateZ(8deg); transform-origin:50% 100%; clip-path:polygon(0 0,100% 14%,80% 100%,16% 92%); } #s2-boat::before { content:"";position:absolute;left:82px;top:-95px;width:92px;height:112px;background:#eab64a;clip-path:polygon(48% 0,100% 100%,0 100%); }
+      #s2-note { position:absolute; right:80px; bottom:77px; z-index:12; color:#142b47; background:#f4eddd; padding:15px 17px; transform:rotate(4deg); }
+
+      /* 03 press */
+      #s3-thread { position:absolute; left:-30px; top:1060px; width:1140px; height:9px; background:#d7533c; transform:rotate(-4deg); transform-origin:left; }
+      #s3-thread::before,#s3-thread::after{content:"";position:absolute;top:-18px;width:42px;height:42px;border:7px solid #d7533c;border-radius:50%;background:#f4eddd;} #s3-thread::before{left:120px;} #s3-thread::after{right:90px;}
+      .slip { position:absolute; z-index:4; width:282px; height:402px; padding:28px; color:#142b47; background:#f4eddd; border:5px solid #142b47; } .slip .n{color:#d7533c;font:800 19px/1 var(--mono);letter-spacing:.14em}.slip .word{margin-top:143px;font:700 53px/.97 var(--serif);letter-spacing:-.06em}
+      #s3-slip-a{left:100px;top:891px;transform:rotate(-15deg)} #s3-slip-b{left:415px;top:870px;transform:rotate(4deg)} #s3-slip-c{right:91px;top:922px;transform:rotate(17deg)}
+      #s3-stamp-shadow { position:absolute; left:248px; top:1180px; z-index:5; width:582px; height:118px; border-radius:50%; background:rgba(20,43,71,.28); filter:blur(18px); }
+      #s3-stamp { position:absolute; left:250px; top:996px; z-index:9; display:flex; flex-direction:column; justify-content:center; align-items:center; width:582px; height:582px; color:#d7533c; background:#f4eddd; border:21px solid #d7533c; border-radius:50%; transform:rotate(-9deg); text-align:center; }
+      #s3-stamp::before{content:"";position:absolute;inset:22px;border:4px dashed #d7533c;border-radius:50%;opacity:.86;} #s3-stamp .small{font:800 20px/1 var(--mono);letter-spacing:.2em} #s3-stamp .big{margin-top:16px;font:800 106px/.88 var(--serif);letter-spacing:-.09em} #s3-stamp .tiny{margin-top:24px;font:700 17px/1 var(--mono);letter-spacing:.11em}
+
+      /* 04 proof */
+      #s4-window { position:absolute; left:77px; top:660px; z-index:4; width:926px; height:912px; overflow:hidden; color:#142b47; background:#f4eddd; border:9px solid #f4eddd; box-shadow:25px 31px 0 rgba(215,83,60,.82); transform-style:preserve-3d; }
+      #s4-sky { position:absolute; inset:0 0 410px; background:#eab64a; } #s4-mountain{position:absolute;left:-50px;top:255px;width:690px;height:430px;background:#6f8f79;clip-path:polygon(0 100%,0 60%,20% 42%,34% 0,57% 58%,79% 16%,100% 100%)} #s4-water{position:absolute;left:0;right:0;bottom:0;height:460px;background:#142b47;clip-path:polygon(0 11%,16% 5%,30% 15%,47% 7%,66% 13%,85% 5%,100% 12%,100% 100%,0 100%)}
+      #s4-boat{position:absolute;left:353px;top:546px;width:398px;height:155px;background:#d7533c;clip-path:polygon(0 0,100% 15%,78% 100%,18% 92%);z-index:6;transform:rotate(3deg)} #s4-boat::before{content:"";position:absolute;left:123px;top:-150px;width:135px;height:172px;background:#f4eddd;clip-path:polygon(49% 0,100% 100%,0 100%)}
+      #s4-character{position:absolute;left:520px;top:430px;width:50px;height:123px;background:#142b47;border-radius:28px 28px 12px 12px;z-index:9} #s4-character::before{content:"";position:absolute;left:4px;top:-54px;width:42px;height:50px;background:#142b47;border-radius:50%}
+      #s4-line { position:absolute; left:550px; top:397px; z-index:12; width:1px; height:247px; border-left:7px solid #d7533c; transform:rotate(26deg); transform-origin:top; } #s4-line::before,#s4-line::after{content:"";position:absolute;left:-14px;width:21px;height:21px;border-radius:50%;background:#d7533c} #s4-line::before{top:-9px} #s4-line::after{bottom:-9px}
+      #s4-anchor{position:absolute;left:641px;top:602px;width:35px;height:35px;border:5px solid #f4eddd;border-radius:50%;background:#d7533c;z-index:13}.proof-tag{position:absolute;z-index:14;padding:14px 16px;color:#f4eddd;background:#142b47;font:700 18px/1 var(--mono);letter-spacing:.1em}#s4-character-tag{left:662px;top:360px}#s4-boat-tag{left:718px;top:674px}
+      #s4-proof-label { position:absolute; left:34px; bottom:28px; z-index:15; padding:13px 15px; color:#f4eddd; background:#142b47; font:700 17px/1 var(--mono); letter-spacing:.12em; }
+      #s4-layer-list { position:absolute; left:77px; right:77px; bottom:104px; z-index:12; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; } #s4-layer-list span{padding-top:17px;border-top:2px solid rgba(244,237,221,.7);font:700 16px/1.25 var(--mono);letter-spacing:.09em}
+
+      /* 05 artifact */
+      #s5-folio-stage { position:absolute; left:74px; top:704px; width:934px; height:960px; z-index:3; perspective:1500px; }
+      #s5-shadow { position:absolute; left:38px; top:140px; width:854px; height:780px; background:rgba(20,43,71,.22); transform:rotate(-5deg); filter:blur(18px); }
+      #s5-page { position:absolute; left:90px; top:90px; width:740px; height:620px; overflow:hidden; padding:35px; background:#f4eddd; transform:rotate(2deg); box-shadow:0 20px 30px rgba(20,43,71,.18); } #s5-page img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top;filter:saturate(.84) contrast(1.05)}
+      #s5-page::after{content:"captured project artifact";position:absolute;right:29px;bottom:26px;padding:12px 13px;color:#f4eddd;background:#d7533c;font:700 15px/1 var(--mono);letter-spacing:.1em}
+      #s5-cover { position:absolute; left:22px; top:14px; width:145px; height:806px; z-index:7; overflow:hidden; color:#f4eddd; background:#142b47; transform:rotate(-5deg); transform-origin:left center; box-shadow:12px 18px 0 rgba(20,43,71,.3); }
+      #s5-cover::before{content:"OPEN SOURCE / EDITABLE";position:absolute;left:44px;top:37px;font:700 17px/1 var(--mono);letter-spacing:.14em} #s5-cover::after{content:"";position:absolute;left:36px;top:92px;width:9px;height:638px;background:#d7533c}
+      #s5-seal { position:absolute; right:2px; top:-25px; z-index:12; display:grid; place-items:center; width:186px; height:186px; color:#d7533c; background:#f4eddd; border:10px solid #d7533c; border-radius:50%; transform:rotate(13deg); text-align:center; font:800 21px/1.04 var(--mono); letter-spacing:.09em; } #s5-seal::before{content:"";position:absolute;inset:15px;border:2px dashed #d7533c;border-radius:50%}
+      #s5-spine { position:absolute; left:6px; bottom:4px; z-index:13; display:flex; align-items:center; justify-content:space-between; width:920px; height:128px; padding:36px 42px; color:#f4eddd; background:#142b47; transform:rotate(-2deg); } #s5-spine .name{font:700 37px/1 var(--serif);letter-spacing:-.04em}#s5-spine .url{font:600 16px/1 var(--mono);letter-spacing:.01em}
+      #s5-outro { position:absolute; left:77px; bottom:71px; z-index:18; width:760px; font:600 20px/1.35 var(--mono); letter-spacing:.04em; }
+    </style>
+  </head>
+  <body>
+    <div id="paper-collage-video-recut-root" data-composition-id="paper-collage-video-recut" data-start="0" data-duration="30" data-track-index="0" data-width="1080" data-height="1920">
+      <section id="scene-01" class="scene" aria-label="A paper scene gathers into one hero object"><div class="scene-frame"></div><div class="cap"><span class="num">01</span> THE PROBLEM</div><h1 class="headline" id="s1-title" data-layout-allow-overlap><span class="line">一张图，</span><span class="line">不是一条<em>片</em>。</span></h1><p class="intro" id="s1-intro">A moving scene needs story, hierarchy and a place for every piece to land.</p><div id="s1-label" class="cut-label">STILL / NOT YET A WORLD</div><div id="s1-mountain" data-layout-allow-overflow></div><div id="s1-water" data-layout-allow-overflow></div><div id="s1-horizon"></div><div id="s1-boat-stage" class="torn paper-shadow"><div id="s1-tree"><span></span><span></span><span></span></div><div id="s1-boat"></div><div id="s1-character"></div></div><div id="s1-scrap-a" class="torn"></div><div id="s1-scrap-b" class="torn"></div><div id="s1-scrap-c" class="torn"></div><p class="scene-note" id="s1-note">先让一个场景成为主角。再让它拥有时间、层次和去处。</p></section>
+
+      <section id="scene-02" class="scene night" aria-label="The flat paper scene rises into a world"><div class="scene-frame"></div><div class="cap"><span class="num">02</span> BUILD A WORLD</div><h1 class="headline" id="s2-title" data-layout-allow-overlap><span class="line">让它，</span><span class="line"><em>站</em>起来。</span></h1><p class="intro" id="s2-intro">Story, assets and composition share one fold — then become a playable stage.</p><div id="s2-stage-wrap"><div id="s2-stage"><div id="s2-base"></div><div id="s2-hinge"></div><div id="s2-mountain" data-layout-allow-overflow></div><div id="s2-water" data-layout-allow-overflow></div><div id="s2-boat"></div></div></div><div id="s2-note" class="cut-label">ONE FOLD / REAL DEPTH</div></section>
+
+      <section id="scene-03" class="scene" aria-label="A human direction presses the production state into place"><div class="scene-frame"></div><div class="cap"><span class="num">03</span> HUMAN DIRECTION</div><h1 class="headline" id="s3-title" data-layout-allow-overlap><span class="line">人，不在</span><span class="line"><em>流程外</em>。</span></h1><p class="intro" id="s3-intro">A direction is not a switch. It changes the state, weight and order of the work.</p><div id="s3-thread" data-layout-allow-overflow></div><article id="s3-slip-a" class="slip torn" data-layout-allow-overflow data-layout-allow-occlusion><div class="n">01</div><div class="word">概念<br>档位</div></article><article id="s3-slip-b" class="slip torn" data-layout-allow-occlusion><div class="n">02</div><div class="word">风格<br>试听</div></article><article id="s3-slip-c" class="slip torn" data-layout-allow-occlusion><div class="n">03</div><div class="word">预览<br>修改</div></article><div id="s3-stamp-shadow"></div><div id="s3-stamp"><span class="small">HUMAN DECIDES</span><span class="big">导演位</span><span class="tiny">PRESS / LOCK / CONTINUE</span></div><p class="scene-note" id="s3-note">一个按下去的决定，应该让画面里的东西真正归位。</p></section>
+
+      <section id="scene-04" class="scene night" aria-label="A visible line proves the character to boat relationship"><div class="scene-frame"></div><div class="cap"><span class="num">04</span> MAKE IT PROVABLE</div><h1 class="headline" id="s4-title" data-layout-allow-overlap><span class="line">每一层，</span><span class="line">都要<em>证明</em>。</span></h1><p class="intro" id="s4-intro">The proof is not a caption. It begins on the character and ends on the boat.</p><div id="s4-window"><div id="s4-sky"></div><div id="s4-mountain" data-layout-allow-overflow></div><div id="s4-water"></div><div id="s4-boat"></div><div id="s4-character"></div><div id="s4-line"></div><div id="s4-anchor"></div><div id="s4-character-tag" class="proof-tag">CHARACTER</div><div id="s4-boat-tag" class="proof-tag">BOAT / PARENT</div><div id="s4-proof-label">RELATIONSHIP PROOF / V4</div></div><div id="s4-layer-list"><span>WATER / BACK</span><span>BOAT / MID</span><span>CHARACTER / ON</span></div></section>
+
+      <section id="scene-05" class="scene" aria-label="The captured project page opens as an editable paper folio"><div class="scene-frame"></div><div class="cap"><span class="num">05</span> CONTINUE THE WORK</div><h1 class="headline" id="s5-title" data-layout-allow-overlap><span class="line">不是结尾。</span><span class="line">是一件<em>作品</em>。</span></h1><p class="intro" id="s5-intro">An inspectable project artifact, opened as a folio that can be changed and continued.</p><div id="s5-folio-stage"><div id="s5-shadow"></div><div id="s5-page"><img src="assets/source/paper-collage-video-readme.png" alt="Captured Paper Collage Video Pipeline project page" /></div><div id="s5-cover"></div><div id="s5-seal">OPEN<br>AND<br>EDIT</div><div id="s5-spine"><span class="name">paper-collage-video</span><span class="url">github.com/cyberlesterr/paper-collage-video</span></div></div><p id="s5-outro">真实项目作为证据出现；纸张、装帧、文字和镜头语言仍然是原创的。</p></section>
+      <div id="paper-pull" data-layout-allow-overflow></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({paused: true, defaults: {ease: "power3.out"}});
+      const scenes = ["#scene-01", "#scene-02", "#scene-03", "#scene-04", "#scene-05"];
+      function paperPull(at, outgoing, incoming, color) {
+        tl.set(incoming, {autoAlpha: 1, zIndex: 1}, at)
+          .set(outgoing, {zIndex: 2}, at)
+          .set("#paper-pull", {autoAlpha: 1, y: 2050, backgroundColor: color}, at)
+          .to("#paper-pull", {y: 0, duration: 0.28, ease: "power4.in"}, at)
+          .set(outgoing, {autoAlpha: 0, zIndex: 1}, at + 0.28)
+          .set(incoming, {zIndex: 2}, at + 0.28)
+          .to("#paper-pull", {y: -2050, duration: 0.42, ease: "power3.out"}, at + 0.28)
+          .set("#paper-pull", {autoAlpha: 0}, at + 0.7);
+      }
+      tl.set(scenes.slice(1), {autoAlpha: 0})
+        .from("#s1-title .line", {autoAlpha: 0, y: 46, stagger: 0.13, duration: 0.68}, 0.2)
+        .from("#s1-intro", {autoAlpha: 0, y: 24, duration: 0.46}, 0.67)
+        .from("#s1-mountain", {autoAlpha: 0, x: -220, y: 104, rotation: -18, duration: 0.86, ease: "power3.out"}, 0.52)
+        .from("#s1-water", {autoAlpha: 0, x: 260, y: 130, rotation: 10, duration: 0.8}, 0.76)
+        .from("#s1-scrap-a", {autoAlpha: 0, x: -230, y: 120, rotation: -25, duration: 0.62, ease: "back.out(1.1)"}, 1.1)
+        .from("#s1-scrap-b", {autoAlpha: 0, x: 220, y: 105, rotation: 26, duration: 0.62, ease: "back.out(1.1)"}, 1.23)
+        .from("#s1-scrap-c", {autoAlpha: 0, x: 130, y: -180, rotation: 45, duration: 0.54, ease: "back.out(1.1)"}, 1.39)
+        .from("#s1-boat-stage", {autoAlpha: 0, y: -230, scale: 0.58, rotation: -7, duration: 0.92, ease: "back.out(1.05)"}, 1.48)
+        .from("#s1-character", {autoAlpha: 0, y: -112, scale: 0.55, duration: 0.52, ease: "back.out(1.4)"}, 2.03)
+        .from("#s1-horizon", {autoAlpha: 0, scaleX: 0, transformOrigin: "left center", duration: 0.62}, 2.26)
+        .from("#s1-label", {autoAlpha: 0, x: -55, duration: 0.45}, 2.65)
+        .from("#s1-note", {autoAlpha: 0, y: 30, duration: 0.44}, 3.03);
+      paperPull(3.8, "#scene-01", "#scene-02", "#eab64a");
+      tl.from("#s2-title .line", {autoAlpha: 0, y: 50, stagger: 0.13, duration: 0.67}, 4.5)
+        .from("#s2-intro", {autoAlpha: 0, y: 24, duration: 0.45}, 4.92)
+        .from("#s2-base", {autoAlpha: 0, y: 260, rotationX: 74, duration: 0.96, ease: "power3.out"}, 5.05)
+        .from("#s2-hinge", {autoAlpha: 0, scaleX: 0, transformOrigin: "left center", duration: 0.54}, 5.7)
+        .from("#s2-mountain", {autoAlpha: 0, rotationX: 0, duration: 1.05, ease: "power2.inOut"}, 5.86)
+        .from("#s2-water", {autoAlpha: 0, rotationX: 0, duration: 0.9, ease: "power2.inOut"}, 6.2)
+        .from("#s2-boat", {autoAlpha: 0, rotationX: 0, y: 120, duration: 0.78, ease: "back.out(1.15)"}, 6.63)
+        .from("#s2-note", {autoAlpha: 0, y: 28, rotation: -10, duration: 0.42}, 7.44)
+        .to("#s2-stage", {rotationX: 8, y: -18, duration: 0.62, ease: "sine.inOut"}, 8.22);
+      paperPull(9.25, "#scene-02", "#scene-03", "#d7533c");
+      tl.from("#s3-title .line", {autoAlpha: 0, y: 50, stagger: 0.13, duration: 0.67}, 9.95)
+        .from("#s3-intro", {autoAlpha: 0, y: 24, duration: 0.45}, 10.36)
+        .from("#s3-thread", {autoAlpha: 0, scaleX: 0, transformOrigin: "left center", duration: 0.56}, 10.58)
+        .from("#s3-slip-a", {autoAlpha: 0, x: -230, y: 90, rotation: -29, duration: 0.64, ease: "back.out(1.05)"}, 10.85)
+        .from("#s3-slip-b", {autoAlpha: 0, y: 150, rotation: 16, duration: 0.64, ease: "back.out(1.05)"}, 11.08)
+        .from("#s3-slip-c", {autoAlpha: 0, x: 230, y: 90, rotation: 32, duration: 0.64, ease: "back.out(1.05)"}, 11.3)
+        .from("#s3-stamp-shadow", {autoAlpha: 0, scaleX: 0.25, duration: 0.3}, 11.76)
+        .from("#s3-stamp", {autoAlpha: 0, y: -540, rotation: -32, scale: 1.25, duration: 0.78, ease: "power4.in"}, 11.8)
+        .to("#s3-stamp", {scaleY: 0.92, duration: 0.08, ease: "none"}, 12.58)
+        .to("#s3-stamp", {scaleY: 1, duration: 0.18, ease: "back.out(3)"}, 12.66)
+        .to(["#s3-slip-a", "#s3-slip-b", "#s3-slip-c"], {y: "+=10", duration: 0.16, ease: "power2.in"}, 12.58)
+        .to("#s3-stamp-shadow", {scaleX: 0.72, scaleY: 0.55, duration: 0.16}, 12.58)
+        .from("#s3-note", {autoAlpha: 0, y: 25, duration: 0.42}, 13.42);
+      paperPull(14.3, "#scene-03", "#scene-04", "#f4eddd");
+      tl.from("#s4-title .line", {autoAlpha: 0, y: 50, stagger: 0.13, duration: 0.67}, 15.35)
+        .from("#s4-intro", {autoAlpha: 0, y: 24, duration: 0.45}, 15.76)
+        .from("#s4-window", {autoAlpha: 0, x: 170, rotationY: -16, duration: 0.82, ease: "power3.out"}, 16.0)
+        .from("#s4-mountain", {autoAlpha: 0, y: 120, duration: 0.52}, 16.48)
+        .from("#s4-water", {autoAlpha: 0, y: 135, duration: 0.52}, 16.62)
+        .from("#s4-boat", {autoAlpha: 0, y: -155, rotation: -8, duration: 0.64, ease: "back.out(1.1)"}, 17.08)
+        .from("#s4-character", {autoAlpha: 0, y: -128, scale: 0.55, duration: 0.54, ease: "back.out(1.4)"}, 17.45)
+        .from("#s4-line", {autoAlpha: 0, scaleY: 0, transformOrigin: "top center", duration: 0.58}, 17.92)
+        .from("#s4-anchor", {autoAlpha: 0, scale: 0.2, duration: 0.25, ease: "back.out(2)"}, 18.35)
+        .from(["#s4-character-tag", "#s4-boat-tag", "#s4-proof-label"], {autoAlpha: 0, y: 20, stagger: 0.12, duration: 0.38}, 18.48)
+        .from("#s4-layer-list span", {autoAlpha: 0, y: 18, stagger: 0.1, duration: 0.32}, 19.03)
+        .to("#s4-window", {rotationY: 0, x: 0, duration: 0.52, ease: "sine.inOut"}, 20.04);
+      paperPull(21.55, "#scene-04", "#scene-05", "#142b47");
+      tl.from("#s5-title .line", {autoAlpha: 0, y: 50, stagger: 0.13, duration: 0.67}, 22.25)
+        .from("#s5-intro", {autoAlpha: 0, y: 24, duration: 0.45}, 22.68)
+        .from("#s5-shadow", {autoAlpha: 0, scale: 0.7, duration: 0.55}, 22.9)
+        .from("#s5-page", {autoAlpha: 0, x: -110, y: 90, scale: 0.82, filter: "blur(9px)", duration: 0.75, ease: "power3.out"}, 23.08)
+        .from("#s5-cover", {autoAlpha: 0, scaleX: 5.82, x: -60, duration: 0.92, ease: "power2.inOut"}, 23.0)
+        .from("#s5-seal", {autoAlpha: 0, scale: 0.24, rotation: -38, duration: 0.48, ease: "back.out(1.8)"}, 23.72)
+        .from("#s5-spine", {autoAlpha: 0, y: 72, rotation: 7, duration: 0.66, ease: "power3.out"}, 24.16)
+        .from("#s5-outro", {autoAlpha: 0, y: 24, duration: 0.45}, 24.85)
+        .to("#scene-05", {autoAlpha: 0, duration: 0.7, ease: "power1.in"}, 29.25);
+      window.__timelines["paper-collage-video-recut"] = tl;
+    </script>
+  </body>
+</html>

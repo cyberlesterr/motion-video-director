@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "decisionMode": "user-review",
-  "status": "pending",
+  "status": "approved",
   "styleframes": [
     {
       "id": "sf-01",
@@ -40,8 +40,10 @@
     }
   ],
   "notes": [
-    "Pending user review. This package sets the visual direction only; no full HyperFrames composition has been started.",
+    "Approved for a visual HyperFrames preview after the user explicitly asked to turn these frames into video on 2026-07-25.",
     "The captured repository page appears once as authentic project evidence, framed by original paper graphics."
   ],
-  "approval": null
+  "approval": {
+    "note": "User authorized the approved five-frame direction to be made into a viewable video preview. Audio remains a separate post-picture pass."
+  }
 }
