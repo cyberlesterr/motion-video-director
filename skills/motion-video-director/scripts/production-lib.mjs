@@ -89,16 +89,17 @@ export async function fileRecord(scope, relativePath, filePath) {
 
 export async function loadPlanning(projectDir) {
   const productionDir = path.join(projectDir, 'production');
-  const [project, brief, beatGraph, proofPlan] = await Promise.all([
+  const [project, brief, sourceDossier, beatGraph, proofPlan] = await Promise.all([
     readJsonFile(path.join(projectDir, 'project.json'), 'project.json'),
     readJsonFile(path.join(productionDir, 'brief.json'), 'production/brief.json'),
+    readJsonFile(path.join(productionDir, 'source-dossier.json'), 'production/source-dossier.json'),
     readJsonFile(path.join(productionDir, 'beat-graph.json'), 'production/beat-graph.json'),
     readJsonFile(path.join(productionDir, 'proof-plan.json'), 'production/proof-plan.json'),
   ]);
-  return {project, brief, beatGraph, proofPlan};
+  return {project, brief, sourceDossier, beatGraph, proofPlan};
 }
 
-export function compileMotionPlan({project, brief, beatGraph, proofPlan}) {
+export function compileMotionPlan({project, brief, sourceDossier, beatGraph, proofPlan}) {
   const proofByBeat = new Map(proofPlan.scenes.map((scene) => [scene.beatId, scene]));
   const styleTargetIds = proofPlan.styleProof?.targetBeatIds ?? [];
   const targetSet = new Set(styleTargetIds);
@@ -132,7 +133,13 @@ export function compileMotionPlan({project, brief, beatGraph, proofPlan}) {
     durationSeconds: brief.durationSeconds,
     fps: brief.fps,
     motionThesis: brief.motionThesis,
-    planningFingerprint: jsonFingerprint({project, brief, beatGraph, proofPlan}),
+    source: {
+      route: sourceDossier.source.route,
+      canonicalUrl: sourceDossier.source.canonicalUrl,
+      captureStatus: sourceDossier.status,
+      capturedAt: sourceDossier.source.capturedAt,
+    },
+    planningFingerprint: jsonFingerprint({project, brief, sourceDossier, beatGraph, proofPlan}),
     beats,
     approvedHolds: holds.map((hold) => ({...hold})),
     styleProofTargets: beats
@@ -181,6 +188,7 @@ export async function createRuntimeFingerprint(projectDir, skillRoot) {
     'index.html',
     'project.json',
     'production/brief.json',
+    'production/source-dossier.json',
     'production/beat-graph.json',
     'production/asset-manifest.json',
     'production/proof-plan.json',
@@ -191,9 +199,11 @@ export async function createRuntimeFingerprint(projectDir, skillRoot) {
     'SKILL.md',
     'references/project-contract.md',
     'references/quality-gates.md',
+    'references/source-dossier.md',
     'scripts/animation-map.mjs',
     'scripts/compile-motion-plan.mjs',
     'scripts/capture-contact-sheet.mjs',
+    'scripts/capture-source.mjs',
     'scripts/finalize-production.mjs',
     'scripts/fingerprint-production.mjs',
     'scripts/production-lib.mjs',
@@ -225,6 +235,12 @@ export async function createRuntimeFingerprint(projectDir, skillRoot) {
     const filePath = assertProjectRelativePath(projectDir, asset.relativePath, `Asset ${asset.id ?? '(unknown)'}`);
     assert(await pathExists(filePath), `Fingerprint asset is missing: ${asset.relativePath}`);
     records.push(await fileRecord('asset', asset.relativePath, filePath));
+  }
+  const sourceDossier = await readJsonFile(path.join(projectDir, 'production', 'source-dossier.json'));
+  for (const artifact of sourceDossier.capture?.artifacts ?? []) {
+    const filePath = assertProjectRelativePath(projectDir, artifact.path, `Source capture artifact ${artifact.path ?? '(unknown)'}`);
+    assert(await pathExists(filePath), `Fingerprint source capture artifact is missing: ${artifact.path}`);
+    records.push(await fileRecord('source-capture', artifact.path, filePath));
   }
   for (const relativePath of skillFiles) {
     const filePath = path.join(skillRoot, relativePath);

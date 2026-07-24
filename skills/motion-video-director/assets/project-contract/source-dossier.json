@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "status": "not-captured",
+  "source": {
+    "route": "local-brief",
+    "canonicalUrl": null,
+    "capturedAt": null,
+    "usage": "original"
+  },
+  "capture": {
+    "directory": "capture",
+    "artifacts": []
+  },
+  "facts": [],
+  "assetCandidates": []
+}

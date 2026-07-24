@@ -1,4 +1,4 @@
 interface:
   display_name: "Motion Video Director"
-  short_description: "Create editable, motion-first explainer videos."
-  default_prompt: "Use $motion-video-director to turn this script and my local assets into a motion-first explainer video."
+  short_description: "Turn websites and GitHub projects into directed videos."
+  default_prompt: "Use $motion-video-director to turn this public website or GitHub project into a source-grounded motion video."

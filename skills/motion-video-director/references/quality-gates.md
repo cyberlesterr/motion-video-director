@@ -4,6 +4,13 @@ Passing a render command is not proof that the delivered video is good.
 
 ## Source gate
 
+- For a website or GitHub route, `source-dossier.json` has a public canonical
+  HTTPS URL, capture time, usage declaration, and SHA-256-matched raw artifacts
+  below `capture/`. Public marketing copy remains `source-claimed`.
+- Every factual claim in `brief.json` names the source-fact IDs that support it.
+  A capture does not establish promotional rights or independent verification.
+- For a third-party source, the user has approved the thesis, claims, script,
+  storyboard, duration/ratio, and tone before composition or rendering begins.
 - A project `DESIGN.md` exists and names palette, typography, and anti-patterns.
 - The motion thesis and beat graph exist before composition code.
 - Every beat has a concrete state change and named proof times.

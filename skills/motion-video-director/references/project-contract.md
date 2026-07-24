@@ -14,6 +14,7 @@ HyperFrames CLI or its renderer checks.
   project.json
   production/
     brief.json
+    source-dossier.json
     beat-graph.json
     asset-manifest.json
     proof-plan.json
@@ -30,6 +31,11 @@ exists, how it should move, which local assets it may use, where a resumed run
 continues, and how it must be proved. The compiled plan and evidence records are
 machine-generated; agents update them through the bundled scripts rather than
 editing them by hand.
+
+When a project starts from a public website or GitHub repository, its raw
+capture files live below `capture/`. `source-dossier.json` binds them to the
+project by relative path, byte count, and SHA-256 digest. It is planning input,
+not a license or a claim that the captured source is independently true.
 
 ## Project stages
 
@@ -74,13 +80,48 @@ Required fields:
 - `projectId`, `title`, `audience`, and `motionThesis`.
 - `ratio`: `16:9` or `9:16`.
 - `durationSeconds` and `fps`, matching `project.json`.
+- `sourceRoute`: `local-brief`, `website`, or `github`, matching
+  `source-dossier.json`.
 - `narration.mode`: `none`, `local-audio`, or `user-voice`.
 - `generationPolicy`: `textToVideo`, `imageToVideo`, and
   `firstLastFrameVideo` must all be `prohibited`.
-- `factualClaims`: an array. Keep it empty for original demonstrations; put
-  claims and source references here before animating factual material.
+- `factualClaims`: an array. Keep it empty for original demonstrations. Each
+  factual entry needs a unique `id`, `claim`, and one or more `sourceFactIds`
+  from `source-dossier.json` before animating the material.
 
 Do not put provider credentials, remote media URLs, or unverified claims here.
+
+## `source-dossier.json`
+
+The initialized local baseline uses `status: "not-captured"`,
+`source.route: "local-brief"`, and `usage: "original"`. Do not change it when
+the work is based wholly on user-supplied local material.
+
+For public-source work, use `capture-source.mjs` before writing the video
+script. It changes the route to `website` or `github`, stores a canonical HTTPS
+URL and capture timestamp, then lists every raw artifact beneath `capture/`
+with its SHA-256 digest. The contract validates those digests on every
+fingerprint-bound proof.
+
+Every fact has a unique id, statement, artifact `sourcePath`, locator, and one
+of these verification labels:
+
+- `source-claimed`: text visible on the captured public site; it is not an
+  independent fact check.
+- `github-api-snapshot`: metadata or README snapshot obtained from GitHub’s
+  public API at the captured default-branch commit.
+- `user-supplied`: a user-provided source preserved as a local capture artifact.
+
+`source.usage` must be `commentary` or `authorized-promotion` for a captured
+source. Do not select the latter unless the user has confirmed the authority to
+make promotional material. A dossier establishes provenance, not permission to
+reuse branding, imagery, code, or copy; only selected, permitted local assets
+go in `asset-manifest.json`.
+
+Before building or rendering a third-party source video, get explicit approval
+for the source thesis, factual claims, script, storyboard, duration/ratio, and
+tone. The approval is a human production gate, separate from source capture or
+technical validation.
 
 ## `beat-graph.json`
 
@@ -131,8 +172,9 @@ proofs, style-proof targets, review checks, and approved holds.
 ## Fingerprint and proof records
 
 `fingerprint-production.mjs` writes `runtime-fingerprint.json`. The digest
-includes the composition source, planning inputs, declared local assets,
-project-local package locks, and the Skill's validation/runtime scripts. A
+includes the composition source, planning inputs, captured raw source
+artifacts, declared local assets, project-local package locks, and the Skill's
+validation/runtime scripts. A
 source or runtime change invalidates all evidence tied to an older digest.
 
 `style-proof.mjs` captures actual HyperFrames proof frames for the compiled
@@ -154,7 +196,8 @@ source, asset, dependency, or Skill-runtime change invalidated earlier evidence.
 The top-level report status may also
 be `in-progress` or `partial`; use `partial` when at least one required gate is
 not run, and do not call that result fully verified. The required checks are
-source contract, compiled motion plan, source fingerprint, HyperFrames lint,
+source contract (including the source dossier when one is captured), compiled
+motion plan, source fingerprint, HyperFrames lint,
 validation, inspection, animation map, render, media probe, contact sheet,
 style proof, and review scaffold. A report with `status: "passed"` requires
 every required check to be `passed` and every fingerprint-bound proof to match

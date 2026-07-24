@@ -1,41 +1,71 @@
 ---
 name: motion-video-director
-description: Create original, editable, code-first motion-design explainer videos with HyperFrames from a topic, script, data, and local assets. Use when the user wants a 10–60 second motion-first explainer, kinetic-type sequence, product/UI story, editorial diagram video, or procedural Canvas/p5 animation that must be deterministic, inspectable, and free of text-to-video or image-to-video providers.
+description: Turn a public website or GitHub project into an original, editable, code-first HyperFrames video with a source dossier, factual claim links, editorial script, and deterministic QA. Also use for a 10–60 second motion-first explainer from a topic, script, data, or local assets. Use when the user wants a website/product promo, product analysis, GitHub/open-source project share, kinetic-type sequence, editorial diagram video, or procedural Canvas/p5 animation that must be inspectable and free of text-to-video or image-to-video providers.
 ---
 
 # Motion Video Director
 
-Turn a topic, script, data, or local media into a motion-first HyperFrames video. Direct the visual language before composing it. Deliver an editable source project, rendered MP4, and QA evidence.
+Turn a public website, GitHub project, topic, script, data, or local media into a motion-first HyperFrames video. Capture and bound the source before making claims; direct an original visual language before composing it. Deliver an editable source project, rendered MP4, and QA evidence.
 
 ## Boundaries
 
 - Use HyperFrames as the only rendering runtime.
 - Use local images, screen recordings, logos, SVG, Lottie, audio, Canvas/p5, and shaders when they serve the story.
 - Do not call text-to-video, image-to-video, first/last-frame, or external video-generation providers.
-- Do not promise live-action footage generation, pixel-level reference replication, or arbitrary video genres.
+- Do not promise live-action footage generation, pixel-level website replication, or arbitrary video genres.
 - Do not make a sequence of slide-like title, card, and fade scenes. A video needs continuous visual logic and visible state changes.
+- Treat public website copy as `source-claimed`, not independent verification. Do not access a login, private page, or user session.
+- A website capture is evidence and visual reference, not permission to reuse its photos, video, logo, copy, or UI wholesale. Record selected local assets separately with their rights basis.
 
 ## Required project inputs
 
 Collect or infer only decisions that affect the production route:
 
-- topic, script, data, or supplied local assets;
+- a public credential-free website URL, a GitHub repository URL, or topic/script/data/supplied local assets;
 - intended audience, ratio, and duration; default to 16:9 and 30 seconds when safe;
 - whether narration or an existing audio file drives timing;
 - factual accuracy needs and required source material;
 - brand assets or a visual reference.
 
-For factual, current, medical, legal, financial, historical, or named-entity claims, verify the core claims before creating the beat graph.
+For factual, current, medical, legal, financial, historical, or named-entity claims, link each claim to a captured source fact before creating the beat graph. Marketing claims from a website must remain explicitly source-claimed unless the user supplies or approves independent verification.
 
 ## Workflow
 
-### 1. Set visual identity
+### 1. Choose a source route and capture it
+
+Read [references/source-dossier.md](references/source-dossier.md) and [references/project-contract.md](references/project-contract.md). Initialize an empty project first:
+
+```bash
+node <skill-root>/scripts/init-production.mjs <empty-project-directory>
+```
+
+For a public website or GitHub project, capture it during the `plan` stage:
+
+```bash
+node <skill-root>/scripts/capture-source.mjs <project-dir> \
+  --type website --url <https-url> --usage commentary
+
+node <skill-root>/scripts/capture-source.mjs <project-dir> \
+  --type github --url https://github.com/<owner>/<repo> --usage commentary
+```
+
+The website route invokes HyperFrames capture and preserves its public-page artifacts. The GitHub route snapshots public repository metadata, the exact default-branch commit, README when available, and the public page unless `--skip-page-capture` is intentional. The command refuses to overwrite a prior capture. Use `authorized-promotion` only when the user has confirmed authority to make promotional material; otherwise use `commentary`.
+
+For a wholly original/local production, keep the initialized `local-brief` dossier in its `not-captured` state. Never place secrets, credentials, private URLs, or remote media URLs in the dossier.
+
+### 2. Propose the editorial thesis, then obtain the creative gate
+
+Inspect `production/source-dossier.json` and state what is verified, source-claimed, or unknown. Propose the target audience, one-sentence source thesis, 3–6 factual claims with their fact IDs (or no factual claims), duration/ratio, tone, script, and storyboard.
+
+For a third-party website or GitHub project, stop for explicit user approval of that package before composing or rendering the video. A capture, planning contract, review scaffold, or passing technical check is never creative or rights approval.
+
+### 3. Set visual identity
 
 Read the project `DESIGN.md` when it exists. Otherwise, obtain a concise design direction before composition work: mood, light/dark canvas, and any brand colors, fonts, or references. Create `DESIGN.md` with a style prompt, 3–5 palette colors, 1–2 font families, and explicit anti-patterns.
 
 Do not use generic colors or typography as a substitute for a visual identity.
 
-### 2. Write a motion thesis and beat graph
+### 4. Write a motion thesis and beat graph
 
 Write one sentence:
 
@@ -45,17 +75,11 @@ Create a beat graph using [references/beat-graph.md](references/beat-graph.md). 
 
 If no moving metaphor exists, invent one before building a composition.
 
-### 3. Initialize and complete the project contract
+### 5. Complete the project contract
 
-Read [references/project-contract.md](references/project-contract.md). For a deterministic local baseline, run:
+The generated project is a `starter`, not a completed production. Before changing the composition, replace its brief, source dossier, design direction, beat graph, asset manifest, and proof plan with the actual project decisions. Promote it to `production` only when it is a 10–60 second user-facing film.
 
-```bash
-node <skill-root>/scripts/init-production.mjs <empty-project-directory>
-```
-
-The generated project is a `starter`, not a completed production. Before changing the composition, replace its brief, design direction, beat graph, asset manifest, and proof plan with the actual project decisions. Promote it to `production` only when it is a 10–60 second user-facing film.
-
-Keep all video-generation policy fields as `prohibited`. List factual claims and their sources before animating them. Record only local assets that are actually used.
+Keep all video-generation policy fields as `prohibited`. Every factual claim needs an `id`, `claim`, and one or more `sourceFactIds` present in the source dossier. Record only local assets that are actually used.
 
 After planning inputs are complete, compile the execution plan once:
 
@@ -71,23 +95,21 @@ After a source revision from `review` or `complete`, reopen it explicitly before
 node <skill-root>/scripts/reopen-production.mjs <project-dir> build "<revision reason>"
 ```
 
-### 4. Choose local assets and components
+### 6. Choose local assets and components
 
 Use supplied local assets first. Use generated or imported assets only when explicitly available in the host environment and approved by the user; do not substitute an external video provider.
 
-Select 2–4 motion primitives and reuse them with variation. Read [references/style-profile-contract.md](references/style-profile-contract.md) when choosing a style profile.
-
-For relationship, evidence, decision, or process explainers, read [references/editorial-system.md](references/editorial-system.md) and use `assets/style-packs/editorial-system/example/` as the implementation reference. Replace its design and production decisions; do not reuse its copy as a generic template.
+Select 2–4 motion primitives and reuse them with variation. Derive an original visual system from the story, not from a fixed in-repository style pack or a pixel-level imitation of the source website.
 
 Use Canvas/p5 for procedural interaction, state machines, particles, or hand-drawn systems. Keep its random seed, virtual input path, and audio events deterministic.
 
-### 5. Build with HyperFrames
+### 7. Build with HyperFrames
 
 Use `npx hyperframes init <project-dir> --non-interactive` for a new project whenever the CLI is available. Use `assets/hyperframes-starter/` as the baseline composition and design contract, not as an immutable visual style.
 
 Build the static hero frame before animation. Register a paused GSAP timeline in `window.__timelines`, use `data-*` timing attributes, and let the renderer own playback. Use finite repeats only. Use transitions between multi-scene compositions.
 
-### 6. Validate before rendering
+### 8. Validate before rendering
 
 Read [references/quality-gates.md](references/quality-gates.md). Run:
 
@@ -117,14 +139,14 @@ node <skill-root>/scripts/fingerprint-production.mjs <project-dir>
 node <skill-root>/scripts/fingerprint-production.mjs <project-dir> --check
 ```
 
-For a reusable style profile or a high-risk visual mechanism, render the selected proof frames with the project-local HyperFrames CLI. Then generate the review checklist; a scaffold is not a creative approval:
+For a high-risk visual mechanism, render the selected proof frames with the project-local HyperFrames CLI. Then generate the review checklist; a scaffold is not a creative approval:
 
 ```bash
 node <skill-root>/scripts/style-proof.mjs <project-dir>
 node <skill-root>/scripts/review-scaffold.mjs <project-dir>
 ```
 
-### 7. Deliver evidence
+### 9. Deliver evidence
 
 Render through the wrapper so the output and media probe bind to the pre-render source fingerprint:
 
@@ -141,15 +163,14 @@ Deliver the source project, final MP4, contact sheet, selected proof times, styl
 ## Bundled resources
 
 - [references/beat-graph.md](references/beat-graph.md): required scene and beat contract.
-- [references/style-profile-contract.md](references/style-profile-contract.md): reusable style profile boundary.
-- [references/editorial-system.md](references/editorial-system.md): first concrete profile and usage rules for relationship explainers.
+- [references/source-dossier.md](references/source-dossier.md): public-source capture, fact, rights, and creative-gate contract.
 - [references/project-contract.md](references/project-contract.md): project planning, asset, proof, and delivery-report contract.
 - [references/quality-gates.md](references/quality-gates.md): source, visual, and delivery gates.
 - [assets/hyperframes-starter/](assets/hyperframes-starter/): no-provider starter composition.
 - [assets/project-contract/](assets/project-contract/): copyable planning and delivery-report baseline.
-- [assets/style-packs/editorial-system/example/](assets/style-packs/editorial-system/example/): complete 12-second HyperFrames reference sample.
 - `scripts/bootstrap-project.mjs`: copies the fallback starter into an empty directory.
 - `scripts/init-production.mjs`: copies the fallback starter and its production contract into an empty directory.
+- `scripts/capture-source.mjs`: captures one public website or GitHub project into a hash-bound source dossier before creative planning.
 - `scripts/verify-contract.mjs`: validates the bundled starter or a copied project against the local source contract; it does not replace HyperFrames lint, validation, or visual inspection.
 - `scripts/animation-map.mjs`: records timeline tween samples, potential collisions, pacing flags, dead zones, and element lifecycles using the composition's local `@hyperframes/producer` dev dependency.
 - `scripts/compile-motion-plan.mjs` and `scripts/resume-production.mjs`: compile planning decisions and resume from the explicit production stage.

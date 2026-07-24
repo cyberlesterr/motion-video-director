@@ -3,12 +3,13 @@
 import {access, readFile, stat} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
-import {assertControl, compileMotionPlan, createRuntimeFingerprint} from './production-lib.mjs';
+import {assertControl, compileMotionPlan, createRuntimeFingerprint, fileRecord} from './production-lib.mjs';
 
 const target = path.resolve(process.cwd(), process.argv[2] ?? '.');
 const requiredFiles = ['DESIGN.md', 'index.html', 'project.json'];
 const productionFiles = [
   'brief.json',
+  'source-dossier.json',
   'beat-graph.json',
   'asset-manifest.json',
   'proof-plan.json',
@@ -17,6 +18,9 @@ const productionFiles = [
 ];
 const allowedFps = new Set([24, 30, 60]);
 const allowedStatuses = new Set(['starter', 'production']);
+const allowedSourceRoutes = new Set(['local-brief', 'website', 'github']);
+const allowedSourceUses = new Set(['original', 'commentary', 'authorized-promotion']);
+const allowedFactVerifications = new Set(['source-claimed', 'github-api-snapshot', 'user-supplied']);
 const allowedNarrationModes = new Set(['none', 'local-audio', 'user-voice']);
 const allowedNarrativeJobs = new Set(['hook', 'reveal', 'contrast', 'mechanism', 'consequence', 'proof', 'close']);
 const allowedStateChangeKinds = new Set(['transform', 'travel', 'connect', 'split', 'accumulate', 'reveal', 'resolve', 'hold']);
@@ -113,6 +117,16 @@ function dimensionsForRatio(ratio) {
   throw new Error('brief.json ratio must be 16:9 or 9:16.');
 }
 
+function isHttpsUrl(value) {
+  if (!isNonEmptyString(value)) return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && !url.username && !url.password;
+  } catch {
+    return false;
+  }
+}
+
 async function pathExists(filePath) {
   try {
     await access(filePath);
@@ -120,6 +134,73 @@ async function pathExists(filePath) {
   } catch {
     return false;
   }
+}
+
+async function validateSourceDossier(sourceDossier, brief) {
+  assertObject(sourceDossier, 'source-dossier.json');
+  assert(sourceDossier.schemaVersion === 1, 'source-dossier.json schemaVersion must be 1.');
+  assert(['not-captured', 'captured'].includes(sourceDossier.status), 'source-dossier.json status must be not-captured or captured.');
+  assertObject(sourceDossier.source, 'source-dossier.json source');
+  assert(allowedSourceRoutes.has(sourceDossier.source.route), 'source-dossier.json source.route is unsupported.');
+  assert(sourceDossier.source.route === brief.sourceRoute, 'source-dossier.json source.route must match brief.json sourceRoute.');
+  assert(allowedSourceUses.has(sourceDossier.source.usage), 'source-dossier.json source.usage is unsupported.');
+  assertObject(sourceDossier.capture, 'source-dossier.json capture');
+  assert(isNonEmptyString(sourceDossier.capture.directory), 'source-dossier.json capture.directory must be a non-empty relative path.');
+  assert(!path.isAbsolute(sourceDossier.capture.directory), 'source-dossier.json capture.directory must not be absolute.');
+  assert(Array.isArray(sourceDossier.capture.artifacts), 'source-dossier.json capture.artifacts must be an array.');
+  assert(Array.isArray(sourceDossier.facts), 'source-dossier.json facts must be an array.');
+  assert(Array.isArray(sourceDossier.assetCandidates), 'source-dossier.json assetCandidates must be an array.');
+
+  const captureDirectory = path.resolve(target, sourceDossier.capture.directory);
+  const captureRelative = path.relative(target, captureDirectory);
+  assert(captureRelative && !captureRelative.startsWith(`..${path.sep}`) && captureRelative !== '..', 'source-dossier.json capture.directory must stay inside the project directory.');
+
+  if (sourceDossier.status === 'not-captured') {
+    assert(sourceDossier.source.route === 'local-brief', 'Only local-brief projects may remain not-captured.');
+    assert(sourceDossier.source.canonicalUrl === null, 'A not-captured local-brief must not set canonicalUrl.');
+    assert(sourceDossier.source.capturedAt === null, 'A not-captured local-brief must not set capturedAt.');
+    assert(sourceDossier.source.usage === 'original', 'A not-captured local-brief must use original usage.');
+    assert(sourceDossier.capture.artifacts.length === 0, 'A not-captured local-brief must not list capture artifacts.');
+    assert(sourceDossier.facts.length === 0, 'A not-captured local-brief must not list source facts.');
+  } else {
+    assert(['website', 'github'].includes(sourceDossier.source.route), 'Captured source dossiers must be a website or GitHub route.');
+    assert(isHttpsUrl(sourceDossier.source.canonicalUrl), 'A captured source dossier needs a credential-free HTTPS canonicalUrl.');
+    assert(isNonEmptyString(sourceDossier.source.capturedAt) && Number.isFinite(Date.parse(sourceDossier.source.capturedAt)), 'A captured source dossier needs an ISO capturedAt timestamp.');
+    assert(sourceDossier.capture.artifacts.length >= 1, 'A captured source dossier needs at least one raw artifact.');
+  }
+
+  const artifactPaths = new Set();
+  for (const artifact of sourceDossier.capture.artifacts) {
+    assertObject(artifact, 'source capture artifact');
+    assert(isNonEmptyString(artifact.scope), 'Each source capture artifact needs a scope.');
+    assert(isNonEmptyString(artifact.path) && !path.isAbsolute(artifact.path), 'Each source capture artifact needs a relative path.');
+    assert(!artifactPaths.has(artifact.path), `Source capture artifact path is duplicated: ${artifact.path}.`);
+    artifactPaths.add(artifact.path);
+    assert(Number.isInteger(artifact.bytes) && artifact.bytes >= 0, `Source capture artifact ${artifact.path} needs a non-negative integer byte count.`);
+    assert(typeof artifact.sha256 === 'string' && /^[a-f0-9]{64}$/.test(artifact.sha256), `Source capture artifact ${artifact.path} needs a SHA-256 digest.`);
+    const artifactPath = path.resolve(target, artifact.path);
+    const relativeToProject = path.relative(target, artifactPath);
+    const relativeToCapture = path.relative(captureDirectory, artifactPath);
+    assert(relativeToProject && !relativeToProject.startsWith(`..${path.sep}`) && relativeToProject !== '..', `Source capture artifact ${artifact.path} must stay inside the project directory.`);
+    assert(relativeToCapture && !relativeToCapture.startsWith(`..${path.sep}`) && relativeToCapture !== '..', `Source capture artifact ${artifact.path} must stay below ${sourceDossier.capture.directory}.`);
+    assert(await pathExists(artifactPath), `Source capture artifact ${artifact.path} is missing.`);
+    assert((await stat(artifactPath)).isFile(), `Source capture artifact ${artifact.path} must be a file.`);
+    const actual = await fileRecord(artifact.scope, artifact.path, artifactPath);
+    assert(actual.bytes === artifact.bytes && actual.sha256 === artifact.sha256, `Source capture artifact ${artifact.path} does not match its recorded digest.`);
+  }
+
+  const factIds = new Set();
+  for (const fact of sourceDossier.facts) {
+    assertObject(fact, 'source fact');
+    assert(isNonEmptyString(fact.id) && !factIds.has(fact.id), 'Each source fact needs a unique, non-empty id.');
+    factIds.add(fact.id);
+    assert(isNonEmptyString(fact.statement), `Source fact ${fact.id} needs a non-empty statement.`);
+    assert(isNonEmptyString(fact.sourcePath) && artifactPaths.has(fact.sourcePath), `Source fact ${fact.id} must point to a captured raw artifact.`);
+    assert(isNonEmptyString(fact.locator), `Source fact ${fact.id} needs a locator.`);
+    assert(allowedFactVerifications.has(fact.verification), `Source fact ${fact.id} has an unsupported verification method.`);
+  }
+
+  return factIds;
 }
 
 async function validateProductionContract(project, html) {
@@ -132,7 +213,7 @@ async function validateProductionContract(project, html) {
   }
 
   assert((await stat(productionDirectory)).isDirectory(), `${productionDirectory} must be a directory.`);
-  const [brief, beatGraph, assetManifest, proofPlan, deliveryReport, control] = await Promise.all(
+  const [brief, sourceDossier, beatGraph, assetManifest, proofPlan, deliveryReport, control] = await Promise.all(
     productionFiles.map((file) => readJson(path.join('production', file))),
   );
 
@@ -149,6 +230,7 @@ async function validateProductionContract(project, html) {
     assert(brief.durationSeconds <= 60, 'starter durationSeconds must be at most 60.');
   }
   assert(allowedFps.has(brief.fps), 'brief.json fps must be 24, 30, or 60.');
+  assert(allowedSourceRoutes.has(brief.sourceRoute), 'brief.json sourceRoute must be local-brief, website, or github.');
   assertObject(brief.narration, 'brief.json narration');
   assert(allowedNarrationModes.has(brief.narration.mode), 'brief.json narration.mode is unsupported.');
   assertObject(brief.generationPolicy, 'brief.json generationPolicy');
@@ -156,6 +238,18 @@ async function validateProductionContract(project, html) {
     assert(brief.generationPolicy[key] === 'prohibited', `brief.json generationPolicy.${key} must be prohibited.`);
   }
   assert(Array.isArray(brief.factualClaims), 'brief.json factualClaims must be an array.');
+  const sourceFactIds = await validateSourceDossier(sourceDossier, brief);
+  const claimIds = new Set();
+  for (const claim of brief.factualClaims) {
+    assertObject(claim, 'factual claim');
+    assert(isNonEmptyString(claim.id) && !claimIds.has(claim.id), 'Each factual claim needs a unique, non-empty id.');
+    claimIds.add(claim.id);
+    assert(isNonEmptyString(claim.claim), `Factual claim ${claim.id} needs a non-empty claim.`);
+    assert(Array.isArray(claim.sourceFactIds) && claim.sourceFactIds.length >= 1, `Factual claim ${claim.id} needs at least one sourceFactId.`);
+    for (const sourceFactId of claim.sourceFactIds) {
+      assert(isNonEmptyString(sourceFactId) && sourceFactIds.has(sourceFactId), `Factual claim ${claim.id} references an unknown source fact: ${sourceFactId}.`);
+    }
+  }
 
   const dimensions = dimensionsForRatio(brief.ratio);
   const composition = compositionAttributes(html);
@@ -274,7 +368,7 @@ async function validateProductionContract(project, html) {
 
   const compiledPlanPath = path.join(productionDirectory, 'compiled-motion-plan.json');
   const runtimeFingerprintPath = path.join(productionDirectory, 'runtime-fingerprint.json');
-  const expectedCompiledPlan = compileMotionPlan({project, brief, beatGraph, proofPlan});
+  const expectedCompiledPlan = compileMotionPlan({project, brief, sourceDossier, beatGraph, proofPlan});
 
   if (deliveryReport.checks.compiledMotionPlan === 'passed') {
     const compiledPlan = await readJson(path.join('production', 'compiled-motion-plan.json'));

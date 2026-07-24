@@ -1,12 +1,14 @@
 # Motion Video Director
 
-`motion-video-director` is a code-first HyperFrames skill for turning a topic, script, data, and local assets into an editable motion-design explainer video.
+`motion-video-director` is a code-first HyperFrames skill for turning a public website or GitHub project into a source-grounded, editable motion-design video. It can also start from a topic, script, data, and local assets when there is no external source.
 
-It is deliberately not a text-to-video or image-to-video wrapper. It directs an original, deterministic production process: visual metaphor, beat graph, HyperFrames composition, local media, and evidence-based delivery QA.
+It is deliberately not a text-to-video or image-to-video wrapper. It directs an original, deterministic production process: public-source capture, factual dossier, editorial thesis, beat graph, HyperFrames composition, local media, and evidence-based delivery QA.
 
 ## Scope
 
-- 10–60 second 16:9 or 9:16 motion explainers.
+- 10–60 second 16:9 or 9:16 product explainers, website walkthroughs, and open-source project stories.
+- `website → video`: capture a public page with HyperFrames, preserve its raw artifacts and hashes, then turn an approved editorial thesis into an original video.
+- `GitHub project → video`: snapshot repository metadata, default-branch commit, README, and optionally the public project page before writing the story.
 - HTML, CSS, GSAP, SVG, Canvas/p5, optional shaders, local images, screen recordings, logos, Lottie, and local audio.
 - Kinetic type, editorial diagrams, product/UI stories, and procedural visual metaphors.
 - Deterministic rendering and local quality checks.
@@ -15,11 +17,13 @@ It is deliberately not a text-to-video or image-to-video wrapper. It directs an 
 
 - Text-to-video, image-to-video, first/last-frame interpolation, or other external video-generation providers.
 - Live-action footage generation or a generic "make any kind of video" promise.
-- A default slide-deck flow made from titles, cards, and fades.
+- Pixel-level copying of a source website or a default slide-deck flow made from titles, cards, and fades.
 
 ## Core contract
 
 Every production starts with a visual metaphor and a beat graph. A beat has a narrative job, a main moving object, and a visible state change; simple entrances or exits alone do not count as a state change. At least 80% of beats must visibly transform, travel, connect, split, accumulate, reveal, or otherwise change state.
+
+For a website or GitHub source, every production also starts with `production/source-dossier.json`: canonical URL, capture timestamp, raw artifact hashes, fact locators, and intended use (`commentary` or `authorized-promotion`). Marketing copy stays labeled as source-claimed until independently verified. A third-party product is not rendered until its source thesis, claims, script, and storyboard have explicit human approval.
 
 The skill requires a project-specific `DESIGN.md` before composition work and treats the final MP4 as incomplete until its renderer checks, key frames, and media probe are recorded.
 
@@ -30,10 +34,9 @@ skills/motion-video-director/
   SKILL.md                         # Agent workflow and production boundaries
   agents/openai.yaml               # Codex interface metadata
   assets/hyperframes-starter/      # Copyable no-provider starter composition
-  assets/project-contract/         # Copyable brief, beat, asset, proof, and delivery records
-  assets/style-packs/              # Reusable visual systems with real HyperFrames samples
-  references/                      # Beat, style, and QA contracts
-  scripts/                         # Bootstrap and static contract checks
+  assets/project-contract/         # Copyable brief, source, beat, asset, proof, and delivery records
+  references/                      # Source, beat, production, and QA contracts
+  scripts/                         # Bootstrap, capture, and static contract checks
 ```
 
 ## Local development
@@ -58,7 +61,7 @@ node skills/motion-video-director/scripts/bootstrap-project.mjs ./my-motion-vide
 
 The fallback does not replace the official HyperFrames scaffold; it gives a deterministic source template that can be linted and rendered once the CLI is available.
 
-For a contract-managed local starter, initialize the composition and its production artifacts together:
+For a contract-managed source-first project, initialize the composition and its production artifacts together:
 
 ```bash
 node skills/motion-video-director/scripts/init-production.mjs ./my-motion-video
@@ -67,33 +70,30 @@ node skills/motion-video-director/scripts/compile-motion-plan.mjs ./my-motion-vi
 node skills/motion-video-director/scripts/resume-production.mjs ./my-motion-video
 ```
 
-This creates a short `starter` project. Replace its brief, design, beat graph,
-asset manifest, and proof plan before promoting a user-facing video to
-`production`; production projects must be 10–60 seconds.
+This creates a short `starter` project. Replace its brief, source dossier,
+design, beat graph, asset manifest, and proof plan before promoting a
+user-facing video to `production`; production projects must be 10–60 seconds.
 
-## Included style packs
+## Source-first routes
 
-- `editorial-system`: warm-paper editorial hierarchy, diagrammatic
-  relationships, and restrained signal color for stories about evidence,
-  processes, and decisions. Its self-contained 12-second reference project is
-  at
-  [`skills/motion-video-director/assets/style-packs/editorial-system/example/`](skills/motion-video-director/assets/style-packs/editorial-system/example/).
-- `procedural-explainer`: a dark, code-only signal field in which a visible
-  constraint aligns noisy inputs into a stable feedback route. Its
-  self-contained 14-second reference project is at
-  [`skills/motion-video-director/assets/style-packs/procedural-explainer/example/`](skills/motion-video-director/assets/style-packs/procedural-explainer/example/).
-
-Both samples pin their HyperFrames runtime and use the same production
-evidence lifecycle. Run a sample's checks from its own directory:
+Capture only public, credential-free URLs. The command writes raw files below
+the project's `capture/` directory and binds them to
+`production/source-dossier.json`; it does not generate a video or reuse a
+site's visual assets automatically.
 
 ```bash
-npm install
-npm run compile-plan
-npm run validate
-npm run style-proof
-npm run review-scaffold
-npm run render
+node skills/motion-video-director/scripts/init-production.mjs ./heygen-story
+node skills/motion-video-director/scripts/capture-source.mjs ./heygen-story \
+  --type website --url https://www.heygen.com/en-gb --usage commentary
+
+node skills/motion-video-director/scripts/init-production.mjs ./react-story
+node skills/motion-video-director/scripts/capture-source.mjs ./react-story \
+  --type github --url https://github.com/facebook/react
 ```
+
+Inspect the dossier, then get approval for the source thesis, claims, script,
+storyboard, duration, ratio, and tone before building or rendering a
+third-party product/project video. See [the source dossier contract](skills/motion-video-director/references/source-dossier.md) for the evidence and rights boundary.
 
 ## Validation
 

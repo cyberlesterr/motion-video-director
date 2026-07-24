@@ -7,6 +7,7 @@
   "ratio": "16:9",
   "durationSeconds": 8,
   "fps": 30,
+  "sourceRoute": "local-brief",
   "motionThesis": "A fragmented signal resolves into one directed path, showing that a clear system turns scattered work into momentum.",
   "narration": {
     "mode": "none"
