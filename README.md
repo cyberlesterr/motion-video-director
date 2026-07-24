@@ -74,4 +74,4 @@ npx hyperframes inspect . --samples 15
 
 ## License and publication
 
-The implementation is local-only until a maintainer selects a license and explicitly approves a public GitHub repository creation and push. No remote has been configured.
+This repository is licensed under the [MIT License](LICENSE). No remote has been configured; creating a public GitHub repository and pushing remain separate, explicit actions.
