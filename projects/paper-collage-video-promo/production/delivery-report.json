@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "checks": {
+    "sourceContract": "passed",
+    "compiledMotionPlan": "passed",
+    "sourceFingerprint": "passed",
+    "hyperframesLint": "passed",
+    "hyperframesValidate": "passed",
+    "hyperframesInspect": "passed",
+    "animationMap": "passed",
+    "render": "passed",
+    "mediaProbe": "passed",
+    "contactSheet": "passed",
+    "styleProof": "passed",
+    "reviewScaffold": "passed"
+  },
+  "notes": [],
+  "evidence": {
+    "compiledMotionPlan": {
+      "path": "production/compiled-motion-plan.json",
+      "planningFingerprint": "28f2fc2785d737ebf2ee18ce575f6e0cc56c7251286ae84015d05fb93c861322"
+    },
+    "sourceFingerprint": {
+      "path": "production/runtime-fingerprint.json",
+      "value": "d264b0e9c6c13766bd215bcba3dc83123b3674234d79e25b3dccc0adb1d907e7"
+    },
+    "validation": {
+      "sourceFingerprint": "d264b0e9c6c13766bd215bcba3dc83123b3674234d79e25b3dccc0adb1d907e7",
+      "animationMap": ".hyperframes/animation-map/animation-map.json",
+      "inspectedSamples": 15,
+      "approvedHoldIds": []
+    },
+    "renderedSourceFingerprint": "d264b0e9c6c13766bd215bcba3dc83123b3674234d79e25b3dccc0adb1d907e7",
+    "renderOutput": "renders/paper-collage-video-promo.mp4",
+    "renderArtifact": {
+      "scope": "artifact",
+      "path": "renders/paper-collage-video-promo.mp4",
+      "bytes": 4274563,
+      "sha256": "20d8ba485577736613bdfc141050a586aaf5e5f8c6da1f65ef9839c4f455a86b"
+    },
+    "media": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1080,
+          "height": 1920,
+          "avg_frame_rate": "30/1",
+          "duration": "27.000000",
+          "nb_frames": "810"
+        }
+      ],
+      "format": {
+        "duration": "27.000000",
+        "size": "4274563"
+      }
+    },
+    "styleProof": {
+      "manifest": "production/style-proof.json",
+      "frameCount": 6,
+      "sourceFingerprint": "d264b0e9c6c13766bd215bcba3dc83123b3674234d79e25b3dccc0adb1d907e7"
+    },
+    "contactSheet": "renders/proof-contact-sheet.jpg",
+    "contactSheetArtifact": {
+      "scope": "artifact",
+      "path": "renders/proof-contact-sheet.jpg",
+      "bytes": 201044,
+      "sha256": "cb7df0210a7b3c9f2d1e69dd39909fe7bc2ee6ec6d9d92a7a1ea6927594d8103"
+    },
+    "contactSheetProofTimes": [
+      0.45,
+      2.1,
+      4.1,
+      4.7,
+      6.9,
+      9.3,
+      9.9,
+      12.3,
+      14.7,
+      15.3,
+      18.4,
+      21.5,
+      22.1,
+      24.4,
+      26.7
+    ],
+    "contactSheetSourceFingerprint": "d264b0e9c6c13766bd215bcba3dc83123b3674234d79e25b3dccc0adb1d907e7",
+    "reviewScaffold": {
+      "path": "production/review-scaffold.json",
+      "itemCount": 5,
+      "sourceFingerprint": "d264b0e9c6c13766bd215bcba3dc83123b3674234d79e25b3dccc0adb1d907e7"
+    }
+  }
+}

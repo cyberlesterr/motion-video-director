@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "status": "pending-review",
+  "sourceFingerprint": "d264b0e9c6c13766bd215bcba3dc83123b3674234d79e25b3dccc0adb1d907e7",
+  "planningFingerprint": "28f2fc2785d737ebf2ee18ce575f6e0cc56c7251286ae84015d05fb93c861322",
+  "styleProof": {
+    "manifest": "production/style-proof.json",
+    "sourceFingerprint": "d264b0e9c6c13766bd215bcba3dc83123b3674234d79e25b3dccc0adb1d907e7"
+  },
+  "items": [
+    {
+      "id": "beat:beat-01",
+      "kind": "beat",
+      "beatId": "beat-01",
+      "proofTimes": [
+        0.45,
+        2.1,
+        4.1
+      ],
+      "checks": [
+        "state-change-visible",
+        "moving-object-readable",
+        "text-role-readable",
+        "anti-slide-risk-reviewed"
+      ],
+      "requiredEvidence": "contact sheet and named proof frames",
+      "note": "Review torn paper fragments: Loose visual fragments collect into a single handmade animation problem rather than a finished still image."
+    },
+    {
+      "id": "beat:beat-02",
+      "kind": "beat",
+      "beatId": "beat-02",
+      "proofTimes": [
+        4.7,
+        6.9,
+        9.3
+      ],
+      "checks": [
+        "state-change-visible",
+        "moving-object-readable",
+        "text-role-readable",
+        "anti-slide-risk-reviewed"
+      ],
+      "requiredEvidence": "contact sheet and named proof frames",
+      "note": "Review three interlocking production cards: Storyboard, assets, and composition panels slide together and lock through physical paper tabs."
+    },
+    {
+      "id": "beat:beat-03",
+      "kind": "beat",
+      "beatId": "beat-03",
+      "proofTimes": [
+        9.9,
+        12.3,
+        14.7
+      ],
+      "checks": [
+        "state-change-visible",
+        "moving-object-readable",
+        "text-role-readable",
+        "anti-slide-risk-reviewed"
+      ],
+      "requiredEvidence": "style-proof frame set",
+      "note": "Review three human approval stamps: Three approval moments arrive in sequence and resolve into a visible human-director mark."
+    },
+    {
+      "id": "beat:beat-04",
+      "kind": "beat",
+      "beatId": "beat-04",
+      "proofTimes": [
+        15.3,
+        18.4,
+        21.5
+      ],
+      "checks": [
+        "state-change-visible",
+        "moving-object-readable",
+        "text-role-readable",
+        "anti-slide-risk-reviewed"
+      ],
+      "requiredEvidence": "style-proof frame set",
+      "note": "Review layered paper boat and relationship line: A nested production tree transforms into a paper scene whose boat, character, and water keep their intended visual relationship."
+    },
+    {
+      "id": "beat:beat-05",
+      "kind": "beat",
+      "beatId": "beat-05",
+      "proofTimes": [
+        22.1,
+        24.4,
+        26.7
+      ],
+      "checks": [
+        "state-change-visible",
+        "moving-object-readable",
+        "text-role-readable",
+        "anti-slide-risk-reviewed"
+      ],
+      "requiredEvidence": "contact sheet and named proof frames",
+      "note": "Review completed paper production kit and captured repository page: The moving paper system resolves into the project identity and its public GitHub address."
+    }
+  ],
+  "instructions": [
+    "Review generated frames at useful size; do not mark a scaffold as a creative approval by itself.",
+    "Record revision feedback beside the project source before changing the composition.",
+    "Regenerate this scaffold after a source fingerprint changes."
+  ]
+}

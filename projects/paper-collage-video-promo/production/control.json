@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "stage": "complete",
+  "events": [
+    {
+      "stage": "plan",
+      "action": "initialized",
+      "note": "Initialized as an original, user-authorized promotional short; source dossier captured before the script and storyboard were written."
+    },
+    {
+      "stage": "build",
+      "action": "compiled-motion-plan",
+      "note": "Planning inputs compiled into the deterministic motion plan."
+    },
+    {
+      "stage": "validate",
+      "action": "stage-advanced",
+      "note": "Complete HyperFrames validation and animation-map evidence was recorded against the current runtime fingerprint."
+    },
+    {
+      "stage": "review",
+      "action": "stage-advanced",
+      "note": "Rendered MP4, named proof contact sheet, and style-proof frames were inspected as actual pixels; review scaffold is current."
+    },
+    {
+      "stage": "complete",
+      "action": "completed-production",
+      "note": "All required delivery evidence is current and the contract passed."
+    }
+  ]
+}

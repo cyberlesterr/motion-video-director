@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "status": "production",
+  "projectId": "paper-collage-video-promo",
+  "title": "Paper Collage Video Pipeline — 人仍在导演位",
+  "audience": "想把 AI 辅助制作变成可控、可审查视频流程的中文创作者与 Codex 用户",
+  "ratio": "9:16",
+  "durationSeconds": 27,
+  "fps": 30,
+  "sourceRoute": "github",
+  "motionThesis": "Fragments of a handmade paper world lock into an editable production system, while three human approvals remain visibly in charge.",
+  "narration": {
+    "mode": "none"
+  },
+  "generationPolicy": {
+    "textToVideo": "prohibited",
+    "imageToVideo": "prohibited",
+    "firstLastFrameVideo": "prohibited"
+  },
+  "factualClaims": [
+    {
+      "id": "claim-configured-local-pipeline",
+      "claim": "该项目将自己描述为配置驱动的本地纸片分层视频生产系统，支持人工审批、断点恢复、预览渲染和技术验收。",
+      "sourceFactIds": ["github-repository-description"]
+    },
+    {
+      "id": "claim-human-checkpoints",
+      "claim": "README 列出了概念与制作档位、风格与试听、预览与修改三次人工检查点。",
+      "sourceFactIds": ["readme-human-checkpoints"]
+    },
+    {
+      "id": "claim-relationship-proof",
+      "claim": "README 说明 v4 采用递归组合树与组合证明，以避免纸片分层中的关系错误。",
+      "sourceFactIds": ["readme-composition-proof"]
+    }
+  ]
+}

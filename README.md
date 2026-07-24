@@ -1,12 +1,12 @@
 # Motion Video Director
 
-`motion-video-director` is a code-first HyperFrames skill for turning a public website or GitHub project into a source-grounded, editable motion-design video. It can also start from a topic, script, data, and local assets when there is no external source.
+`motion-video-director` is a code-first HyperFrames skill for directing editable motion-design videos from a topic, script, data, local assets, a public website, or a GitHub project. Public sources are one audited input route, not the skill's definition or its ceiling.
 
 It is deliberately not a text-to-video or image-to-video wrapper. It directs an original, deterministic production process: public-source capture, factual dossier, editorial thesis, beat graph, HyperFrames composition, local media, and evidence-based delivery QA.
 
 ## Scope
 
-- 10–60 second 16:9 or 9:16 product explainers, website walkthroughs, and open-source project stories.
+- 10–60 second 16:9 or 9:16 explainers, kinetic-type stories, editorial diagrams, product narratives, website walkthroughs, and open-source project films.
 - `website → video`: capture a public page with HyperFrames, preserve its raw artifacts and hashes, then turn an approved editorial thesis into an original video.
 - `GitHub project → video`: snapshot repository metadata, default-branch commit, README, and optionally the public project page before writing the story.
 - HTML, CSS, GSAP, SVG, Canvas/p5, optional shaders, local images, screen recordings, logos, Lottie, and local audio.
@@ -61,7 +61,7 @@ node skills/motion-video-director/scripts/bootstrap-project.mjs ./my-motion-vide
 
 The fallback does not replace the official HyperFrames scaffold; it gives a deterministic source template that can be linted and rendered once the CLI is available.
 
-For a contract-managed source-first project, initialize the composition and its production artifacts together:
+For a contract-managed project, initialize the composition and its production artifacts together:
 
 ```bash
 node skills/motion-video-director/scripts/init-production.mjs ./my-motion-video
@@ -74,7 +74,7 @@ This creates a short `starter` project. Replace its brief, source dossier,
 design, beat graph, asset manifest, and proof plan before promoting a
 user-facing video to `production`; production projects must be 10–60 seconds.
 
-## Source-first routes
+## Optional public-source routes
 
 Capture only public, credential-free URLs. The command writes raw files below
 the project's `capture/` directory and binds them to

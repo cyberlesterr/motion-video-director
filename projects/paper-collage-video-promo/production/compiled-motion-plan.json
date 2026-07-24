@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "projectId": "paper-collage-video-promo",
+  "durationSeconds": 27,
+  "fps": 30,
+  "motionThesis": "Fragments of a handmade paper world lock into an editable production system, while three human approvals remain visibly in charge.",
+  "source": {
+    "route": "github",
+    "canonicalUrl": "https://github.com/cyberlesterr/paper-collage-video",
+    "captureStatus": "captured",
+    "capturedAt": "2026-07-24T16:28:05.304Z"
+  },
+  "planningFingerprint": "28f2fc2785d737ebf2ee18ce575f6e0cc56c7251286ae84015d05fb93c861322",
+  "beats": [
+    {
+      "id": "beat-01",
+      "startSeconds": 0,
+      "endSeconds": 4.4,
+      "normalizedStart": 0,
+      "normalizedEnd": 0.16296,
+      "narrativeJob": "hook",
+      "mainMovingObject": "torn paper fragments",
+      "stateChangeKind": "accumulate",
+      "stateChange": "Loose visual fragments collect into a single handmade animation problem rather than a finished still image.",
+      "proofTimes": [
+        0.45,
+        2.1,
+        4.1
+      ],
+      "reviewChecks": [
+        "state-change-visible",
+        "moving-object-readable",
+        "text-role-readable",
+        "anti-slide-risk-reviewed"
+      ]
+    },
+    {
+      "id": "beat-02",
+      "startSeconds": 4.4,
+      "endSeconds": 9.6,
+      "normalizedStart": 0.16296,
+      "normalizedEnd": 0.35556,
+      "narrativeJob": "mechanism",
+      "mainMovingObject": "three interlocking production cards",
+      "stateChangeKind": "connect",
+      "stateChange": "Storyboard, assets, and composition panels slide together and lock through physical paper tabs.",
+      "proofTimes": [
+        4.7,
+        6.9,
+        9.3
+      ],
+      "reviewChecks": [
+        "state-change-visible",
+        "moving-object-readable",
+        "text-role-readable",
+        "anti-slide-risk-reviewed"
+      ]
+    },
+    {
+      "id": "beat-03",
+      "startSeconds": 9.6,
+      "endSeconds": 15,
+      "normalizedStart": 0.35556,
+      "normalizedEnd": 0.55556,
+      "narrativeJob": "contrast",
+      "mainMovingObject": "three human approval stamps",
+      "stateChangeKind": "reveal",
+      "stateChange": "Three approval moments arrive in sequence and resolve into a visible human-director mark.",
+      "proofTimes": [
+        9.9,
+        12.3,
+        14.7
+      ],
+      "reviewChecks": [
+        "state-change-visible",
+        "moving-object-readable",
+        "text-role-readable",
+        "anti-slide-risk-reviewed"
+      ]
+    },
+    {
+      "id": "beat-04",
+      "startSeconds": 15,
+      "endSeconds": 21.8,
+      "normalizedStart": 0.55556,
+      "normalizedEnd": 0.80741,
+      "narrativeJob": "proof",
+      "mainMovingObject": "layered paper boat and relationship line",
+      "stateChangeKind": "transform",
+      "stateChange": "A nested production tree transforms into a paper scene whose boat, character, and water keep their intended visual relationship.",
+      "proofTimes": [
+        15.3,
+        18.4,
+        21.5
+      ],
+      "reviewChecks": [
+        "state-change-visible",
+        "moving-object-readable",
+        "text-role-readable",
+        "anti-slide-risk-reviewed"
+      ]
+    },
+    {
+      "id": "beat-05",
+      "startSeconds": 21.8,
+      "endSeconds": 27,
+      "normalizedStart": 0.80741,
+      "normalizedEnd": 1,
+      "narrativeJob": "close",
+      "mainMovingObject": "completed paper production kit and captured repository page",
+      "stateChangeKind": "resolve",
+      "stateChange": "The moving paper system resolves into the project identity and its public GitHub address.",
+      "proofTimes": [
+        22.1,
+        24.4,
+        26.7
+      ],
+      "reviewChecks": [
+        "state-change-visible",
+        "moving-object-readable",
+        "text-role-readable",
+        "anti-slide-risk-reviewed"
+      ]
+    }
+  ],
+  "approvedHolds": [],
+  "styleProofTargets": [
+    {
+      "beatId": "beat-03",
+      "proofTimes": [
+        9.9,
+        12.3,
+        14.7
+      ],
+      "rationale": "Human approval remains the project's core promise, while the layered relationship scene tests whether the paper language actually reads as depth instead of decoration."
+    },
+    {
+      "beatId": "beat-04",
+      "proofTimes": [
+        15.3,
+        18.4,
+        21.5
+      ],
+      "rationale": "Human approval remains the project's core promise, while the layered relationship scene tests whether the paper language actually reads as depth instead of decoration."
+    }
+  ]
+}

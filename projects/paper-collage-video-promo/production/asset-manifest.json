@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "id": "github-readme-snapshot",
+      "kind": "image",
+      "relativePath": "capture/site/screenshots/scroll-017.png",
+      "role": "A small, perspective-framed provenance tile in the final beat; it is not used as the video's visual system.",
+      "source": "licensed-local"
+    },
+    {
+      "id": "zcool-xiaowei-font",
+      "kind": "font",
+      "relativePath": "assets/fonts/zcool-xiaowei.ttf",
+      "role": "Embedded Chinese display face for the film's editorial paper voice; licensed under OFL 1.1 in assets/fonts/OFL-ZCOOL-XiaoWei.txt.",
+      "source": "licensed-local"
+    }
+  ]
+}

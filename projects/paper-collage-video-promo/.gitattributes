@@ -1,0 +1,5 @@
+# Hash-bound raw captures and an upstream OFL license are retained byte-for-byte.
+# Do not normalize their incidental trailing whitespace when checking source diffs.
+assets/fonts/OFL-ZCOOL-XiaoWei.txt -whitespace
+capture/site/assets/svg-125a92bb.svg -whitespace
+capture/site/extracted/page.html -whitespace

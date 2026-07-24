@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "scope": "style",
+  "sourceFingerprint": "d264b0e9c6c13766bd215bcba3dc83123b3674234d79e25b3dccc0adb1d907e7",
+  "planningFingerprint": "28f2fc2785d737ebf2ee18ce575f6e0cc56c7251286ae84015d05fb93c861322",
+  "targets": [
+    {
+      "beatId": "beat-03",
+      "proofTimes": [
+        9.9,
+        12.3,
+        14.7
+      ],
+      "rationale": "Human approval remains the project's core promise, while the layered relationship scene tests whether the paper language actually reads as depth instead of decoration."
+    },
+    {
+      "beatId": "beat-04",
+      "proofTimes": [
+        15.3,
+        18.4,
+        21.5
+      ],
+      "rationale": "Human approval remains the project's core promise, while the layered relationship scene tests whether the paper language actually reads as depth instead of decoration."
+    }
+  ],
+  "evidence": {
+    "framesDirectory": "renders/style-proof-frames",
+    "frames": [
+      {
+        "scope": "evidence",
+        "path": "renders/style-proof-frames/frame-00-at-9.9s.png",
+        "bytes": 50588,
+        "sha256": "57a8f1bf6976124b8fc9278b2bbd783afde3b42729a3c6885f91525b68f49da6"
+      },
+      {
+        "scope": "evidence",
+        "path": "renders/style-proof-frames/frame-01-at-12.3s.png",
+        "bytes": 84140,
+        "sha256": "5aa669be36b360463299a11136ca6b1361dc03d2fc8c5ff6249d4b81f3704da5"
+      },
+      {
+        "scope": "evidence",
+        "path": "renders/style-proof-frames/frame-02-at-14.7s.png",
+        "bytes": 107439,
+        "sha256": "e39ac12e6d8aa7279e8a967007df39c7cf39cd31aa74992606eff7ea3919fc45"
+      },
+      {
+        "scope": "evidence",
+        "path": "renders/style-proof-frames/frame-03-at-15.3s.png",
+        "bytes": 67694,
+        "sha256": "4f8a33522a3dfaf0abfc72d1a7c61ff32c87e6e79b59479f2584eeb2136a6df9"
+      },
+      {
+        "scope": "evidence",
+        "path": "renders/style-proof-frames/frame-04-at-18.4s.png",
+        "bytes": 84925,
+        "sha256": "0c5f6e0c4fa0c9fc73430ad6d4d2f61cd2dbd7f92063d7c769a00700c2e24462"
+      },
+      {
+        "scope": "evidence",
+        "path": "renders/style-proof-frames/frame-05-at-21.5s.png",
+        "bytes": 91357,
+        "sha256": "9fad0440bc56bb5ce3156e14142cbbe2d9b1c5fc77d6b2c6f861cd0edeb1815b"
+      }
+    ]
+  },
+  "reviewRequirements": [
+    "Inspect every target at its named proof times as actual HyperFrames pixels.",
+    "Confirm the target state change is legible without relying on a slide-like card sequence.",
+    "Confirm text hierarchy, intended relationships, and any approved hold are readable."
+  ]
+}

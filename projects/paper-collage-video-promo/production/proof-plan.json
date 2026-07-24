@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "styleProof": {
+    "targetBeatIds": ["beat-03", "beat-04"],
+    "rationale": "Human approval remains the project's core promise, while the layered relationship scene tests whether the paper language actually reads as depth instead of decoration."
+  },
+  "approvedHolds": [],
+  "scenes": [
+    {
+      "beatId": "beat-01",
+      "intent": "Verify that the handmade fragments establish a production problem with continuous physical motion, not a static title card.",
+      "proofTimes": [0.45, 2.1, 4.1]
+    },
+    {
+      "beatId": "beat-02",
+      "intent": "Verify that storyboard, assets, and composition visibly interlock into a working system.",
+      "proofTimes": [4.7, 6.9, 9.3]
+    },
+    {
+      "beatId": "beat-03",
+      "intent": "Verify that the three approval moments remain human-led, legible, and not presentation-card-like.",
+      "proofTimes": [9.9, 12.3, 14.7]
+    },
+    {
+      "beatId": "beat-04",
+      "intent": "Verify the nested paper layers preserve the boat, character, and water relationship while the technical proof language stays concrete.",
+      "proofTimes": [15.3, 18.4, 21.5]
+    },
+    {
+      "beatId": "beat-05",
+      "intent": "Verify the repository identity, captured source snapshot, and close remain readable through the final beat.",
+      "proofTimes": [22.1, 24.4, 26.7]
+    }
+  ]
+}

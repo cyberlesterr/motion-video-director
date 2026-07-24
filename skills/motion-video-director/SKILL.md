@@ -1,6 +1,6 @@
 ---
 name: motion-video-director
-description: Turn a public website or GitHub project into an original, editable, code-first HyperFrames video with a source dossier, factual claim links, editorial script, and deterministic QA. Also use for a 10–60 second motion-first explainer from a topic, script, data, or local assets. Use when the user wants a website/product promo, product analysis, GitHub/open-source project share, kinetic-type sequence, editorial diagram video, or procedural Canvas/p5 animation that must be inspectable and free of text-to-video or image-to-video providers.
+description: Direct an original, editable, code-first HyperFrames video from a topic, script, data, local assets, public website, or GitHub project. Use a source dossier and factual claim links only when the story needs a public source. Use when the user wants a product promo, product analysis, GitHub/open-source project share, kinetic-type sequence, editorial diagram video, or procedural Canvas/p5 animation that must be inspectable and free of text-to-video or image-to-video providers.
 ---
 
 # Motion Video Director

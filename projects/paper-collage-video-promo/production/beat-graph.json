@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "beats": [
+    {
+      "id": "beat-01",
+      "startSeconds": 0,
+      "endSeconds": 4.4,
+      "narrativeJob": "hook",
+      "mainMovingObject": "torn paper fragments",
+      "stateChangeKind": "accumulate",
+      "stateChange": "Loose visual fragments collect into a single handmade animation problem rather than a finished still image.",
+      "cameraOrLayerMotion": "Foreground scraps land at staggered depths while the question is assembled word by word.",
+      "textRole": "creative tension",
+      "assetNeed": "Original HTML/CSS paper shapes only",
+      "pptRisk": "Do not reduce the opening to a static title slate or a generic AI sparkle effect."
+    },
+    {
+      "id": "beat-02",
+      "startSeconds": 4.4,
+      "endSeconds": 9.6,
+      "narrativeJob": "mechanism",
+      "mainMovingObject": "three interlocking production cards",
+      "stateChangeKind": "connect",
+      "stateChange": "Storyboard, assets, and composition panels slide together and lock through physical paper tabs.",
+      "cameraOrLayerMotion": "The assembled workbench pushes upward as the cards find their shared baseline.",
+      "textRole": "system explanation",
+      "assetNeed": "Original HTML/CSS paper tabs, shadows, and type",
+      "pptRisk": "Do not turn the mechanism into a numbered slide deck or a literal UI clone."
+    },
+    {
+      "id": "beat-03",
+      "startSeconds": 9.6,
+      "endSeconds": 15,
+      "narrativeJob": "contrast",
+      "mainMovingObject": "three human approval stamps",
+      "stateChangeKind": "reveal",
+      "stateChange": "Three approval moments arrive in sequence and resolve into a visible human-director mark.",
+      "cameraOrLayerMotion": "Each stamp drops on a different paper plane, then the planes fold into a single decision line.",
+      "textRole": "human agency",
+      "assetNeed": "Original HTML/CSS stamps and cards",
+      "pptRisk": "Do not imply unattended automation or make the approvals look like optional checkboxes."
+    },
+    {
+      "id": "beat-04",
+      "startSeconds": 15,
+      "endSeconds": 21.8,
+      "narrativeJob": "proof",
+      "mainMovingObject": "layered paper boat and relationship line",
+      "stateChangeKind": "transform",
+      "stateChange": "A nested production tree transforms into a paper scene whose boat, character, and water keep their intended visual relationship.",
+      "cameraOrLayerMotion": "The tree contracts to the left while the depth layers separate and settle on the right.",
+      "textRole": "technical credibility",
+      "assetNeed": "Original HTML/CSS layered scene with simple geometric paper silhouettes",
+      "pptRisk": "Do not draw disconnected connector lines or claim machine intelligence without showing a concrete relationship."
+    },
+    {
+      "id": "beat-05",
+      "startSeconds": 21.8,
+      "endSeconds": 27,
+      "narrativeJob": "close",
+      "mainMovingObject": "completed paper production kit and captured repository page",
+      "stateChangeKind": "resolve",
+      "stateChange": "The moving paper system resolves into the project identity and its public GitHub address.",
+      "cameraOrLayerMotion": "A small source snapshot settles beneath the title while the paper frame completes around it.",
+      "textRole": "project invitation",
+      "assetNeed": "One user-authorized captured GitHub screenshot plus original HTML/CSS framing",
+      "pptRisk": "Do not end with a bare URL card; retain motion and a clear creative proposition through the close."
+    }
+  ]
+}
