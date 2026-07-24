@@ -65,7 +65,23 @@ Read the project `DESIGN.md` when it exists. Otherwise, obtain a concise design 
 
 Do not use generic colors or typography as a substitute for a visual identity.
 
-### 4. Write a motion thesis and beat graph
+### 4. Gate composition with a shot map and styleframe review
+
+Read [references/shot-map.md](references/shot-map.md). Before writing a
+composition, map every beat to one named shot family, one dominant subject,
+one action arc, and one exit/transition cause. Make 3–5 designed static
+styleframes at the actual hero states; do not reuse incidental animation
+captures or a generic moodboard.
+
+Record the entries in `production/shot-map.json` and the review package in
+`production/styleframe-review.json`. A `user-review` project may not compile
+from `plan` to `build` until the user has reviewed and approved the package.
+Use `autonomous` only when the user has explicitly delegated that creative
+decision. Treat styleframes as a low-cost creative gate: correct visual
+direction, material language, hierarchy, and source-evidence treatment before
+writing scene code.
+
+### 5. Write a motion thesis and beat graph
 
 Write one sentence:
 
@@ -75,9 +91,9 @@ Create a beat graph using [references/beat-graph.md](references/beat-graph.md). 
 
 If no moving metaphor exists, invent one before building a composition.
 
-### 5. Complete the project contract
+### 6. Complete the project contract
 
-The generated project is a `starter`, not a completed production. Before changing the composition, replace its brief, source dossier, design direction, beat graph, asset manifest, and proof plan with the actual project decisions. Promote it to `production` only when it is a 10–60 second user-facing film.
+The generated project is a `starter`, not a completed production. Before changing the composition, replace its brief, source dossier, design direction, shot map, styleframe review, beat graph, asset manifest, and proof plan with the actual project decisions. Promote it to `production` only when it is a 10–60 second user-facing film.
 
 Keep all video-generation policy fields as `prohibited`. Every factual claim needs an `id`, `claim`, and one or more `sourceFactIds` present in the source dossier. Record only local assets that are actually used.
 
@@ -95,21 +111,21 @@ After a source revision from `review` or `complete`, reopen it explicitly before
 node <skill-root>/scripts/reopen-production.mjs <project-dir> build "<revision reason>"
 ```
 
-### 6. Choose local assets and components
+### 7. Choose local assets and components
 
 Use supplied local assets first. Use generated or imported assets only when explicitly available in the host environment and approved by the user; do not substitute an external video provider.
 
-Select 2–4 motion primitives and reuse them with variation. Derive an original visual system from the story, not from a fixed in-repository style pack or a pixel-level imitation of the source website.
+Select 2–4 motion primitives and reuse them with variation. Derive an original visual system from the story, not from a fixed in-repository style pack or a pixel-level imitation of the source website. Reuse a shot family only when the shot map names a new narrative reason; never repeat it merely because it is easy to implement.
 
 Use Canvas/p5 for procedural interaction, state machines, particles, or hand-drawn systems. Keep its random seed, virtual input path, and audio events deterministic.
 
-### 7. Build with HyperFrames
+### 8. Build with HyperFrames
 
 Use `npx hyperframes init <project-dir> --non-interactive` for a new project whenever the CLI is available. Use `assets/hyperframes-starter/` as the baseline composition and design contract, not as an immutable visual style.
 
 Build the static hero frame before animation. Register a paused GSAP timeline in `window.__timelines`, use `data-*` timing attributes, and let the renderer own playback. Use finite repeats only. Use transitions between multi-scene compositions.
 
-### 8. Validate before rendering
+### 9. Validate before rendering
 
 Read [references/quality-gates.md](references/quality-gates.md). Run:
 
@@ -146,7 +162,7 @@ node <skill-root>/scripts/style-proof.mjs <project-dir>
 node <skill-root>/scripts/review-scaffold.mjs <project-dir>
 ```
 
-### 9. Deliver evidence
+### 10. Deliver evidence
 
 Render through the wrapper so the output and media probe bind to the pre-render source fingerprint:
 
@@ -163,6 +179,7 @@ Deliver the source project, final MP4, contact sheet, selected proof times, styl
 ## Bundled resources
 
 - [references/beat-graph.md](references/beat-graph.md): required scene and beat contract.
+- [references/shot-map.md](references/shot-map.md): required pre-composition shot grammar and styleframe gate.
 - [references/source-dossier.md](references/source-dossier.md): public-source capture, fact, rights, and creative-gate contract.
 - [references/project-contract.md](references/project-contract.md): project planning, asset, proof, and delivery-report contract.
 - [references/quality-gates.md](references/quality-gates.md): source, visual, and delivery gates.

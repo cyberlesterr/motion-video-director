@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "decisionMode": "user-review",
+  "status": "pending",
+  "styleframes": [
+    {
+      "id": "sf-01",
+      "relativePath": "production/styleframes/sf-01.svg",
+      "shotIds": ["shot-01"],
+      "heroMoment": "State the one frame that the later camera movement must earn.",
+      "reviewChecks": [
+        "dominant-subject",
+        "material-logic",
+        "type-and-contrast",
+        "source-evidence",
+        "anti-slide-risk"
+      ]
+    },
+    {
+      "id": "sf-02",
+      "relativePath": "production/styleframes/sf-02.svg",
+      "shotIds": ["shot-02"],
+      "heroMoment": "The system is visibly unified at the exact moment before it settles.",
+      "reviewChecks": [
+        "dominant-subject",
+        "movement-cause",
+        "type-and-contrast",
+        "anti-slide-risk"
+      ]
+    },
+    {
+      "id": "sf-03",
+      "relativePath": "production/styleframes/sf-03.svg",
+      "shotIds": ["shot-03"],
+      "heroMoment": "The final identity is the only reading target and has enough rest to be remembered.",
+      "reviewChecks": [
+        "dominant-subject",
+        "identity-hold",
+        "type-and-contrast",
+        "anti-slide-risk"
+      ]
+    }
+  ],
+  "notes": [
+    "Pending creative review. Do not compile the motion plan until an authorized reviewer records approval."
+  ],
+  "approval": null
+}

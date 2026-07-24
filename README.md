@@ -21,7 +21,7 @@ It is deliberately not a text-to-video or image-to-video wrapper. It directs an 
 
 ## Core contract
 
-Every production starts with a visual metaphor and a beat graph. A beat has a narrative job, a main moving object, and a visible state change; simple entrances or exits alone do not count as a state change. At least 80% of beats must visibly transform, travel, connect, split, accumulate, reveal, or otherwise change state.
+Every production starts with a visual metaphor, a shot map, and a beat graph. The shot map gives every beat one dominant subject, one camera/material action, a settle window, a transition cause, and a designed hero-frame reference. A version-2 production cannot compile into build work until its 3–5 static styleframes have passed the recorded creative gate. A beat has a narrative job, a main moving object, and a visible state change; simple entrances or exits alone do not count as a state change. At least 80% of beats must visibly transform, travel, connect, split, accumulate, reveal, or otherwise change state.
 
 For a website or GitHub source, every production also starts with `production/source-dossier.json`: canonical URL, capture timestamp, raw artifact hashes, fact locators, and intended use (`commentary` or `authorized-promotion`). Marketing copy stays labeled as source-claimed until independently verified. A third-party product is not rendered until its source thesis, claims, script, and storyboard have explicit human approval.
 

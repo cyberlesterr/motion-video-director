@@ -15,6 +15,8 @@ HyperFrames CLI or its renderer checks.
   production/
     brief.json
     source-dossier.json
+    shot-map.json
+    styleframe-review.json
     beat-graph.json
     asset-manifest.json
     proof-plan.json
@@ -45,7 +47,8 @@ not a license or a claim that the captured source is independently true.
   required delivery gate before being called complete.
 
 Promote a project to `production` only after replacing the starter brief,
-design, beat graph, and source composition with the actual work.
+design, shot map, styleframe review, beat graph, and source composition with
+the actual work.
 
 ## `control.json`
 
@@ -61,8 +64,9 @@ node <skill-root>/scripts/set-production-stage.mjs <project-dir> <next-stage> "<
 ```
 
 `compile-motion-plan.mjs` automatically advances `plan` to `build` after it
-writes a valid compiled plan. `complete` is valid only when the delivery report
-is fully passed.
+writes a valid compiled plan. For the current contract version, the
+styleframe-review creative gate must be approved before compilation. `complete`
+is valid only when the delivery report is fully passed.
 
 If a composition, planning input, local asset, dependency lock, or Skill runtime
 changes after review, run `reopen-production.mjs <project-dir> build "<reason>"`
@@ -75,7 +79,8 @@ Keep the production route in one small, factual file.
 
 Required fields:
 
-- `schemaVersion`: `1`.
+- `schemaVersion`: `2` for new projects. Version `1` is accepted only for
+  existing projects created before the shot-map gate.
 - `status`: `starter` or `production`.
 - `projectId`, `title`, `audience`, and `motionThesis`.
 - `ratio`: `16:9` or `9:16`.
@@ -90,6 +95,39 @@ Required fields:
   from `source-dossier.json` before animating the material.
 
 Do not put provider credentials, remote media URLs, or unverified claims here.
+
+## `shot-map.json`
+
+Version-2 projects use a shot map before any composition code. It has one
+entry for every beat, maps that beat to a unique `id` and an original motion
+family, and makes the visual grammar executable rather than implicit.
+
+Every entry must name a `beatId`, `family`, `narrativePurpose`,
+`dominantSubject`, `startState`, `mainAction`, `endState`, `cameraPlan`,
+`materialRule`, `transitionOut`, `styleframeId`, and `antiPattern`. It also
+declares `durationSeconds`, `actionSeconds`, and `settleSeconds`; action plus
+settle must fit within the shot duration. Keep a meaningful settle of at least
+0.5 seconds. `audioCues` and `assetDependencies` are arrays, even if empty.
+
+Read [shot-map.md](shot-map.md) before choosing a family. The map is a
+creative contract, not an implementation wish list.
+
+## `styleframe-review.json`
+
+Version-2 projects require 3–5 static hero frames before implementation. Each
+styleframe points to a local PNG (or a starter SVG placeholder), names one or more mapped shots, and records
+the hero moment and review checks. `decisionMode` is `user-review` or
+`autonomous`:
+
+- In `user-review`, only the user may turn `status` from `pending` to
+  `approved` and add a concise approval record.
+- In `autonomous`, use `approved` only when the user explicitly delegated the
+  creative decision; record that delegation in the approval note.
+
+The validator accepts a coherent `pending` package while the control stage is
+`plan`, so it can be shared for review. It refuses to compile that package into
+build work until approved. Never pass incidental video frames off as
+styleframes.
 
 ## `source-dossier.json`
 

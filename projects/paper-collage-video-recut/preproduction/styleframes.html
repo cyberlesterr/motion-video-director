@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Paper Collage Video — Styleframes</title>
+    <style>
+      :root {
+        --stock: #f4eddd;
+        --ink: #142b47;
+        --vermilion: #d7533c;
+        --saffron: #eab64a;
+        --leaf: #6f8f79;
+        --pulp: #cfc1a5;
+        --night: #0b1c30;
+        --serif: "Songti SC", "STSong", "Songti TC", serif;
+        --mono: "SF Mono", "Menlo", "PingFang SC", monospace;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; background: #d7d0c2; }
+      body { display: flex; flex-direction: column; align-items: center; gap: 42px; padding: 42px; }
+
+      .frame {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        isolation: isolate;
+        background-color: var(--stock);
+        color: var(--ink);
+        box-shadow: 0 34px 70px rgba(20, 43, 71, .25);
+      }
+
+      .frame::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        opacity: .42;
+        background-image:
+          radial-gradient(circle at 19% 23%, rgba(20,43,71,.12) 0 1px, transparent 1.5px),
+          radial-gradient(circle at 72% 64%, rgba(20,43,71,.08) 0 1px, transparent 1.8px),
+          radial-gradient(circle at 42% 88%, rgba(20,43,71,.07) 0 .8px, transparent 1.4px);
+        background-size: 31px 37px, 41px 43px, 23px 29px;
+      }
+
+      .frame::after {
+        content: "";
+        position: absolute;
+        inset: 28px;
+        border: 1px solid rgba(20,43,71,.16);
+        pointer-events: none;
+        z-index: 20;
+      }
+
+      .cap {
+        position: absolute;
+        z-index: 16;
+        font: 600 19px/1 var(--mono);
+        letter-spacing: .13em;
+        text-transform: uppercase;
+      }
+      .cap.dark { color: var(--ink); }
+      .cap.light { color: var(--stock); }
+      .cap .num { color: var(--vermilion); margin-right: 10px; }
+
+      .display {
+        margin: 0;
+        font: 700 108px/.94 var(--serif);
+        letter-spacing: -.07em;
+      }
+      .display em { color: var(--vermilion); font-style: normal; }
+      .micro {
+        margin: 0;
+        font: 500 22px/1.55 var(--mono);
+        letter-spacing: .04em;
+      }
+      .rule { height: 3px; width: 100%; background: var(--ink); }
+      .torn { clip-path: polygon(0 7%, 5% 0, 17% 5%, 31% 1%, 43% 6%, 57% 0, 69% 4%, 82% 1%, 100% 6%, 96% 95%, 83% 100%, 67% 96%, 54% 100%, 39% 96%, 21% 100%, 0 93%); }
+      .paper-shadow { filter: drop-shadow(20px 24px 0 rgba(20,43,71,.86)); }
+      .thin-shadow { filter: drop-shadow(10px 13px 0 rgba(20,43,71,.44)); }
+      .cut-label { font: 700 20px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+
+      /* 01 — gathering */
+      .sf-problem .cap { left: 77px; top: 80px; }
+      .sf-problem .top-rule { position: absolute; left: 77px; top: 127px; width: 414px; height: 3px; background: var(--ink); }
+      .sf-problem .headline { position: absolute; top: 204px; left: 77px; width: 880px; z-index: 8; }
+      .sf-problem .headline .display { font-size: 125px; max-width: 850px; }
+      .sf-problem .headline .micro { margin-top: 33px; max-width: 535px; }
+      .sf-problem .flat-caption { position: absolute; top: 664px; left: 79px; padding: 16px 20px 15px; color: var(--stock); background: var(--ink); transform: rotate(-2deg); z-index: 9; }
+      .sf-problem .horizon { position: absolute; left: 66px; right: 60px; top: 1130px; height: 34px; background: var(--saffron); transform: rotate(-3deg); z-index: 4; }
+      .sf-problem .horizon::after { content: "timing lives here"; position: absolute; right: 29px; top: 8px; color: var(--ink); font: 600 16px/1 var(--mono); letter-spacing: .1em; }
+      .sf-problem .mountain { position: absolute; left: -20px; top: 916px; width: 500px; height: 455px; z-index: 1; background: var(--leaf); clip-path: polygon(0 100%, 0 67%, 24% 48%, 38% 18%, 50% 43%, 70% 0, 100% 57%, 100% 100%); transform: rotate(-6deg); }
+      .sf-problem .wave { position: absolute; right: -30px; top: 1115px; width: 804px; height: 420px; z-index: 2; background: var(--ink); clip-path: polygon(0 27%, 14% 20%, 30% 26%, 43% 17%, 60% 23%, 74% 15%, 100% 22%, 100% 100%, 0 100%); transform: rotate(2deg); }
+      .sf-problem .boat-card { position: absolute; z-index: 6; width: 710px; height: 384px; left: 202px; top: 850px; padding: 41px 46px; background: var(--stock); transform: rotate(7deg); }
+      .sf-problem .boat-card .label { color: var(--vermilion); font: 700 20px/1 var(--mono); letter-spacing: .14em; }
+      .sf-problem .boat-card .tiny-tree { position: absolute; right: 46px; top: 53px; display: grid; gap: 8px; width: 160px; }
+      .sf-problem .tiny-tree span { height: 9px; border-radius: 20px; background: var(--ink); }
+      .sf-problem .tiny-tree span:nth-child(2) { margin-left: 28px; width: 80%; background: var(--leaf); }
+      .sf-problem .tiny-tree span:nth-child(3) { margin-left: 54px; width: 58%; background: var(--saffron); }
+      .sf-problem .boat { position: absolute; left: 88px; bottom: 47px; width: 410px; height: 148px; background: var(--vermilion); clip-path: polygon(0 2%, 100% 17%, 79% 100%, 17% 94%); }
+      .sf-problem .boat::after { content: ""; position: absolute; left: 99px; top: -117px; width: 116px; height: 139px; background: var(--saffron); clip-path: polygon(50% 0, 100% 100%, 0 100%); transform: rotate(-4deg); }
+      .sf-problem .character { position: absolute; left: 254px; bottom: 171px; width: 41px; height: 100px; border-radius: 50% 50% 18px 18px; background: var(--ink); z-index: 3; }
+      .sf-problem .character::before { content: ""; position: absolute; top: -44px; left: 4px; width: 35px; height: 42px; border-radius: 50%; background: var(--ink); }
+      .sf-problem .scrap-a { position: absolute; z-index: 10; left: 64px; top: 1307px; width: 268px; height: 200px; background: var(--vermilion); transform: rotate(-13deg); }
+      .sf-problem .scrap-b { position: absolute; z-index: 3; right: 71px; top: 1370px; width: 312px; height: 224px; background: var(--saffron); transform: rotate(11deg); }
+      .sf-problem .scrap-c { position: absolute; z-index: 9; right: 91px; top: 721px; width: 146px; height: 124px; background: var(--leaf); transform: rotate(23deg); }
+      .sf-problem .footer-note { position: absolute; left: 77px; bottom: 104px; width: 700px; font: 500 25px/1.45 var(--mono); letter-spacing: .04em; z-index: 15; }
+
+      /* 02 — standing world */
+      .sf-world { background: var(--ink); color: var(--stock); }
+      .sf-world::before { opacity: .15; background-image: radial-gradient(circle at 21% 14%, rgba(244,237,221,.7) 0 1px, transparent 1.5px), radial-gradient(circle at 80% 78%, rgba(244,237,221,.5) 0 1px, transparent 1.7px); background-size: 29px 31px, 43px 47px; }
+      .sf-world::after { border-color: rgba(244,237,221,.24); }
+      .sf-world .cap { left: 77px; top: 80px; }
+      .sf-world .headline { position: absolute; top: 205px; left: 77px; width: 790px; z-index: 10; }
+      .sf-world .headline .display { font-size: 118px; color: var(--stock); }
+      .sf-world .headline .micro { margin-top: 28px; color: rgba(244,237,221,.82); max-width: 560px; }
+      .sf-world .world-table { position: absolute; left: 76px; right: 76px; top: 804px; bottom: 166px; z-index: 3; perspective: 1400px; }
+      .sf-world .world-base { position: absolute; inset: 126px 0 0; background: var(--stock); transform: rotateX(59deg) rotateZ(-7deg); transform-origin: 50% 84%; box-shadow: 0 54px 0 rgba(0,0,0,.23); }
+      .sf-world .world-base::before { content: "story / assets / composition"; position: absolute; left: 64px; top: 48px; color: var(--ink); font: 700 21px/1 var(--mono); letter-spacing: .13em; }
+      .sf-world .hinge { position: absolute; left: 72px; right: 46px; top: 510px; height: 40px; background: var(--saffron); transform: rotateZ(-7deg); z-index: 7; }
+      .sf-world .standing-mountain { position: absolute; left: 113px; top: 176px; width: 530px; height: 505px; background: var(--leaf); transform: rotateX(5deg) rotateZ(-7deg); transform-origin: 50% 100%; clip-path: polygon(0 100%, 0 55%, 22% 28%, 38% 58%, 58% 0, 100% 65%, 100% 100%); z-index: 5; filter: drop-shadow(25px 33px 0 rgba(0,0,0,.26)); }
+      .sf-world .standing-water { position: absolute; left: 270px; top: 495px; width: 630px; height: 370px; background: var(--ink); border: 10px solid var(--stock); transform: rotateX(12deg) rotateZ(2deg); clip-path: polygon(0 22%, 14% 12%, 31% 20%, 48% 7%, 64% 18%, 81% 8%, 100% 16%, 100% 100%, 0 100%); z-index: 6; filter: drop-shadow(20px 28px 0 rgba(0,0,0,.34)); }
+      .sf-world .standing-boat { position: absolute; left: 452px; top: 559px; width: 304px; height: 104px; background: var(--vermilion); transform: rotateZ(9deg); clip-path: polygon(0 0, 100% 14%, 80% 100%, 16% 92%); z-index: 8; }
+      .sf-world .standing-boat::before { content: ""; position: absolute; left: 80px; top: -94px; width: 92px; height: 112px; background: var(--saffron); clip-path: polygon(48% 0, 100% 100%, 0 100%); }
+      .sf-world .depth-note { position: absolute; right: 80px; bottom: 74px; padding: 15px 17px; color: var(--ink); background: var(--stock); font: 700 18px/1 var(--mono); letter-spacing: .1em; transform: rotate(4deg); z-index: 10; }
+
+      /* 03 — decision press */
+      .sf-decision .cap { left: 77px; top: 80px; }
+      .sf-decision .headline { position: absolute; top: 215px; left: 77px; width: 925px; z-index: 12; }
+      .sf-decision .headline .display { font-size: 129px; }
+      .sf-decision .headline .micro { margin-top: 30px; width: 590px; }
+      .sf-decision .thread { position: absolute; left: 0; top: 1060px; width: 1080px; height: 9px; background: var(--vermilion); transform: rotate(-4deg); z-index: 3; }
+      .sf-decision .thread::before, .sf-decision .thread::after { content: ""; position: absolute; top: -18px; width: 42px; height: 42px; border: 7px solid var(--vermilion); border-radius: 50%; background: var(--stock); }
+      .sf-decision .thread::before { left: 122px; } .sf-decision .thread::after { right: 92px; }
+      .sf-decision .slip { position: absolute; width: 285px; height: 400px; padding: 28px 28px; color: var(--ink); background: var(--stock); border: 5px solid var(--ink); z-index: 4; }
+      .sf-decision .slip .slip-index { color: var(--vermilion); font: 800 19px/1 var(--mono); letter-spacing: .14em; }
+      .sf-decision .slip .slip-word { margin-top: 143px; font: 700 54px/.97 var(--serif); letter-spacing: -.06em; }
+      .sf-decision .slip-a { left: 103px; top: 891px; transform: rotate(-15deg); }
+      .sf-decision .slip-b { left: 415px; top: 870px; transform: rotate(4deg); }
+      .sf-decision .slip-c { right: 93px; top: 922px; transform: rotate(17deg); }
+      .sf-decision .stamp-shadow { position: absolute; left: 250px; top: 1175px; width: 580px; height: 116px; border-radius: 50%; background: rgba(20,43,71,.28); filter: blur(18px); z-index: 5; }
+      .sf-decision .stamp { position: absolute; left: 252px; top: 995px; width: 580px; height: 580px; border: 21px solid var(--vermilion); border-radius: 50%; color: var(--vermilion); background: var(--stock); transform: rotate(-9deg); z-index: 9; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+      .sf-decision .stamp::before { content: ""; position: absolute; inset: 22px; border: 4px dashed var(--vermilion); border-radius: 50%; opacity: .86; }
+      .sf-decision .stamp .stamp-small { font: 800 20px/1 var(--mono); letter-spacing: .2em; }
+      .sf-decision .stamp .stamp-big { margin-top: 16px; font: 800 107px/.88 var(--serif); letter-spacing: -.09em; }
+      .sf-decision .stamp .stamp-note { margin-top: 24px; font: 700 18px/1 var(--mono); letter-spacing: .12em; }
+      .sf-decision .impact-copy { position: absolute; left: 77px; bottom: 110px; width: 820px; padding-top: 23px; border-top: 3px solid var(--ink); font: 600 24px/1.4 var(--mono); letter-spacing: .04em; z-index: 13; }
+
+      /* 04 — proof */
+      .sf-proof { background: var(--night); color: var(--stock); }
+      .sf-proof::before { opacity: .1; background-image: radial-gradient(circle at 19% 24%, rgba(244,237,221,.78) 0 1px, transparent 1.5px), radial-gradient(circle at 72% 64%, rgba(244,237,221,.5) 0 1px, transparent 1.7px); background-size: 32px 36px, 50px 53px; }
+      .sf-proof::after { border-color: rgba(244,237,221,.22); }
+      .sf-proof .cap { left: 77px; top: 80px; }
+      .sf-proof .headline { position: absolute; top: 198px; left: 77px; z-index: 11; }
+      .sf-proof .headline .display { font-size: 121px; color: var(--stock); }
+      .sf-proof .headline .micro { margin-top: 29px; width: 600px; color: rgba(244,237,221,.8); }
+      .sf-proof .proof-window { position: absolute; left: 77px; top: 660px; width: 926px; height: 912px; border: 9px solid var(--stock); background: var(--stock); color: var(--ink); overflow: hidden; z-index: 3; box-shadow: 25px 31px 0 rgba(215,83,60,.82); }
+      .sf-proof .proof-window::after { content: "RELATIONSHIP PROOF / V4"; position: absolute; left: 34px; bottom: 28px; z-index: 15; color: var(--stock); background: var(--ink); padding: 13px 15px; font: 700 17px/1 var(--mono); letter-spacing: .12em; }
+      .sf-proof .depth-sky { position: absolute; inset: 0 0 410px; background: var(--saffron); }
+      .sf-proof .depth-mountain { position: absolute; left: -50px; top: 255px; width: 690px; height: 430px; background: var(--leaf); clip-path: polygon(0 100%, 0 60%, 20% 42%, 34% 0, 57% 58%, 79% 16%, 100% 100%); }
+      .sf-proof .depth-water { position: absolute; left: 0; right: 0; bottom: 0; height: 460px; background: var(--ink); clip-path: polygon(0 11%, 16% 5%, 30% 15%, 47% 7%, 66% 13%, 85% 5%, 100% 12%, 100% 100%, 0 100%); }
+      .sf-proof .proof-boat { position: absolute; left: 353px; top: 546px; width: 398px; height: 155px; background: var(--vermilion); clip-path: polygon(0 0, 100% 15%, 78% 100%, 18% 92%); z-index: 6; transform: rotate(3deg); }
+      .sf-proof .proof-boat::before { content: ""; position: absolute; left: 123px; top: -150px; width: 135px; height: 172px; background: var(--stock); clip-path: polygon(49% 0, 100% 100%, 0 100%); }
+      .sf-proof .proof-character { position: absolute; left: 520px; top: 430px; width: 50px; height: 123px; background: var(--ink); border-radius: 28px 28px 12px 12px; z-index: 9; }
+      .sf-proof .proof-character::before { content: ""; position: absolute; left: 4px; top: -54px; width: 42px; height: 50px; background: var(--ink); border-radius: 50%; }
+      .sf-proof .proof-line { position: absolute; left: 550px; top: 397px; width: 1px; height: 247px; border-left: 7px solid var(--vermilion); z-index: 12; transform: rotate(26deg); transform-origin: top; }
+      .sf-proof .proof-line::before, .sf-proof .proof-line::after { content: ""; position: absolute; width: 21px; height: 21px; border-radius: 50%; background: var(--vermilion); }
+      .sf-proof .proof-line::before { left: -14px; top: -9px; } .sf-proof .proof-line::after { left: -14px; bottom: -9px; }
+      .sf-proof .boat-anchor { position: absolute; left: 641px; top: 602px; width: 35px; height: 35px; border-radius: 50%; background: var(--vermilion); border: 5px solid var(--stock); z-index: 13; }
+      .sf-proof .tag { position: absolute; z-index: 14; padding: 14px 16px; color: var(--stock); background: var(--ink); font: 700 18px/1 var(--mono); letter-spacing: .1em; }
+      .sf-proof .tag-character { left: 662px; top: 360px; } .sf-proof .tag-boat { left: 718px; top: 674px; }
+      .sf-proof .layer-list { position: absolute; top: 1640px; left: 77px; right: 77px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; z-index: 12; }
+      .sf-proof .layer-list span { padding-top: 17px; border-top: 2px solid rgba(244,237,221,.7); font: 700 16px/1.25 var(--mono); letter-spacing: .09em; }
+
+      /* 05 — artifact */
+      .sf-artifact .cap { left: 77px; top: 80px; }
+      .sf-artifact .headline { position: absolute; top: 186px; left: 77px; width: 892px; z-index: 14; }
+      .sf-artifact .headline .display { font-size: 115px; }
+      .sf-artifact .headline .micro { margin-top: 26px; width: 600px; }
+      .sf-artifact .folio-shadow { position: absolute; left: 113px; top: 834px; width: 854px; height: 780px; background: rgba(20,43,71,.22); transform: rotate(-5deg); filter: blur(17px); z-index: 1; }
+      .sf-artifact .folio-cover { position: absolute; left: 104px; top: 718px; width: 844px; height: 806px; background: var(--ink); transform: rotate(-5deg); z-index: 3; }
+      .sf-artifact .folio-cover::before { content: "OPEN SOURCE / EDITABLE"; position: absolute; left: 44px; top: 37px; color: var(--stock); font: 700 17px/1 var(--mono); letter-spacing: .14em; }
+      .sf-artifact .folio-cover::after { content: ""; position: absolute; left: 36px; top: 92px; width: 9px; height: 638px; background: var(--vermilion); }
+      .sf-artifact .folio-page { position: absolute; left: 165px; top: 794px; width: 740px; height: 620px; background: var(--stock); transform: rotate(2deg); z-index: 6; padding: 35px; overflow: hidden; }
+      .sf-artifact .repo-shot { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; filter: saturate(.84) contrast(1.05); }
+      .sf-artifact .folio-page::after { content: "captured project artifact"; position: absolute; right: 29px; bottom: 26px; padding: 12px 13px; color: var(--stock); background: var(--vermilion); font: 700 15px/1 var(--mono); letter-spacing: .1em; }
+      .sf-artifact .spine { position: absolute; left: 80px; bottom: 160px; width: 920px; height: 128px; padding: 36px 42px; color: var(--stock); background: var(--ink); transform: rotate(-2deg); z-index: 11; display: flex; align-items: center; justify-content: space-between; }
+      .sf-artifact .spine .name { font: 700 38px/1 var(--serif); letter-spacing: -.04em; }
+      .sf-artifact .spine .url { font: 600 17px/1 var(--mono); letter-spacing: .02em; }
+      .sf-artifact .seal { position: absolute; right: 88px; top: 640px; width: 186px; height: 186px; border-radius: 50%; color: var(--vermilion); background: var(--stock); border: 10px solid var(--vermilion); transform: rotate(13deg); z-index: 12; display: grid; place-items: center; text-align: center; font: 800 21px/1.04 var(--mono); letter-spacing: .09em; }
+      .sf-artifact .seal::before { content: ""; position: absolute; inset: 15px; border: 2px dashed var(--vermilion); border-radius: 50%; }
+      .sf-artifact .footer-note { position: absolute; left: 77px; bottom: 72px; width: 750px; font: 600 20px/1.35 var(--mono); letter-spacing: .04em; z-index: 15; }
+    </style>
+  </head>
+  <body>
+    <article class="frame sf-problem" id="sf-01" aria-label="Styleframe 01, one unfinished scene gathers into the hero object">
+      <div class="cap dark"><span class="num">01</span> the problem</div>
+      <div class="top-rule"></div>
+      <section class="headline">
+        <h1 class="display">一张图，<br>不是一条<em>片</em>。</h1>
+        <p class="micro">A moving scene needs story, hierarchy and a place for every piece to land.</p>
+      </section>
+      <div class="flat-caption cut-label">still / not yet a world</div>
+      <div class="mountain"></div>
+      <div class="wave"></div>
+      <div class="horizon"></div>
+      <div class="boat-card torn paper-shadow">
+        <div class="label">UNFINISHED SCENE</div>
+        <div class="tiny-tree"><span></span><span></span><span></span></div>
+        <div class="boat"></div><div class="character"></div>
+      </div>
+      <div class="scrap-a torn thin-shadow"></div><div class="scrap-b torn thin-shadow"></div><div class="scrap-c torn"></div>
+      <p class="footer-note">先让一个场景成为主角。<br>再让它拥有时间、层次和去处。</p>
+    </article>
+
+    <article class="frame sf-world" id="sf-02" aria-label="Styleframe 02, a paper world stands from one construction seam">
+      <div class="cap light"><span class="num">02</span> build a world</div>
+      <section class="headline"><h1 class="display">让它，<br><em>站</em>起来。</h1><p class="micro">Story, assets and composition share one fold — then become a playable stage.</p></section>
+      <div class="world-table"><div class="world-base"></div><div class="hinge"></div><div class="standing-mountain"></div><div class="standing-water"></div><div class="standing-boat"></div></div>
+      <div class="depth-note">ONE FOLD / REAL DEPTH</div>
+    </article>
+
+    <article class="frame sf-decision" id="sf-03" aria-label="Styleframe 03, a human director stamp fixes the production state">
+      <div class="cap dark"><span class="num">03</span> human direction</div>
+      <section class="headline"><h1 class="display">人，不在<br><em>流程外</em>。</h1><p class="micro">A direction is not a switch. It changes the state, weight and order of the work.</p></section>
+      <div class="thread"></div>
+      <div class="slip slip-a torn thin-shadow"><div class="slip-index">01</div><div class="slip-word">概念<br>档位</div></div>
+      <div class="slip slip-b torn thin-shadow"><div class="slip-index">02</div><div class="slip-word">风格<br>试听</div></div>
+      <div class="slip slip-c torn thin-shadow"><div class="slip-index">03</div><div class="slip-word">预览<br>修改</div></div>
+      <div class="stamp-shadow"></div>
+      <div class="stamp"><span class="stamp-small">HUMAN DECIDES</span><span class="stamp-big">导演位</span><span class="stamp-note">PRESS / LOCK / CONTINUE</span></div>
+      <p class="impact-copy">一个按下去的决定，应该让画面里的东西真正归位。</p>
+    </article>
+
+    <article class="frame sf-proof" id="sf-04" aria-label="Styleframe 04, character and boat relationship visibly proven">
+      <div class="cap light"><span class="num">04</span> make it provable</div>
+      <section class="headline"><h1 class="display">每一层，<br>都要<em>证明</em>。</h1><p class="micro">The proof is not a caption. It begins on the character and ends on the boat.</p></section>
+      <div class="proof-window">
+        <div class="depth-sky"></div><div class="depth-mountain"></div><div class="depth-water"></div><div class="proof-boat"></div><div class="proof-character"></div><div class="proof-line"></div><div class="boat-anchor"></div>
+        <div class="tag tag-character">CHARACTER</div><div class="tag tag-boat">BOAT / PARENT</div>
+      </div>
+      <div class="layer-list"><span>WATER / BACK</span><span>BOAT / MID</span><span>CHARACTER / ON</span></div>
+    </article>
+
+    <article class="frame sf-artifact" id="sf-05" aria-label="Styleframe 05, real project page opens as a paper folio">
+      <div class="cap dark"><span class="num">05</span> continue the work</div>
+      <section class="headline"><h1 class="display">不是结尾。<br>是一件<em>作品</em>。</h1><p class="micro">An inspectable project artifact, opened as a folio that can be changed and continued.</p></section>
+      <div class="folio-shadow"></div><div class="folio-cover"></div>
+      <div class="folio-page thin-shadow"><img class="repo-shot" src="../../paper-collage-video-promo/capture/site/screenshots/scroll-017.png" alt="Captured paper-collage-video project page" /></div>
+      <div class="seal">OPEN<br>AND<br>EDIT</div>
+      <div class="spine"><span class="name">paper-collage-video</span><span class="url">github.com/cyberlesterr/paper-collage-video</span></div>
+      <p class="footer-note">真实项目作为证据出现；纸张、装帧、文字和镜头语言仍然是原创的。</p>
+    </article>
+  </body>
+</html>

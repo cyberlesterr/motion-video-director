@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <rect width="1600" height="900" fill="#f4efe4"/>
+  <circle cx="800" cy="450" r="184" fill="#1c2d4a"/>
+  <circle cx="800" cy="450" r="126" fill="#f0b64a"/>
+  <path d="M475 602 765 410l355 144-310 162z" fill="#d75945"/>
+  <text x="800" y="168" text-anchor="middle" fill="#1c2d4a" font-family="Georgia,serif" font-size="64">ONE SUBJECT. ONE ARC.</text>
+</svg>

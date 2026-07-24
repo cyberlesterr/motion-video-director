@@ -52,6 +52,7 @@ await copyContents(contract, path.join(target, 'production'));
 await mkdir(path.join(target, 'assets'), {recursive: true});
 
 console.log(`Initialized motion-video-director starter at ${target}`);
-console.log('Update DESIGN.md and production/{brief,source-dossier,beat-graph,asset-manifest,proof-plan}.json before editing the composition.');
+console.log('Update DESIGN.md and production/{brief,source-dossier,shot-map,styleframe-review,beat-graph,asset-manifest,proof-plan}.json before editing the composition.');
+console.log('Version-2 projects must approve 3–5 designed styleframes before compile-motion-plan.mjs can enter build work.');
 console.log('The generated project is status=starter, not a completed production.');
 console.log('Run verify-contract.mjs now, then run HyperFrames lint, validate, inspect, and render when the CLI is available.');

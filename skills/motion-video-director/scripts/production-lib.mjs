@@ -96,17 +96,26 @@ export async function loadPlanning(projectDir) {
     readJsonFile(path.join(productionDir, 'beat-graph.json'), 'production/beat-graph.json'),
     readJsonFile(path.join(productionDir, 'proof-plan.json'), 'production/proof-plan.json'),
   ]);
-  return {project, brief, sourceDossier, beatGraph, proofPlan};
+  const shotPlanning = brief.schemaVersion === 2
+    ? await Promise.all([
+        readJsonFile(path.join(productionDir, 'shot-map.json'), 'production/shot-map.json'),
+        readJsonFile(path.join(productionDir, 'styleframe-review.json'), 'production/styleframe-review.json'),
+      ])
+    : [null, null];
+  const [shotMap, styleframeReview] = shotPlanning;
+  return {project, brief, sourceDossier, shotMap, styleframeReview, beatGraph, proofPlan};
 }
 
-export function compileMotionPlan({project, brief, sourceDossier, beatGraph, proofPlan}) {
+export function compileMotionPlan({project, brief, sourceDossier, shotMap, styleframeReview, beatGraph, proofPlan}) {
   const proofByBeat = new Map(proofPlan.scenes.map((scene) => [scene.beatId, scene]));
+  const shotByBeat = new Map((shotMap?.shots ?? []).map((shot) => [shot.beatId, shot]));
   const styleTargetIds = proofPlan.styleProof?.targetBeatIds ?? [];
   const targetSet = new Set(styleTargetIds);
   const holds = proofPlan.approvedHolds ?? [];
 
   const beats = beatGraph.beats.map((beat) => {
     const proof = proofByBeat.get(beat.id);
+    const shot = shotByBeat.get(beat.id);
     return {
       id: beat.id,
       startSeconds: beat.startSeconds,
@@ -117,12 +126,23 @@ export function compileMotionPlan({project, brief, sourceDossier, beatGraph, pro
       mainMovingObject: beat.mainMovingObject,
       stateChangeKind: beat.stateChangeKind,
       stateChange: beat.stateChange,
+      shot: shot ? {
+        id: shot.id,
+        family: shot.family,
+        dominantSubject: shot.dominantSubject,
+        cameraPlan: shot.cameraPlan,
+        transitionOut: shot.transitionOut,
+        styleframeId: shot.styleframeId,
+        actionSeconds: shot.actionSeconds,
+        settleSeconds: shot.settleSeconds,
+      } : null,
       proofTimes: proof?.proofTimes ?? [],
       reviewChecks: [
         'state-change-visible',
         'moving-object-readable',
         'text-role-readable',
         'anti-slide-risk-reviewed',
+        ...(shot ? ['dominant-subject-readable', 'shot-grammar-preserved', 'styleframe-matched'] : []),
       ],
     };
   });
@@ -139,7 +159,12 @@ export function compileMotionPlan({project, brief, sourceDossier, beatGraph, pro
       captureStatus: sourceDossier.status,
       capturedAt: sourceDossier.source.capturedAt,
     },
-    planningFingerprint: jsonFingerprint({project, brief, sourceDossier, beatGraph, proofPlan}),
+    planningFingerprint: jsonFingerprint({project, brief, sourceDossier, shotMap, styleframeReview, beatGraph, proofPlan}),
+    styleframeGate: styleframeReview ? {
+      decisionMode: styleframeReview.decisionMode,
+      status: styleframeReview.status,
+      frameIds: styleframeReview.styleframes.map((frame) => frame.id),
+    } : null,
     beats,
     approvedHolds: holds.map((hold) => ({...hold})),
     styleProofTargets: beats
@@ -194,11 +219,16 @@ export async function createRuntimeFingerprint(projectDir, skillRoot) {
     'production/proof-plan.json',
     'production/compiled-motion-plan.json',
   ];
+  const brief = await readJsonFile(path.join(projectDir, 'production', 'brief.json'));
+  if (brief.schemaVersion === 2) {
+    requiredProjectFiles.push('production/shot-map.json', 'production/styleframe-review.json');
+  }
   const optionalProjectFiles = ['hyperframes.json', 'meta.json', 'package.json', 'package-lock.json'];
   const skillFiles = [
     'SKILL.md',
     'references/project-contract.md',
     'references/quality-gates.md',
+    'references/shot-map.md',
     'references/source-dossier.md',
     'scripts/animation-map.mjs',
     'scripts/compile-motion-plan.mjs',

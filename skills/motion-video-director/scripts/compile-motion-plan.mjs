@@ -18,6 +18,9 @@ if (!projectArgument || projectArgument === '--help' || projectArgument === '-h'
 
 const projectDir = path.resolve(process.cwd(), projectArgument);
 const planning = await loadPlanning(projectDir);
+if (planning.brief.schemaVersion === 2 && planning.styleframeReview.status !== 'approved') {
+  throw new Error('Cannot compile a version-2 production before production/styleframe-review.json has status=approved.');
+}
 const compiledPlan = compileMotionPlan(planning);
 const productionDir = path.join(projectDir, 'production');
 const controlPath = path.join(productionDir, 'control.json');
@@ -55,5 +58,8 @@ if (control.stage === 'plan') {
 }
 
 console.log(`Compiled ${compiledPlan.beats.length} beats for ${compiledPlan.projectId}.`);
+if (compiledPlan.styleframeGate) {
+  console.log(`Styleframe gate: ${compiledPlan.styleframeGate.status} (${compiledPlan.styleframeGate.frameIds.join(', ')}).`);
+}
 console.log(`Planning fingerprint: ${compiledPlan.planningFingerprint}`);
 console.log(`Style-proof targets: ${compiledPlan.styleProofTargets.map((target) => target.beatId).join(', ')}`);

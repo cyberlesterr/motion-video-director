@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "decisionMode": "user-review",
+  "status": "pending",
+  "styleframes": [
+    {
+      "id": "sf-01",
+      "relativePath": "preproduction/styleframes/sf-01.png",
+      "shotIds": ["shot-01-gather"],
+      "heroMoment": "The unfinished scene has become the only reading target; loose fragments frame it without becoming a card group.",
+      "reviewChecks": ["dominant-subject", "paper-depth", "type-hierarchy", "anti-slide-risk"]
+    },
+    {
+      "id": "sf-02",
+      "relativePath": "preproduction/styleframes/sf-02.png",
+      "shotIds": ["shot-02-stand"],
+      "heroMoment": "The paper world is visibly standing from one construction seam, with readable height and ground shadows.",
+      "reviewChecks": ["dominant-subject", "hinge-logic", "depth-readability", "anti-grid-risk"]
+    },
+    {
+      "id": "sf-03",
+      "relativePath": "preproduction/styleframes/sf-03.png",
+      "shotIds": ["shot-03-press"],
+      "heroMoment": "The human stamp has fixed the work; the red impact is stronger than the surrounding process labels.",
+      "reviewChecks": ["dominant-subject", "decision-consequence", "shadow-compression", "no-checkbox-look"]
+    },
+    {
+      "id": "sf-04",
+      "relativePath": "preproduction/styleframes/sf-04.png",
+      "shotIds": ["shot-04-prove"],
+      "heroMoment": "The thread visibly begins at the character and ends at the boat while the paper depth order can be inspected.",
+      "reviewChecks": ["dominant-subject", "anchored-endpoints", "depth-proof", "technical-legibility"]
+    },
+    {
+      "id": "sf-05",
+      "relativePath": "preproduction/styleframes/sf-05.png",
+      "shotIds": ["shot-05-open"],
+      "heroMoment": "The authentic project artifact is large enough to read inside one physical folio; the address belongs to its spine.",
+      "reviewChecks": ["authentic-artifact", "dominant-subject", "final-hold", "no-detached-cta"]
+    }
+  ],
+  "notes": [
+    "Pending user review. This package sets the visual direction only; no full HyperFrames composition has been started.",
+    "The captured repository page appears once as authentic project evidence, framed by original paper graphics."
+  ],
+  "approval": null
+}

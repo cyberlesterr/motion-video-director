@@ -28,6 +28,16 @@ const allowedAssetKinds = new Set(['image', 'video', 'audio', 'svg', 'lottie', '
 const allowedAssetSources = new Set(['supplied', 'created-in-project', 'licensed-local']);
 const allowedDeliveryStatuses = new Set(['not-run', 'in-progress', 'partial', 'passed', 'failed']);
 const allowedCheckStatuses = new Set(['not-run', 'stale', 'passed', 'failed', 'not-applicable']);
+const allowedShotFamilies = new Set([
+  'subject-reveal',
+  'world-build',
+  'decision-impact',
+  'relationship-proof',
+  'artifact-encounter',
+  'assembly-close',
+]);
+const allowedStyleframeDecisionModes = new Set(['user-review', 'autonomous']);
+const allowedStyleframeStatuses = new Set(['pending', 'approved']);
 const requiredDeliveryChecks = [
   'sourceContract',
   'compiledMotionPlan',
@@ -203,6 +213,87 @@ async function validateSourceDossier(sourceDossier, brief) {
   return factIds;
 }
 
+async function validateShotPlanning({projectDir, shotMap, styleframeReview, beatById, control}) {
+  assertObject(shotMap, 'shot-map.json');
+  assert(shotMap.schemaVersion === 1, 'shot-map.json schemaVersion must be 1.');
+  assert(Array.isArray(shotMap.shots) && shotMap.shots.length === beatById.size, 'shot-map.json must contain exactly one shot for every beat.');
+
+  const shotIds = new Set();
+  const shotById = new Map();
+  const mappedBeatIds = new Set();
+  const familyCounts = new Map();
+  for (const shot of shotMap.shots) {
+    assertObject(shot, 'shot-map shot');
+    assert(isNonEmptyString(shot.id) && !shotIds.has(shot.id), 'Every shot-map shot needs a unique, non-empty id.');
+    shotIds.add(shot.id);
+    shotById.set(shot.id, shot);
+    assert(isNonEmptyString(shot.beatId) && beatById.has(shot.beatId) && !mappedBeatIds.has(shot.beatId), `Shot ${shot.id} must map to one unique existing beat.`);
+    mappedBeatIds.add(shot.beatId);
+    assert(allowedShotFamilies.has(shot.family), `Shot ${shot.id} has an unsupported family.`);
+    familyCounts.set(shot.family, (familyCounts.get(shot.family) ?? 0) + 1);
+    for (const field of ['narrativePurpose', 'dominantSubject', 'startState', 'mainAction', 'endState', 'cameraPlan', 'materialRule', 'transitionOut', 'styleframeId', 'antiPattern']) {
+      assert(isNonEmptyString(shot[field]), `Shot ${shot.id} ${field} must be a non-empty string.`);
+    }
+    for (const field of ['durationSeconds', 'actionSeconds', 'settleSeconds']) {
+      assertDuration(shot[field], `Shot ${shot.id} ${field}`);
+    }
+    const beat = beatById.get(shot.beatId);
+    assert(Math.abs(shot.durationSeconds - (beat.endSeconds - beat.startSeconds)) <= 0.02, `Shot ${shot.id} durationSeconds must match beat ${shot.beatId}.`);
+    assert(shot.actionSeconds + shot.settleSeconds <= shot.durationSeconds, `Shot ${shot.id} actionSeconds plus settleSeconds must fit inside the shot.`);
+    assert(shot.settleSeconds >= 0.5, `Shot ${shot.id} needs at least 0.5 seconds of settle.`);
+    assert(Array.isArray(shot.audioCues), `Shot ${shot.id} audioCues must be an array.`);
+    assert(Array.isArray(shot.assetDependencies), `Shot ${shot.id} assetDependencies must be an array.`);
+  }
+  for (const [family, count] of familyCounts) {
+    if (count > 1) {
+      const repetitions = shotMap.shots.filter((shot) => shot.family === family);
+      for (const shot of repetitions) {
+        assert(isNonEmptyString(shot.repeatRationale), `Shot ${shot.id} repeats ${family}; add a non-empty repeatRationale.`);
+      }
+    }
+  }
+
+  assertObject(styleframeReview, 'styleframe-review.json');
+  assert(styleframeReview.schemaVersion === 1, 'styleframe-review.json schemaVersion must be 1.');
+  assert(allowedStyleframeDecisionModes.has(styleframeReview.decisionMode), 'styleframe-review.json decisionMode is unsupported.');
+  assert(allowedStyleframeStatuses.has(styleframeReview.status), 'styleframe-review.json status is unsupported.');
+  assert(Array.isArray(styleframeReview.styleframes) && styleframeReview.styleframes.length >= 3 && styleframeReview.styleframes.length <= 5, 'styleframe-review.json needs 3–5 styleframes.');
+  assert(Array.isArray(styleframeReview.notes), 'styleframe-review.json notes must be an array.');
+
+  const frameIds = new Set();
+  const reviewedShotIds = new Set();
+  for (const frame of styleframeReview.styleframes) {
+    assertObject(frame, 'styleframe-review styleframe');
+    assert(isNonEmptyString(frame.id) && !frameIds.has(frame.id), 'Every styleframe needs a unique, non-empty id.');
+    frameIds.add(frame.id);
+    assert(isNonEmptyString(frame.relativePath) && !path.isAbsolute(frame.relativePath), `Styleframe ${frame.id} needs a project-relative frame path.`);
+    assert(/\.(png|svg)$/i.test(frame.relativePath), `Styleframe ${frame.id} must point to a PNG or SVG.`);
+    const framePath = path.resolve(projectDir, frame.relativePath);
+    const frameRelative = path.relative(projectDir, framePath);
+    assert(frameRelative && !frameRelative.startsWith(`..${path.sep}`) && frameRelative !== '..', `Styleframe ${frame.id} must stay inside the project directory.`);
+    assert(await pathExists(framePath) && (await stat(framePath)).isFile(), `Styleframe ${frame.id} is missing at ${frame.relativePath}.`);
+    assert(Array.isArray(frame.shotIds) && frame.shotIds.length >= 1, `Styleframe ${frame.id} must reference at least one shot.`);
+    for (const shotId of frame.shotIds) {
+      assert(shotById.has(shotId), `Styleframe ${frame.id} references an unknown shot: ${shotId}.`);
+      reviewedShotIds.add(shotId);
+    }
+    assert(isNonEmptyString(frame.heroMoment), `Styleframe ${frame.id} needs a heroMoment.`);
+    assert(Array.isArray(frame.reviewChecks) && frame.reviewChecks.length >= 3, `Styleframe ${frame.id} needs at least three reviewChecks.`);
+  }
+  for (const shot of shotMap.shots) {
+    assert(frameIds.has(shot.styleframeId), `Shot ${shot.id} references an unknown styleframe: ${shot.styleframeId}.`);
+    assert(reviewedShotIds.has(shot.id), `Shot ${shot.id} is not covered by a styleframe review.`);
+  }
+
+  if (styleframeReview.status === 'approved') {
+    assertObject(styleframeReview.approval, 'styleframe-review.json approval');
+    assert(isNonEmptyString(styleframeReview.approval.note), 'An approved styleframe review needs an approval note.');
+  } else {
+    assert(styleframeReview.approval === null, 'A pending styleframe review must not contain approval data.');
+    assert(control.stage === 'plan', 'A pending styleframe review is only valid while control.stage is plan.');
+  }
+}
+
 async function validateProductionContract(project, html) {
   const productionDirectory = path.join(target, 'production');
   const productionExists = await pathExists(productionDirectory);
@@ -216,9 +307,15 @@ async function validateProductionContract(project, html) {
   const [brief, sourceDossier, beatGraph, assetManifest, proofPlan, deliveryReport, control] = await Promise.all(
     productionFiles.map((file) => readJson(path.join('production', file))),
   );
+  const [shotMap, styleframeReview] = brief.schemaVersion === 2
+    ? await Promise.all([
+        readJson(path.join('production', 'shot-map.json')),
+        readJson(path.join('production', 'styleframe-review.json')),
+      ])
+    : [null, null];
 
   assertObject(brief, 'brief.json');
-  assert(brief.schemaVersion === 1, 'brief.json schemaVersion must be 1.');
+  assert([1, 2].includes(brief.schemaVersion), 'brief.json schemaVersion must be 1 or 2.');
   assert(allowedStatuses.has(brief.status), 'brief.json status must be starter or production.');
   for (const field of ['projectId', 'title', 'audience', 'motionThesis']) {
     assert(isNonEmptyString(brief[field]), `brief.json ${field} must be a non-empty string.`);
@@ -294,6 +391,10 @@ async function validateProductionContract(project, html) {
 
   assert(stateChangeCount / beatGraph.beats.length >= 0.8, 'At least 80% of beats must have a concrete state change.');
 
+  if (brief.schemaVersion === 2) {
+    await validateShotPlanning({projectDir: target, shotMap, styleframeReview, beatById, control});
+  }
+
   assertObject(proofPlan, 'proof-plan.json');
   assert(proofPlan.schemaVersion === 1, 'proof-plan.json schemaVersion must be 1.');
   assertObject(proofPlan.styleProof, 'proof-plan.json styleProof');
@@ -368,7 +469,7 @@ async function validateProductionContract(project, html) {
 
   const compiledPlanPath = path.join(productionDirectory, 'compiled-motion-plan.json');
   const runtimeFingerprintPath = path.join(productionDirectory, 'runtime-fingerprint.json');
-  const expectedCompiledPlan = compileMotionPlan({project, brief, sourceDossier, beatGraph, proofPlan});
+  const expectedCompiledPlan = compileMotionPlan({project, brief, sourceDossier, shotMap, styleframeReview, beatGraph, proofPlan});
 
   if (deliveryReport.checks.compiledMotionPlan === 'passed') {
     const compiledPlan = await readJson(path.join('production', 'compiled-motion-plan.json'));
