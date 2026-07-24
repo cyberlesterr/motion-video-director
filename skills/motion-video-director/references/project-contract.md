@@ -17,12 +17,19 @@ HyperFrames CLI or its renderer checks.
     beat-graph.json
     asset-manifest.json
     proof-plan.json
+    control.json
+    compiled-motion-plan.json
+    runtime-fingerprint.json
+    style-proof.json
+    review-scaffold.json
     delivery-report.json
 ```
 
 `project.json` describes the local composition. `production/` describes why it
-exists, how it should move, which local assets it may use, and how it must be
-proved.
+exists, how it should move, which local assets it may use, where a resumed run
+continues, and how it must be proved. The compiled plan and evidence records are
+machine-generated; agents update them through the bundled scripts rather than
+editing them by hand.
 
 ## Project stages
 
@@ -33,6 +40,28 @@ proved.
 
 Promote a project to `production` only after replacing the starter brief,
 design, beat graph, and source composition with the actual work.
+
+## `control.json`
+
+`control.json` is the short resume source of truth. Its stages advance only in
+order: `plan` → `build` → `validate` → `review` → `complete`. It records a
+small event history, never a full conversation transcript.
+
+Use these commands rather than inferring the next step from file timestamps:
+
+```bash
+node <skill-root>/scripts/resume-production.mjs <project-dir>
+node <skill-root>/scripts/set-production-stage.mjs <project-dir> <next-stage> "<reason>"
+```
+
+`compile-motion-plan.mjs` automatically advances `plan` to `build` after it
+writes a valid compiled plan. `complete` is valid only when the delivery report
+is fully passed.
+
+If a composition, planning input, local asset, dependency lock, or Skill runtime
+changes after review, run `reopen-production.mjs <project-dir> build "<reason>"`
+or reopen directly at `validate` when the source build itself is unchanged. The
+script marks dependent evidence `stale`; it never silently preserves `passed`.
 
 ## `brief.json`
 
@@ -85,14 +114,51 @@ Create one entry per beat. Each entry maps its `beatId` to at least three proof
 times: early change, hero state, and late/final state. Keep each time inside
 that beat. These are the timestamps for visual review and the contact sheet.
 
+Also declare:
+
+- `styleProof.targetBeatIds`: one or two high-risk beats whose rendered frames
+  prove the reusable visual language;
+- `styleProof.rationale`: why those beats are representative;
+- `approvedHolds`: an array, empty when there are none. Each hold needs an id,
+  beat id, start/end, proof time, and rationale. It must stay within one beat
+  and last no more than 2.5 seconds. A hold is reading or observation time, not
+  duration padding.
+
+Run `compile-motion-plan.mjs` after changing any planning input. It creates
+`compiled-motion-plan.json`, the deterministic execution view of the beats,
+proofs, style-proof targets, review checks, and approved holds.
+
+## Fingerprint and proof records
+
+`fingerprint-production.mjs` writes `runtime-fingerprint.json`. The digest
+includes the composition source, planning inputs, declared local assets,
+project-local package locks, and the Skill's validation/runtime scripts. A
+source or runtime change invalidates all evidence tied to an older digest.
+
+`style-proof.mjs` captures actual HyperFrames proof frames for the compiled
+style targets and records `style-proof.json`. `review-scaffold.mjs` turns the
+compiled plan into a pending visual-review checklist; it does not claim that a
+human or vision reviewer has approved the result.
+
+`render-production.mjs` records the current pre-render fingerprint, output
+artifact hash, and `ffprobe` result. `capture-contact-sheet.mjs` extracts the
+named proof times from that fingerprint-bound MP4. Finally,
+`finalize-production.mjs` verifies every required check and advances the
+control stage from `review` to `complete`.
+
 ## `delivery-report.json`
 
 Start all checks as `not-run`. Record only actual per-check results: `passed`,
-`failed`, `not-run`, or `not-applicable`. The top-level report status may also
+`failed`, `not-run`, `stale`, or `not-applicable`. `stale` means a planning,
+source, asset, dependency, or Skill-runtime change invalidated earlier evidence.
+The top-level report status may also
 be `in-progress` or `partial`; use `partial` when at least one required gate is
 not run, and do not call that result fully verified. The required checks are
-source contract, HyperFrames lint, validation, inspection, animation map,
-render, media probe, and contact sheet.
+source contract, compiled motion plan, source fingerprint, HyperFrames lint,
+validation, inspection, animation map, render, media probe, contact sheet,
+style proof, and review scaffold. A report with `status: "passed"` requires
+every required check to be `passed` and every fingerprint-bound proof to match
+the current runtime fingerprint.
 
 Never use a `passed` value to mean "expected to pass".
 
@@ -104,6 +170,7 @@ Run the source contract after changing project metadata or planning files:
 node <skill-root>/scripts/verify-contract.mjs <project-dir>
 ```
 
-For a `production` project, this is only the first gate. Run the actual
-HyperFrames lint, validate, inspect, animation-map, render, and media checks
-before updating `delivery-report.json`.
+For a `production` project, this is only the first gate. Compile the motion
+plan, write the fingerprint, run actual HyperFrames lint, validate, inspect,
+animation-map, style proof, review scaffold, render, and media checks before
+updating `delivery-report.json` or advancing `control.json` to complete.

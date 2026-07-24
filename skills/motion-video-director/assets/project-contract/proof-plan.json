@@ -1,5 +1,10 @@
 {
   "schemaVersion": 1,
+  "styleProof": {
+    "targetBeatIds": ["beat-02"],
+    "rationale": "The convergence mechanism is the starter's highest-risk visual claim and must be reviewed as rendered pixels."
+  },
+  "approvedHolds": [],
   "scenes": [
     {
       "beatId": "beat-01",

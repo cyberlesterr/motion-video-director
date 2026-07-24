@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 import {access, readFile, stat} from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
 import path from 'node:path';
+import {assertControl, compileMotionPlan, createRuntimeFingerprint} from './production-lib.mjs';
 
 const target = path.resolve(process.cwd(), process.argv[2] ?? '.');
 const requiredFiles = ['DESIGN.md', 'index.html', 'project.json'];
@@ -11,6 +13,7 @@ const productionFiles = [
   'asset-manifest.json',
   'proof-plan.json',
   'delivery-report.json',
+  'control.json',
 ];
 const allowedFps = new Set([24, 30, 60]);
 const allowedStatuses = new Set(['starter', 'production']);
@@ -20,9 +23,11 @@ const allowedStateChangeKinds = new Set(['transform', 'travel', 'connect', 'spli
 const allowedAssetKinds = new Set(['image', 'video', 'audio', 'svg', 'lottie', 'font', 'other']);
 const allowedAssetSources = new Set(['supplied', 'created-in-project', 'licensed-local']);
 const allowedDeliveryStatuses = new Set(['not-run', 'in-progress', 'partial', 'passed', 'failed']);
-const allowedCheckStatuses = new Set(['not-run', 'passed', 'failed', 'not-applicable']);
+const allowedCheckStatuses = new Set(['not-run', 'stale', 'passed', 'failed', 'not-applicable']);
 const requiredDeliveryChecks = [
   'sourceContract',
+  'compiledMotionPlan',
+  'sourceFingerprint',
   'hyperframesLint',
   'hyperframesValidate',
   'hyperframesInspect',
@@ -30,6 +35,8 @@ const requiredDeliveryChecks = [
   'render',
   'mediaProbe',
   'contactSheet',
+  'styleProof',
+  'reviewScaffold',
 ];
 
 async function readRequired(relativePath) {
@@ -125,7 +132,7 @@ async function validateProductionContract(project, html) {
   }
 
   assert((await stat(productionDirectory)).isDirectory(), `${productionDirectory} must be a directory.`);
-  const [brief, beatGraph, assetManifest, proofPlan, deliveryReport] = await Promise.all(
+  const [brief, beatGraph, assetManifest, proofPlan, deliveryReport, control] = await Promise.all(
     productionFiles.map((file) => readJson(path.join('production', file))),
   );
 
@@ -195,6 +202,10 @@ async function validateProductionContract(project, html) {
 
   assertObject(proofPlan, 'proof-plan.json');
   assert(proofPlan.schemaVersion === 1, 'proof-plan.json schemaVersion must be 1.');
+  assertObject(proofPlan.styleProof, 'proof-plan.json styleProof');
+  assert(Array.isArray(proofPlan.styleProof.targetBeatIds) && proofPlan.styleProof.targetBeatIds.length >= 1 && proofPlan.styleProof.targetBeatIds.length <= 2, 'proof-plan.json styleProof needs one or two targetBeatIds.');
+  assert(isNonEmptyString(proofPlan.styleProof.rationale), 'proof-plan.json styleProof needs a rationale.');
+  assert(Array.isArray(proofPlan.approvedHolds), 'proof-plan.json approvedHolds must be an array.');
   assert(Array.isArray(proofPlan.scenes) && proofPlan.scenes.length === beatGraph.beats.length, 'proof-plan.json must contain one scene entry per beat.');
   const proofBeatIds = new Set();
   for (const scene of proofPlan.scenes) {
@@ -207,6 +218,24 @@ async function validateProductionContract(project, html) {
     for (const proofTime of scene.proofTimes) {
       assert(isFiniteNumber(proofTime) && proofTime >= beat.startSeconds && proofTime <= beat.endSeconds, `Proof time for ${scene.beatId} must be inside its beat.`);
     }
+  }
+  const styleTargetIds = new Set();
+  for (const beatId of proofPlan.styleProof.targetBeatIds) {
+    assert(beatById.has(beatId) && !styleTargetIds.has(beatId), 'Each styleProof targetBeatId must name one unique beat.');
+    styleTargetIds.add(beatId);
+  }
+  const holdIds = new Set();
+  for (const hold of proofPlan.approvedHolds) {
+    assertObject(hold, 'approved hold');
+    assert(isNonEmptyString(hold.id) && !holdIds.has(hold.id), 'Each approved hold needs a unique, non-empty id.');
+    holdIds.add(hold.id);
+    const beat = beatById.get(hold.beatId);
+    assert(beat, `Approved hold ${hold.id} must reference an existing beat.`);
+    assert(isFiniteNumber(hold.startSeconds) && isFiniteNumber(hold.endSeconds) && hold.startSeconds < hold.endSeconds, `Approved hold ${hold.id} must have an ordered time range.`);
+    assert(hold.startSeconds >= beat.startSeconds && hold.endSeconds <= beat.endSeconds, `Approved hold ${hold.id} must stay inside its beat.`);
+    assert(hold.endSeconds - hold.startSeconds <= 2.5, `Approved hold ${hold.id} must be at most 2.5 seconds.`);
+    assert(isFiniteNumber(hold.proofTime) && hold.proofTime >= hold.startSeconds && hold.proofTime <= hold.endSeconds, `Approved hold ${hold.id} proofTime must be inside the hold.`);
+    assert(isNonEmptyString(hold.rationale), `Approved hold ${hold.id} needs a rationale.`);
   }
 
   assertObject(assetManifest, 'asset-manifest.json');
@@ -237,6 +266,53 @@ async function validateProductionContract(project, html) {
     assert(allowedCheckStatuses.has(deliveryReport.checks[check]), `delivery-report.json checks.${check} is missing or unsupported.`);
   }
   assert(Array.isArray(deliveryReport.notes), 'delivery-report.json notes must be an array.');
+
+  assertControl(control);
+  if (control.stage === 'complete') {
+    assert(deliveryReport.status === 'passed', 'A complete control stage requires delivery-report.json status=passed.');
+  }
+
+  const compiledPlanPath = path.join(productionDirectory, 'compiled-motion-plan.json');
+  const runtimeFingerprintPath = path.join(productionDirectory, 'runtime-fingerprint.json');
+  const expectedCompiledPlan = compileMotionPlan({project, brief, beatGraph, proofPlan});
+
+  if (deliveryReport.checks.compiledMotionPlan === 'passed') {
+    const compiledPlan = await readJson(path.join('production', 'compiled-motion-plan.json'));
+    assert(compiledPlan.schemaVersion === 1, 'compiled-motion-plan.json schemaVersion must be 1.');
+    assert(compiledPlan.planningFingerprint === expectedCompiledPlan.planningFingerprint, 'compiled-motion-plan.json is stale; recompile the motion plan.');
+  } else {
+    assert(!(await pathExists(compiledPlanPath)) || deliveryReport.checks.compiledMotionPlan !== 'not-run', 'compiled-motion-plan.json exists but delivery report does not record its status.');
+  }
+
+  const needsCurrentFingerprint = ['sourceFingerprint', 'render', 'styleProof', 'reviewScaffold'].some(
+    (check) => deliveryReport.checks[check] === 'passed',
+  );
+  let currentFingerprint;
+  if (needsCurrentFingerprint) {
+    assert(await pathExists(runtimeFingerprintPath), 'A passed fingerprint-bound check requires production/runtime-fingerprint.json.');
+    const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+    currentFingerprint = await createRuntimeFingerprint(target, skillRoot);
+    const recordedFingerprint = await readJson(path.join('production', 'runtime-fingerprint.json'));
+    assert(recordedFingerprint.fingerprint === currentFingerprint.fingerprint, 'production/runtime-fingerprint.json is stale; regenerate evidence after source or runtime changes.');
+    assert(deliveryReport.evidence?.sourceFingerprint?.value === currentFingerprint.fingerprint, 'delivery-report.json must bind sourceFingerprint evidence to the current runtime fingerprint.');
+  }
+  if (deliveryReport.checks.render === 'passed') {
+    assert(deliveryReport.evidence?.renderedSourceFingerprint === currentFingerprint?.fingerprint, 'Passed render evidence must be bound to the current source fingerprint; rerender after source changes.');
+  }
+  if (deliveryReport.checks.styleProof === 'passed') {
+    const styleProof = await readJson(path.join('production', 'style-proof.json'));
+    assert(styleProof.scope === 'style' && styleProof.sourceFingerprint === currentFingerprint?.fingerprint, 'style-proof.json must bind to the current source fingerprint.');
+    assert(Array.isArray(styleProof.targets) && styleProof.targets.length === proofPlan.styleProof.targetBeatIds.length, 'style-proof.json target coverage is incomplete.');
+  }
+  if (deliveryReport.checks.reviewScaffold === 'passed') {
+    const reviewScaffold = await readJson(path.join('production', 'review-scaffold.json'));
+    assert(reviewScaffold.sourceFingerprint === currentFingerprint?.fingerprint, 'review-scaffold.json must bind to the current source fingerprint.');
+  }
+  if (deliveryReport.status === 'passed') {
+    for (const check of requiredDeliveryChecks) {
+      assert(deliveryReport.checks[check] === 'passed', `delivery-report.json status=passed requires checks.${check}=passed.`);
+    }
+  }
 
   console.log(`PASS production planning contract: ${brief.status}, ${beatGraph.beats.length} beats, ${assetManifest.assets.length} local assets.`);
 }

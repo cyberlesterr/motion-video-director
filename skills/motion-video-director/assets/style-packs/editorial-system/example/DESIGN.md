@@ -20,7 +20,7 @@ meaning through connection, registration, and resolution.
 
 ## Typography
 
-Use `Baskerville` for the display statement and `Menlo` for labels, evidence,
+Use `Baskerville` for the display statement and `IBM Plex Mono` for labels, evidence,
 and metadata. The serif voice makes an editorial claim; the mono voice makes
 the evidence accountable. Keep display tracking tight and labels tabular.
 

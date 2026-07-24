@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "status": "pending-review",
+  "sourceFingerprint": "d35866a8f6238667cc81674527f0b5c034f14560c3e5f32e6627b7f6dee9c81a",
+  "planningFingerprint": "a2dac4f37b0671bf43228ca37767f0a22c25cf4cf1bddcfea85971f2cda93cf4",
+  "styleProof": {
+    "manifest": "production/style-proof.json",
+    "sourceFingerprint": "d35866a8f6238667cc81674527f0b5c034f14560c3e5f32e6627b7f6dee9c81a"
+  },
+  "items": [
+    {
+      "id": "beat:beat-01",
+      "kind": "beat",
+      "beatId": "beat-01",
+      "proofTimes": [
+        0.55,
+        1.45,
+        2.45
+      ],
+      "checks": [
+        "state-change-visible",
+        "moving-object-readable",
+        "text-role-readable",
+        "anti-slide-risk-reviewed"
+      ],
+      "requiredEvidence": "contact sheet and named proof frames",
+      "note": "Review four unanswered signal labels: Four distinct questions enter an otherwise empty evidence field."
+    },
+    {
+      "id": "beat:beat-02",
+      "kind": "beat",
+      "beatId": "beat-02",
+      "proofTimes": [
+        2.85,
+        4.1,
+        5.25
+      ],
+      "checks": [
+        "state-change-visible",
+        "moving-object-readable",
+        "text-role-readable",
+        "anti-slide-risk-reviewed"
+      ],
+      "requiredEvidence": "style-proof frame set",
+      "note": "Review route network: Fine editorial routes draw from each signal into a shared evidence spine."
+    },
+    {
+      "id": "beat:beat-03",
+      "kind": "beat",
+      "beatId": "beat-03",
+      "proofTimes": [
+        5.7,
+        7.15,
+        8.7
+      ],
+      "checks": [
+        "state-change-visible",
+        "moving-object-readable",
+        "text-role-readable",
+        "anti-slide-risk-reviewed"
+      ],
+      "requiredEvidence": "contact sheet and named proof frames",
+      "note": "Review registered evidence units: Evidence units register on the routes and turn the system into a verifiable chain."
+    },
+    {
+      "id": "beat:beat-04",
+      "kind": "beat",
+      "beatId": "beat-04",
+      "proofTimes": [
+        9.15,
+        10.35,
+        11.55
+      ],
+      "checks": [
+        "state-change-visible",
+        "moving-object-readable",
+        "text-role-readable",
+        "anti-slide-risk-reviewed"
+      ],
+      "requiredEvidence": "style-proof frame set",
+      "note": "Review decision node: The completed evidence field resolves into one highlighted decision node and proof marker."
+    },
+    {
+      "id": "hold:final-reading-hold",
+      "kind": "approved-hold",
+      "beatId": "beat-04",
+      "proofTimes": [
+        11.55
+      ],
+      "checks": [
+        "hold-is-readable",
+        "hold-is-not-padding",
+        "hold-preserves-final-state"
+      ],
+      "requiredEvidence": "named proof frame and rendered timeline",
+      "note": "The final 1.5 seconds let the viewer read the resolved decision while the completed evidence field remains visible."
+    }
+  ],
+  "instructions": [
+    "Review generated frames at useful size; do not mark a scaffold as a creative approval by itself.",
+    "Record revision feedback beside the project source before changing the composition.",
+    "Regenerate this scaffold after a source fingerprint changes."
+  ]
+}

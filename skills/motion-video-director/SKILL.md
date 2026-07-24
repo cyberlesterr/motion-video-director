@@ -57,6 +57,20 @@ The generated project is a `starter`, not a completed production. Before changin
 
 Keep all video-generation policy fields as `prohibited`. List factual claims and their sources before animating them. Record only local assets that are actually used.
 
+After planning inputs are complete, compile the execution plan once:
+
+```bash
+node <skill-root>/scripts/compile-motion-plan.mjs <project-dir>
+```
+
+The compiled plan is the source of truth for proof times, style-proof targets, approved holds, and review coverage. Resume an interrupted project with `resume-production.mjs`; do not rediscover its state from loose artifacts.
+
+After a source revision from `review` or `complete`, reopen it explicitly before rerunning evidence:
+
+```bash
+node <skill-root>/scripts/reopen-production.mjs <project-dir> build "<revision reason>"
+```
+
 ### 4. Choose local assets and components
 
 Use supplied local assets first. Use generated or imported assets only when explicitly available in the host environment and approved by the user; do not substitute an external video provider.
@@ -78,12 +92,10 @@ Build the static hero frame before animation. Register a paused GSAP timeline in
 Read [references/quality-gates.md](references/quality-gates.md). Run:
 
 ```bash
-npx hyperframes lint .
-npx hyperframes validate .
-npx hyperframes inspect . --samples 15
+node <skill-root>/scripts/validate-production.mjs <project-dir> --samples 15
 ```
 
-Also run the local project contract check after changing source metadata or production planning files:
+This command runs the local contract, HyperFrames lint/validation/inspection, and animation map; it records only actual passing results and rejects any dead zone not represented by an approved hold. To inspect a source change before the full validation pass, run:
 
 ```bash
 node <skill-root>/scripts/verify-contract.mjs .
@@ -98,9 +110,33 @@ npm install --save-dev @hyperframes/producer@0.7.70
 node <skill-root>/scripts/animation-map.mjs . --out .hyperframes/animation-map
 ```
 
+Create a current runtime fingerprint before evidence capture. It covers composition source, declared local assets, project-local dependency locks, and the Skill validation runtime. A changed fingerprint invalidates passed evidence:
+
+```bash
+node <skill-root>/scripts/fingerprint-production.mjs <project-dir>
+node <skill-root>/scripts/fingerprint-production.mjs <project-dir> --check
+```
+
+For a reusable style profile or a high-risk visual mechanism, render the selected proof frames with the project-local HyperFrames CLI. Then generate the review checklist; a scaffold is not a creative approval:
+
+```bash
+node <skill-root>/scripts/style-proof.mjs <project-dir>
+node <skill-root>/scripts/review-scaffold.mjs <project-dir>
+```
+
 ### 7. Deliver evidence
 
-Deliver the source project, final MP4, contact sheet, selected proof times, renderer validation results, and an `ffprobe` media summary. Distinguish successful checks from unverified visual or audio claims.
+Render through the wrapper so the output and media probe bind to the pre-render source fingerprint:
+
+```bash
+node <skill-root>/scripts/render-production.mjs <project-dir> \
+  --output renders/final.mp4 --quality standard --workers 2
+node <skill-root>/scripts/capture-contact-sheet.mjs <project-dir> \
+  --video renders/final.mp4 --output renders/contact-sheet.jpg
+node <skill-root>/scripts/finalize-production.mjs <project-dir>
+```
+
+Deliver the source project, final MP4, contact sheet, selected proof times, style-proof frame set, review scaffold, renderer validation results, and an `ffprobe` media summary. Distinguish successful checks from unverified visual or audio claims. Advance `control.json` to `complete` only after every required delivery check passes.
 
 ## Bundled resources
 
@@ -116,3 +152,9 @@ Deliver the source project, final MP4, contact sheet, selected proof times, rend
 - `scripts/init-production.mjs`: copies the fallback starter and its production contract into an empty directory.
 - `scripts/verify-contract.mjs`: validates the bundled starter or a copied project against the local source contract; it does not replace HyperFrames lint, validation, or visual inspection.
 - `scripts/animation-map.mjs`: records timeline tween samples, potential collisions, pacing flags, dead zones, and element lifecycles using the composition's local `@hyperframes/producer` dev dependency.
+- `scripts/compile-motion-plan.mjs` and `scripts/resume-production.mjs`: compile planning decisions and resume from the explicit production stage.
+- `scripts/reopen-production.mjs`: returns a reviewed or complete production to build/validate and truthfully marks dependent evidence stale.
+- `scripts/fingerprint-production.mjs`: writes or checks the source/runtime fingerprint that invalidates stale evidence.
+- `scripts/validate-production.mjs`: runs contract and HyperFrames quality gates, records their evidence, and verifies animation-map dead zones against approved holds.
+- `scripts/style-proof.mjs`, `scripts/review-scaffold.mjs`, and `scripts/render-production.mjs`: capture style evidence, generate review coverage, and bind a local render to its source fingerprint.
+- `scripts/capture-contact-sheet.mjs` and `scripts/finalize-production.mjs`: capture proof-time frames from the fingerprint-bound render and move a fully verified project to complete.

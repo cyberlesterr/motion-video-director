@@ -20,3 +20,5 @@ A style profile is a reusable visual system, not a one-off collection of colors.
 - **procedural-poetry**: Canvas/p5 systems, seeded behavior, sparse typography, audio events derived from the same state changes as the image.
 
 Use a profile as a starting point. Create a project `DESIGN.md` for the actual video; do not copy a profile blindly.
+
+Every profile sample must also declare one or two compiled style-proof target beats and capture their real rendered proof frames. Its review scaffold must make the profile's primary visual relationship, readability risk, and anti-slide constraint explicit.

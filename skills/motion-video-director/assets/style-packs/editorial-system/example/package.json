@@ -5,8 +5,15 @@
   "scripts": {
     "dev": "hyperframes preview",
     "check": "hyperframes check",
-    "render": "hyperframes render",
-    "animation-map": "node ../../../../scripts/animation-map.mjs . --out .hyperframes/animation-map"
+    "compile-plan": "node ../../../../scripts/compile-motion-plan.mjs .",
+    "fingerprint": "node ../../../../scripts/fingerprint-production.mjs .",
+    "validate": "node ../../../../scripts/validate-production.mjs . --samples 15",
+    "animation-map": "node ../../../../scripts/animation-map.mjs . --out .hyperframes/animation-map",
+    "style-proof": "node ../../../../scripts/style-proof.mjs .",
+    "review-scaffold": "node ../../../../scripts/review-scaffold.mjs .",
+    "render": "node ../../../../scripts/render-production.mjs . --output renders/editorial-system-sample.mp4 --quality standard --workers 2",
+    "contact-sheet": "node ../../../../scripts/capture-contact-sheet.mjs . --video renders/editorial-system-sample.mp4 --output renders/editorial-system-contact-sheet.jpg",
+    "finalize": "node ../../../../scripts/finalize-production.mjs ."
   },
   "devDependencies": {
     "@hyperframes/producer": "0.7.70",

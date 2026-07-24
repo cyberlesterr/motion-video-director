@@ -22,11 +22,11 @@ argument readable. Let relationships move; leave ornament subordinate to proof.
 | `signal` | `#A93F29` | one active question or decision cue |
 | `proof` | `#3B6B56` | verified connection or resolved state |
 
-Use `Baskerville` for the single expressive statement voice and `Menlo` for
+Use `Baskerville` for the single expressive statement voice and `IBM Plex Mono` for
 evidence, metadata, and numerical labels. The tension is editorial judgement
-against accountable systems. Declare both as local fonts in source so the
-renderer does not silently substitute them. Do not add a second display
-typeface.
+against accountable systems. Declare the local display face in source and use
+the compiler-supported mono family by name so the renderer can embed it rather
+than silently substitute a system font. Do not add a second display typeface.
 
 ## Motion primitives
 

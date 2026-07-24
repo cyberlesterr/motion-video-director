@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "scope": "style",
+  "sourceFingerprint": "d35866a8f6238667cc81674527f0b5c034f14560c3e5f32e6627b7f6dee9c81a",
+  "planningFingerprint": "a2dac4f37b0671bf43228ca37767f0a22c25cf4cf1bddcfea85971f2cda93cf4",
+  "targets": [
+    {
+      "beatId": "beat-02",
+      "proofTimes": [
+        2.85,
+        4.1,
+        5.25
+      ],
+      "rationale": "The route network and final decision resolve the profile's core claim: a moving editorial system, not a sequence of decorative cards."
+    },
+    {
+      "beatId": "beat-04",
+      "proofTimes": [
+        9.15,
+        10.35,
+        11.55
+      ],
+      "rationale": "The route network and final decision resolve the profile's core claim: a moving editorial system, not a sequence of decorative cards."
+    }
+  ],
+  "evidence": {
+    "framesDirectory": "dist/style-proof/frames",
+    "frames": [
+      {
+        "scope": "evidence",
+        "path": "dist/style-proof/frames/frame-00-at-2.85s.png",
+        "bytes": 135779,
+        "sha256": "c037a81e66ac547f14576c131e83aa89dd41774b40e7ecbc2bf7d3b63a0cf2e1"
+      },
+      {
+        "scope": "evidence",
+        "path": "dist/style-proof/frames/frame-01-at-4.1s.png",
+        "bytes": 142038,
+        "sha256": "f1784634357b0c37b89511118732c2a4ba4cfdcc4567fdbe37d6e9cfad83aa51"
+      },
+      {
+        "scope": "evidence",
+        "path": "dist/style-proof/frames/frame-02-at-5.25s.png",
+        "bytes": 143558,
+        "sha256": "5feeea48b2a45d4ec27aa22d08bc93be165f7d9ddebb247b3a5b2aa8f2f0c81b"
+      },
+      {
+        "scope": "evidence",
+        "path": "dist/style-proof/frames/frame-03-at-9.15s.png",
+        "bytes": 175486,
+        "sha256": "8c45fc54888748e7d6a419829644a7728fd7ea33ccf9871754261d8bf3171e08"
+      },
+      {
+        "scope": "evidence",
+        "path": "dist/style-proof/frames/frame-04-at-10.35s.png",
+        "bytes": 186472,
+        "sha256": "8cddd29df3d7ea4a61eb0759a0a4eb9d7498ef8e2aa4df16fc5280fcb52492d2"
+      },
+      {
+        "scope": "evidence",
+        "path": "dist/style-proof/frames/frame-05-at-11.55s.png",
+        "bytes": 186472,
+        "sha256": "8cddd29df3d7ea4a61eb0759a0a4eb9d7498ef8e2aa4df16fc5280fcb52492d2"
+      }
+    ]
+  },
+  "reviewRequirements": [
+    "Inspect every target at its named proof times as actual HyperFrames pixels.",
+    "Confirm the target state change is legible without relying on a slide-like card sequence.",
+    "Confirm text hierarchy, intended relationships, and any approved hold are readable."
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "stage": "complete",
+  "events": [
+    {
+      "stage": "plan",
+      "action": "initialized",
+      "note": "v0.2 production control introduced; compile the existing editorial plan before revalidating its evidence."
+    },
+    {
+      "stage": "build",
+      "action": "compiled-motion-plan",
+      "note": "Planning inputs compiled into the deterministic motion plan."
+    },
+    {
+      "stage": "validate",
+      "action": "stage-advanced",
+      "note": "Existing editorial sample enters v0.2 quality validation."
+    },
+    {
+      "stage": "review",
+      "action": "validated-production",
+      "note": "Contract, HyperFrames checks, animation map, and approved-hold coverage passed."
+    },
+    {
+      "stage": "validate",
+      "action": "reopened-production",
+      "note": "Use the directly declared Menlo system stack so style-proof fonts load in snapshot runtime."
+    },
+    {
+      "stage": "review",
+      "action": "validated-production",
+      "note": "Contract, HyperFrames checks, animation map, and approved-hold coverage passed."
+    },
+    {
+      "stage": "validate",
+      "action": "reopened-production",
+      "note": "Replace the snapshot-failing system mono with compiler-embedded IBM Plex Mono."
+    },
+    {
+      "stage": "review",
+      "action": "validated-production",
+      "note": "Contract, HyperFrames checks, animation map, and approved-hold coverage passed."
+    },
+    {
+      "stage": "validate",
+      "action": "reopened-production",
+      "note": "Stabilize runtime fingerprint after the complete HyperFrames gate pass."
+    },
+    {
+      "stage": "review",
+      "action": "validated-production",
+      "note": "Contract, HyperFrames checks, animation map, and approved-hold coverage passed."
+    },
+    {
+      "stage": "complete",
+      "action": "completed-production",
+      "note": "All required delivery evidence is current and the contract passed."
+    },
+    {
+      "stage": "validate",
+      "action": "reopened-production",
+      "note": "Revalidate after final source-runtime hygiene cleanup."
+    },
+    {
+      "stage": "review",
+      "action": "validated-production",
+      "note": "Contract, HyperFrames checks, animation map, and approved-hold coverage passed."
+    },
+    {
+      "stage": "complete",
+      "action": "completed-production",
+      "note": "All required delivery evidence is current and the contract passed."
+    },
+    {
+      "stage": "validate",
+      "action": "reopened-production",
+      "note": "Regenerate style proof after making its evidence directory exact."
+    },
+    {
+      "stage": "review",
+      "action": "validated-production",
+      "note": "Contract, HyperFrames checks, animation map, and approved-hold coverage passed."
+    },
+    {
+      "stage": "complete",
+      "action": "completed-production",
+      "note": "All required delivery evidence is current and the contract passed."
+    }
+  ]
+}

@@ -1,5 +1,19 @@
 {
   "schemaVersion": 1,
+  "styleProof": {
+    "targetBeatIds": ["beat-02", "beat-04"],
+    "rationale": "The route network and final decision resolve the profile's core claim: a moving editorial system, not a sequence of decorative cards."
+  },
+  "approvedHolds": [
+    {
+      "id": "final-reading-hold",
+      "beatId": "beat-04",
+      "startSeconds": 10.5,
+      "endSeconds": 12,
+      "proofTime": 11.55,
+      "rationale": "The final 1.5 seconds let the viewer read the resolved decision while the completed evidence field remains visible."
+    }
+  ],
   "scenes": [
     {
       "beatId": "beat-01",

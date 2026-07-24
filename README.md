@@ -63,6 +63,8 @@ For a contract-managed local starter, initialize the composition and its product
 ```bash
 node skills/motion-video-director/scripts/init-production.mjs ./my-motion-video
 node skills/motion-video-director/scripts/verify-contract.mjs ./my-motion-video
+node skills/motion-video-director/scripts/compile-motion-plan.mjs ./my-motion-video
+node skills/motion-video-director/scripts/resume-production.mjs ./my-motion-video
 ```
 
 This creates a short `starter` project. Replace its brief, design, beat graph,
@@ -81,8 +83,10 @@ Run its pinned HyperFrames checks from that directory:
 
 ```bash
 npm install
-npm run check
-npm run animation-map
+npm run compile-plan
+npm run validate
+npm run style-proof
+npm run review-scaffold
 npm run render
 ```
 
@@ -97,6 +101,7 @@ node skills/motion-video-director/scripts/verify-contract.mjs \
 For a real project, run the HyperFrames checks before delivery:
 
 ```bash
+npx hyperframes check .
 npx hyperframes lint .
 npx hyperframes validate .
 npx hyperframes inspect . --samples 15
@@ -108,6 +113,22 @@ the motion diagnostics without relying on a host-level plugin cache:
 ```bash
 npm install --save-dev @hyperframes/producer@0.7.70
 node skills/motion-video-director/scripts/animation-map.mjs . --out .hyperframes/animation-map
+```
+
+For a contract-managed production, compile planning first and bind every proof
+to the current source/runtime fingerprint. The render wrapper records the
+pre-render digest alongside the MP4 and `ffprobe` result:
+
+```bash
+node skills/motion-video-director/scripts/compile-motion-plan.mjs .
+node skills/motion-video-director/scripts/validate-production.mjs . --samples 15
+node skills/motion-video-director/scripts/style-proof.mjs .
+node skills/motion-video-director/scripts/review-scaffold.mjs .
+node skills/motion-video-director/scripts/render-production.mjs . \
+  --output renders/final.mp4 --quality standard --workers 2
+node skills/motion-video-director/scripts/capture-contact-sheet.mjs . \
+  --video renders/final.mp4 --output renders/contact-sheet.jpg
+node skills/motion-video-director/scripts/finalize-production.mjs .
 ```
 
 ## License and publication

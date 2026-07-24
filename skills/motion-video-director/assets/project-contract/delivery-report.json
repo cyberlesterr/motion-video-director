@@ -3,13 +3,17 @@
   "status": "not-run",
   "checks": {
     "sourceContract": "not-run",
+    "compiledMotionPlan": "not-run",
+    "sourceFingerprint": "not-run",
     "hyperframesLint": "not-run",
     "hyperframesValidate": "not-run",
     "hyperframesInspect": "not-run",
     "animationMap": "not-run",
     "render": "not-run",
     "mediaProbe": "not-run",
-    "contactSheet": "not-run"
+    "contactSheet": "not-run",
+    "styleProof": "not-run",
+    "reviewScaffold": "not-run"
   },
   "notes": []
 }

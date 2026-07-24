@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "stage": "plan",
+  "events": [
+    {
+      "stage": "plan",
+      "action": "initialized",
+      "note": "Starter created; replace its planning inputs before compiling the motion plan."
+    }
+  ]
+}
